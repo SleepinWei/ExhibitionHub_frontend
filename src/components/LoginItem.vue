@@ -2,22 +2,18 @@
  * @Author: yingxin wang
  * @Date: 2023-04-04 16:20:22
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-04-08 15:51:21
+ * @LastEditTime: 2023-04-08 14:44:18
  * @Description: Login Item
 -->
 <template>
     <div class="frame">
         <div class="frame-input">
-            <h1>登录</h1>
+            <h1 class="">登录</h1>
             <el-input class="frame-el-input" v-model="input" placeholder="用户名" />
             <el-input class="frame-el-input" v-model="input" placeholder="密码" />
             <div class="frame-el-button">
                 <el-button type="primary" size="large">登录</el-button>
             </div>
-            <el-row style="text-align: center;justify-content: center;margin-left: 10px;">
-                <el-link type="primary">用户注册</el-link>
-                <el-link type="primary" style="margin-left: 10px;">忘记密码</el-link>
-            </el-row>
         </div>
     </div>
 </template>
@@ -27,13 +23,11 @@
     border: 1px solid gainsboro;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
-    width: 400px;
     height: 350px;
-    padding: 20px 35px 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -210px 0 0 -300px;
+    width: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .frame h1 {
@@ -45,10 +39,9 @@
     bottom: 0;
     left: 0;
     right: 0;
-    width: 70%;
+    width: 60%;
     height: auto;
     margin-bottom: 10px;
-    margin: auto;
 }
 
 .frame-input> :not(:last-child) {
