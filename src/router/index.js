@@ -22,6 +22,12 @@ const router = createRouter({
       name: 'login',
       //登陆页面
       component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/calendar',
+      name: 'calendar',
+      //登陆页面
+      component: () => import('../views/CalendarView.vue')
     }
   ]
 })
