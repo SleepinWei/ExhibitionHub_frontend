@@ -8,6 +8,8 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import VueCookies from 'vue-cookies'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
+axios.defaults.baseURL="http://localhost:8080"
+
 const app = createApp(App)
 app.config.globalProperties.$axios=axios
 // app.config.headers["Access-Control-Allow-Origin"]="http://127.0.0.1:8080";
