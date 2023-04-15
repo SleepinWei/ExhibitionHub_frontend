@@ -44,10 +44,9 @@ export default {
 </script>
 
 <style>
-.outer-header{
-  width: 100%;
-  height: 50px;
-  min-width: 1300px;
-  box-shadow: 0px 4px 4px 1px rgba(0, 0, 0, .2);
+body{
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 </style>
