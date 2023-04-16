@@ -2,7 +2,7 @@
     <el-row style="margin-bottom: 50px;">
         <el-col :span="12" :offset="6" style="margin-top: 50px;">
             <el-input
-                v-model="input" 
+                v-model="inputText" 
                 size="large"
                 placeholder="Input"
                 >
@@ -29,11 +29,13 @@
 
 <script>
 import ExThumbnail from '@/components/ExThumbnail.vue';
+import axios from 'axios';
+import { url } from 'inspector';
 export default {
     components:{ExThumbnail},
     data() {
         return {
-            input: "",
+            inputText: "",
             searchResult: [
                 {
                     name: "Ex1",
@@ -45,5 +47,40 @@ export default {
             ]
         }
     },
+    methods: {
+        submitSearch() {
+            this.$router.push({
+                path: "/search", query: { querytext: this.inputText }
+            });
+            // 调用一次查询
+            this.searchRequest();
+        },
+        searchRequest() {
+            if (this.$route.query.querytext == null) {
+                return;
+            }
+            // console.log(this.$route.query.querytext);
+            axios.get(
+                url=`/search/${this.inputText}` 
+            ).then(
+                (response) => {
+                    this.searchRequest = response.data;
+                }
+            )
+        },
+        keyListener(event) {
+            if (event.keyCode == 13) {
+                this.submitSearch();
+            }
+        }
+    },
+    mounted() {
+        window.addEventListener('keydown', this.keyListener,true);
+        // 从其他页面跳转过来，需要进行一次查询
+        this.searchRequest();
+    },
+    unmounted() {
+        window.removeEventListener('keydown', this.keyListener,false);
+    }
 }
 </script>
