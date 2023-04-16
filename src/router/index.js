@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import AlterInfo from '../views/AlterInfo.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +9,12 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      //TODO:动态
+      path: '/alterinfo',
+      name: 'AlterInfo',
+      component: AlterInfo
     },
     {
       path: '/about',
