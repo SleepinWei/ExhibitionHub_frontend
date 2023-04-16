@@ -22,7 +22,7 @@
                 </el-col>
             </el-row>
             <el-row class="sub_info">
-                时间：{{form.begin_time}} - {{ form.end_time }}
+                时间：{{form.begin_date}} - {{ form.end_date}}
             </el-row>
             <el-row class="sub_info">
                 主办方：{{form.organizer }}
@@ -86,8 +86,8 @@ export default {
                 exId: this.$route.params.exId,
                 poster_url: "/src/assets/posters/saber.png",
                 name: "Exhibition 1",
-                begin_time: "2001-01-01",
-                end_time: "2001-02-02",
+                begin_date: "2001-01-01",
+                end_date: "2001-02-02",
                 organizer: "og1",
                 tickets: "2000RMB",
                 link: "https://bilibili.com",
