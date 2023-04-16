@@ -47,10 +47,10 @@
         </el-col>
     </el-row>
 
-    <el-row class="long_intro">
-        <h2>详细介绍</h2>
+    <el-row class="long_intro border_up" style="margin-top: 20px;">
+        <h3>详细介绍</h3>
     </el-row>
-    <el-row class="long_intro">
+    <el-row class="long_intro border_up">
         <!-- {{ intro }} -->
         <div v-html="long_intros"></div>
     </el-row>
@@ -176,6 +176,10 @@ export default {
 
 .subscribe_button{
     margin-top: 20px;
+}
+
+.border_up{
+    border-top: 2px solid #00000010;
 }
 
 </style>
