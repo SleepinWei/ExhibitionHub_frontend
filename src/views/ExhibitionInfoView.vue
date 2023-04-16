@@ -2,17 +2,24 @@
 <el-row>
     <el-col :span="18">
     <el-row class="basic_info">
-        <el-col :span="9">
+        <el-col :span="9" class="poster">
             <el-row justify="center" class="poster-image">
                 <el-image style="width: 250px;height: 300px;" :src="form.poster_url" fit="contain">
                 </el-image>
             </el-row>
         </el-col>
-        <el-col :span="13" :offset="0">
-            <el-row class="sub_info">
-                <h2>
-                    {{form.name}}
-                </h2>
+        <el-col :span="13" :offset="0" class="simple_info">
+            <el-row class="sub_info" align="middle">
+                <el-col :span="18">
+                    <h2>
+                        {{form.name}}
+                    </h2>
+                </el-col>
+                <el-col :span="6" v-if="isAdmin" class="change_info_button">
+                    <el-button type="primary" @click="onChangeInfo">
+                        修改信息
+                    </el-button>
+                </el-col>
             </el-row>
             <el-row class="sub_info">
                 时间：{{form.begin_time}} - {{ form.end_time }}
@@ -82,28 +89,46 @@ export default {
                 tickets: "2000RMB",
                 link: "https://bilibili.com",
                 tags: ["tag1", "tag2"],
-                intro: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
+                introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
             ssssssssssssssssssssssssssssss",
                 recommends: ["ex1", "ex2", "ex3"]
-            }
+            },
+            isAdmin:true
         }
     },
     methods: {
         async getRequest(){
             axios.get(`/exhibition/${this.$route.params.exId}`)
-            .then((response) => {
-                parsed_response= JSON.parse(response.data);
-                console.log(parsed_response);
-            });
+                .then((response) => {
+
+                    this.form = response.data;
+                }).catch((error) => {
+                    if (error.response.status == 400) {
+                        // exhibition is not found
+                        this.$router.push("/error400")
+                    }
+                });
+        },
+        getAdmin() {
+            let isAdmin = this.$cookies.get("isAdmin");
+            if (isAdmin != null) {
+                this.isAdmin = isAdmin;
+            }
+            console.log(this.isAdmin);
+        },
+        onChangeInfo() {
+            // TODO: 与 User 登录对接，主要为字段名
+            // redirect
+            this.$router.push(`/alterinfo/${this.$route.params.exId}`);
         }
     },
     mounted() {
-        console.log(`/exhibition/${this.$route.params.exId}`);
         this.getRequest();
+        this.getAdmin();
     },
     computed: {
         long_intros() {
-            var arr = this.form.intro.split("\n");
+            var arr = this.form.introduction.split("\n");
             var result = ""; 
             arr.forEach((value, index, array) => {
                 result += `<p>${value}</p>`
@@ -118,6 +143,9 @@ export default {
 <style>
 .basic_info{
     padding-top:30px;
+}
+.simple_info{
+    margin-left: 20px;
 }
 
 .el-tag{
@@ -134,4 +162,5 @@ export default {
 .el-divider{
     height: 100%;
 }
+
 </style>

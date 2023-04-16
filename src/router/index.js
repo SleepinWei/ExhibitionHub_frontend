@@ -14,6 +14,10 @@ const router = createRouter({
       path: '/exhibition/:exId',
       meta:{isShowHeader:true},
       component: () => import('@/views/ExhibitionInfoView.vue')
+    },
+    {
+      path: "/error400",
+      component: ()=> import("@/views/error/400.vue")
     }
   ]
 })
