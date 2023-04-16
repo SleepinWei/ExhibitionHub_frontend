@@ -4,34 +4,34 @@
     <el-row class="basic_info">
         <el-col :span="9">
             <el-row justify="center" class="poster-image">
-                <el-image style="width: 250px;height: 300px;" :src="poster_url" fit="contain">
+                <el-image style="width: 250px;height: 300px;" :src="form.poster_url" fit="contain">
                 </el-image>
             </el-row>
         </el-col>
         <el-col :span="13" :offset="0">
             <el-row class="sub_info">
                 <h2>
-                    {{name}}
+                    {{form.name}}
                 </h2>
             </el-row>
             <el-row class="sub_info">
-                时间：{{begin_time}} - {{ end_time }}
+                时间：{{form.begin_time}} - {{ form.end_time }}
             </el-row>
             <el-row class="sub_info">
-                主办方：{{organizer }}
+                主办方：{{form.organizer }}
             </el-row>
             <el-row class="sub_info">
-                票价: {{tickets}}
+                票价: {{form.tickets}}
             </el-row>
             <el-row class="sub_info">
                 官方链接: 
-                <a :href="link">
-                    {{link}}
+                <a :href="form.link">
+                    {{form.link}}
                 </a>
             </el-row>
             <el-row class="sub_info">
                 标签: 
-                <el-tag v-for="tag in tags"> tag </el-tag>
+                <el-tag v-for="tag in form.tags"> tag </el-tag>
             </el-row>
         </el-col>
 
@@ -44,8 +44,11 @@
         <!-- {{ intro }} -->
         <div v-html="long_intros"></div>
     </el-row>
-    </el-col>
-    <el-col :span="6">
+</el-col>
+<el-col :span="1">
+<el-divider direction="vertical" />
+</el-col>
+    <el-col :span="5">
         <!-- 推荐信息 -->
         <el-row>
             <h2>
@@ -54,7 +57,7 @@
         </el-row>
         <el-row>
             <ul>
-                <li v-for="recommend in recommends">
+                <li v-for="recommend in form.recommends">
                     {{recommend}}
                 </li>
             </ul>
@@ -65,29 +68,42 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
-            exId: this.$route.params.exId,
-            poster_url: "/src/assets/posters/saber.png",
-            name: "Exhibition 1",
-            begin_time: "2001-01-01",
-            end_time: "2001-02-02",
-            organizer: "og1",
-            tickets: "2000RMB",
-            link: "https://bilibili.com",
-            tags: ["tag1", "tag2"],
-            intro: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
+            form: {
+                exId: this.$route.params.exId,
+                poster_url: "/src/assets/posters/saber.png",
+                name: "Exhibition 1",
+                begin_time: "2001-01-01",
+                end_time: "2001-02-02",
+                organizer: "og1",
+                tickets: "2000RMB",
+                link: "https://bilibili.com",
+                tags: ["tag1", "tag2"],
+                intro: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
             ssssssssssssssssssssssssssssss",
-            recommends:["ex1","ex2","ex3"]
+                recommends: ["ex1", "ex2", "ex3"]
+            }
+        }
+    },
+    methods: {
+        async getRequest(){
+            axios.get(`/exhibition/${this.$route.params.exId}`)
+            .then((response) => {
+                parsed_response= JSON.parse(response.data);
+                console.log(parsed_response);
+            });
         }
     },
     mounted() {
-        console.log(this.exId);
+        console.log(`/exhibition/${this.$route.params.exId}`);
+        this.getRequest();
     },
     computed: {
         long_intros() {
-            var arr = this.intro.split("\n");
+            var arr = this.form.intro.split("\n");
             var result = ""; 
             arr.forEach((value, index, array) => {
                 result += `<p>${value}</p>`
@@ -114,5 +130,8 @@ export default {
 
 .long_intro{
     padding-left: 50px;
+}
+.el-divider{
+    height: 100%;
 }
 </style>
