@@ -42,8 +42,15 @@
 
         <!-- 用户头像 -->
         <el-col :span="4">
-            <el-row justify="center">
-                用户名
+            <el-row v-if="isLogin" justify="center">
+                <router-link to="/login">
+                    登录
+                </router-link>
+            </el-row>
+            <el-row v-if="!isLogin" justify="center">
+                <router-link :to="{path:'/personal'}">
+                {{ username }}
+                </router-link>
             </el-row>
         </el-col>
     </el-row>
@@ -52,6 +59,25 @@
 <script>
 // import { ref } from 'vue'
 
+export default {
+    data() {
+        return {
+            username: "test_username",
+            isLogin : false
+        };
+    },
+    methods: {
+        checkLoginStatus() {
+
+        }
+    },
+    setup() {
+
+    },
+    mounted() {
+        this.checkLoginStatus();
+    }
+}
 </script>
 
 <style>

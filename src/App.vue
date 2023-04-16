@@ -1,6 +1,6 @@
 
 <template>
-  <Header v-if="state.isShowHeader"></Header>
+  <Header v-if="$route.meta.isShowHeader"></Header>
 
   <router-view></router-view>
 </template>
@@ -17,28 +17,7 @@ export default {
     Header
   },
   setup() {
-    const state = reactive({
-      isShowHeader: true,
-    });
-    const route = useRoute();
 
-    const routeChange = (val, oldVal) => {
-      // const referrer= document.getElementById("referrer");
-      if (val.path === "/") {
-        state.isShowHeader = true;
-        // referrer.setAttribute("content", "always");
-      }
-    };
-
-    onMounted(() => {
-      routeChange(route, route);
-    })
-
-
-    return {
-      state,
-      routeChange
-    };
   }
 }
 </script>
