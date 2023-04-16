@@ -72,9 +72,7 @@ export default {
 
         },
         submitSearch() {
-            // test
-            console.log(this.inputText);
-            // 
+            this.$router.push({ path: "/search", query: { querytext: this.inputText } });
         },
         keyListener(event) {
             if (event.keyCode == 13) {
