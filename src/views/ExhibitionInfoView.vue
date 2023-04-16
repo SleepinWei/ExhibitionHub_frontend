@@ -38,10 +38,13 @@
             </el-row>
             <el-row class="sub_info">
                 标签: 
-                <el-tag v-for="tag in form.tags"> tag </el-tag>
+                <el-tag v-for="tag in form.tags"> {{tag}} </el-tag>
+            </el-row>
+            <el-row class="subscribe_button">
+                <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
+                <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag> 
             </el-row>
         </el-col>
-
     </el-row>
 
     <el-row class="long_intro">
@@ -93,7 +96,9 @@ export default {
             ssssssssssssssssssssssssssssss",
                 recommends: ["ex1", "ex2", "ex3"]
             },
-            isAdmin:true
+            isAdmin: true,
+            isLogin: true,
+            isSubscribed: false,
         }
     },
     methods: {
@@ -109,22 +114,28 @@ export default {
                     }
                 });
         },
-        getAdmin() {
+        getUserInfo() {
             let isAdmin = this.$cookies.get("isAdmin");
+            let isLogin = this.$cookies.get("isLogin");
             if (isAdmin != null) {
                 this.isAdmin = isAdmin;
             }
-            console.log(this.isAdmin);
+            if (isLogin != null) {
+                this.isLogin = isLogin;
+            }
         },
         onChangeInfo() {
             // TODO: 与 User 登录对接，主要为字段名
             // redirect
             this.$router.push(`/alterinfo/${this.$route.params.exId}`);
+        },
+        onSubscribe() {
+            // TODO: add to subscription sets
         }
     },
     mounted() {
         this.getRequest();
-        this.getAdmin();
+        this.getUserInfo();
     },
     computed: {
         long_intros() {
@@ -161,6 +172,10 @@ export default {
 }
 .el-divider{
     height: 100%;
+}
+
+.subscribe_button{
+    margin-top: 20px;
 }
 
 </style>
