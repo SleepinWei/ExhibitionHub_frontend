@@ -18,6 +18,10 @@ const router = createRouter({
     {
       path: "/error400",
       component: ()=> import("@/views/error/400.vue")
+    },
+    {
+      path: "/search",
+      component: ()=> import("@/views/Search.vue")
     }
   ]
 })
