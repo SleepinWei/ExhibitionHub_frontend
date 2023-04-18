@@ -120,8 +120,9 @@ export default {
                 });
         },
         getUserInfo() {
-            let isAdmin = this.$cookies.get("isAdmin");
-            let isLogin = this.$cookies.get("isLogin");
+            // let isAdmin = this.$cookies.get("cookieName") != null;
+            let isAdmin = true; // TODO: is admin
+            let isLogin = (this.$cookies.get("cookieName") != null);
             if (isAdmin != null) {
                 this.isAdmin = isAdmin;
             }
