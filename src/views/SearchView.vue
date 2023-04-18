@@ -17,7 +17,8 @@
         </el-col>
     </el-row>
 
-    <ExThumbnail v-for="result in searchResult" :params="{
+    <!-- <ExThumbnail v-for="result in searchResult" :params="{ -->
+    <ExThumbnail :params="{
         poster_url: result.poster_url,
         name : result.name,
         location : result.location,
@@ -30,13 +31,13 @@
 <script>
 import ExThumbnail from '@/components/ExThumbnail.vue';
 import axios from 'axios';
-import { url } from 'inspector';
 export default {
     components:{ExThumbnail},
     data() {
         return {
             inputText: "",
-            searchResult: [
+            // searchResult: 
+            result:
                 {
                     name: "Ex1",
                     poster_url : "/src/assets/posters/saber.png",
@@ -44,7 +45,7 @@ export default {
                     begin_date: "2001-02-02",
                     end_date: "2002-03-03",
                 },
-            ]
+            // TODO: searchResult should be an array [] 
         }
     },
     methods: {
@@ -59,12 +60,18 @@ export default {
             if (this.$route.query.querytext == null) {
                 return;
             }
-            // console.log(this.$route.query.querytext);
             axios.get(
-                url=`/search/${this.inputText}` 
+                `/search`,
+                {
+                    params: {
+                        querytext: String(this.$route.query.querytext)
+                    }
+                }
             ).then(
                 (response) => {
-                    this.searchRequest = response.data;
+                    // this.searchResult = response.data;
+                    this.result = response.data;
+                    //TODO: this.searchResult should be an array
                 }
             )
         },
