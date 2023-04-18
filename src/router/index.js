@@ -1,3 +1,10 @@
+/*
+ * @Author: yingxin wang
+ * @Date: 2023-04-18 21:36:30
+ * @LastEditors: yingxin wang
+ * @LastEditTime: 2023-04-18 21:37:35
+ * @Description: 请填写简介
+ */
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
@@ -26,15 +33,27 @@ const router = createRouter({
     {
       path: '/personal',
       name: 'personal',
-      redirect:'/info',
+      redirect: '/info',
       component: () => import('../views/Person/Personal.vue'),
-      children:[
+      children: [
         {
-          path:'/info',
-          name:'info',
+          path: '/info',
+          name: 'info',
           component: () => import('../views/Person/Info.vue')
         }
       ]
+    },
+    {
+      path: '/resetPassword',
+      name: 'resetPassword',
+      //重设密码页面
+      component: () => import('../views/ResetPasswordView.vue')
+    },
+    {
+      path: '/register',
+      name: 'register',
+      //注册页面
+      component: () => import('../views/RegisterView.vue')
     }
   ]
 })
