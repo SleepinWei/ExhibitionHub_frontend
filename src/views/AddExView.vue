@@ -93,9 +93,9 @@
         <el-form-item label="标签">
           <el-row>
             <!-- todo: 改为 v-for，从后端获取所有的 tags -->
-          <el-check-tag class="check_tag" :checked="form.checked_tech" @change="onChange_tech">科技</el-check-tag>
-          <el-check-tag class="check_tag" :checked="form.checked_sports" @change="onChange_sports">体育</el-check-tag>
-          <el-check-tag class="check_tag" :checked="form.checked_art" @change="onChange_art">艺术</el-check-tag>
+          <!-- <el-check-tag class="check_tag" :checked="form.checked_tech" @change="onChange_tech">科技</el-check-tag> -->
+          <!-- <el-check-tag class="check_tag" :checked="form.checked_sports" @change="onChange_sports">体育</el-check-tag> -->
+          <!-- <el-check-tag class="check_tag" :checked="form.checked_art" @change="onChange_art">艺术</el-check-tag> -->
           </el-row>
         </el-form-item>
       <el-form-item>
@@ -159,7 +159,7 @@ const imageUrl = ref('')
         //   link:form.official_link
         // }
         
-        data: form,
+        data: form.value,
     })
     .then();
   }
@@ -227,25 +227,6 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
           return true
       }
     }
-
-  const route = useRoute();
-
-onMounted(() => {
-    if (route.params.exId == null)
-    return;
-
-    axios.get(
-      "/searchById",
-      {
-        params: {
-        exId: route.params.exId
-        }
-      }
-      ).then((response) => {
-        form.value = response.data;
-    });
-});
-
 </script>
 
 <style>
