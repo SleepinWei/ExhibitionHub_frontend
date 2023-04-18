@@ -12,7 +12,7 @@ const router = createRouter({
     },
     {
       //TODO:动态
-      path: '/alterinfo',
+      path: '/addExhibition',
       name: 'AlterInfo',
       component: AlterInfo
     },

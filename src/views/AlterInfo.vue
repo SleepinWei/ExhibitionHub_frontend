@@ -108,7 +108,7 @@
     
   </template>
   
-  <script lang="ts" setup>
+<script lang="ts" setup>
   import { onMounted, reactive } from 'vue'
   import { ref } from 'vue'  
   import { Plus } from '@element-plus/icons-vue'
@@ -119,7 +119,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 const imageUrl = ref('')
   // do not use same name with ref
-  const form = reactive({
+  const form = ref({
     id: 0,
     name: '',
     venue_name:'',
@@ -136,15 +136,15 @@ const imageUrl = ref('')
     type: [],
     resource: '',
     introduction: '',
-    checked_sports:false,
-    checked_art:false,
-    checked_tech:false
+    // checked_sports:false,
+    // checked_art:false,
+    // checked_tech:false
   })
   
   const onSubmit = () => {
     axios({
         method: "post",
-        url: "/alterinfo",
+        url: "/addEx",
         // data:{
         //   name:form.exhibition_name,
         //   site_name:form.exhibition_area_name,
@@ -161,24 +161,24 @@ const imageUrl = ref('')
         
         data: form,
     })
-        .then();
+    .then();
   }
 
   // const checked_sports = ref(false)
   // const checked_art = ref(false)
   // const checked_tech = ref(false)
 
-  const onChange_tech = (status: boolean) => {
-  form.checked_tech = status
-  }
+  // const onChange_tech = (status: boolean) => {
+  // form.checked_tech = status
+  // }
 
-  const onChange_sports = (status: boolean) => {
-  form.checked_sports = status
-  }
+  // const onChange_sports = (status: boolean) => {
+  // form.checked_sports = status
+  // }
 
-  const onChange_art = (status: boolean) => {
-  form.checked_art = status
-  }
+  // const onChange_art = (status: boolean) => {
+  // form.checked_art = status
+  // }
 
   const fileList = ref<UploadUserFile[]>([
       {
@@ -232,16 +232,20 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 
 onMounted(() => {
     if (route.params.exId == null)
-      return;
-      axios.get(
-        "/searchById",
-        {
-          params: {
-          exId: route.params.exId
-          }
+    return;
+
+    axios.get(
+      "/searchById",
+      {
+        params: {
+        exId: route.params.exId
         }
-      ).then();
+      }
+      ).then((response) => {
+        form.value = response.data;
+    });
 });
+
 </script>
 
 <style>
