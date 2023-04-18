@@ -29,18 +29,60 @@
             {{ data.day.split("-").slice(2).join("-") }}
             <!-- {{ data.isSelected ? '✔' : ''}} -->
         </div>
-        <div v-for="i in arr" :key="i.id">
-            <div v-if="data.day==i.date">{{i.content}}</div>
+        <div>
+            <div v-for="i in arr" :key="i.id">
+                <div class="item" v-if="data.day==i.date">
+                    <el-tooltip :content="i.content">
+                        <div :class="i.type==1?'item1':'item2'" @click="selectItem(i.id)">
+                        <el-text>{{i.content}}</el-text>
+                        </div>
+                    </el-tooltip>
+                    
+                </div>
+            </div>
         </div>
+        <!-- <div class="item">
+            
+        </div> -->
+        
     </template>
 </el-calendar>
 </template>
     
 <style scoped>
 
+.item{
+    text-align: center;
+    padding:2%;
+    margin:2%;
+}
+.item1 {
+    border-radius:50px;
+    background: rgba(73, 92, 105, 0.5);
+}
+
+.item1:hover{
+    background: rgba(94, 121, 135, 0.5);
+}
+
+.item2 {
+    border-radius:50px;
+    background: rgba(32, 137, 77, 0.5);
+    
+}
+
+.item2:hover{
+    background: rgba(131, 161, 147, 0.5);
+}
+
+.item .el-text{
+    color:white;
+    
+}
+
 </style>
+
 <script>
-import { ref } from 'vue'
 
 export default {
     name : 'calendar',
@@ -51,7 +93,8 @@ export default {
             form:{
                     id:'',
                     date:'',
-                    content:''
+                    type:'',
+                    content:'',
                 }
         } 
     },
@@ -70,6 +113,12 @@ export default {
                 this.arr=res.data
             })
         },
+        selectItem(itemid) {
+            console.log(itemid);
+            this.$router.push('/Exhibitionid='+itemid)
+        },
+
+
     },
         
     beforeMount() {
