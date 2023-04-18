@@ -1,0 +1,55 @@
+<template>
+    <div class="museumSelecotr">
+        <div class="block">
+            <el-select 
+            v-model="value" 
+            filterable
+            placeholder="---------------不限---------------"
+            @change="handleChange"
+            >
+                <el-option
+                v-for="item in museumOptions"
+                :key="item.id"
+                :label="item.label"
+                :value="item.id"
+                />
+            </el-select>
+        </div>
+    </div>
+    
+</template>
+  
+  <script>
+  export default {
+        data() {
+            return{
+                value:'',
+                option:0,
+                museumOptions: [
+                    {id:0,label:'---------------不限---------------'},
+                    {id:1,label:'上海博物馆'},
+                    {id:2,label:'上海科技馆'},
+                    {id:3,label:'上海自然博物馆'},
+                ],
+            } 
+        },        
+        methods:{
+            handleChange(data) {
+                this.option=data
+                console.log(this.option)
+            }
+    }
+  }
+  </script>
+  
+  <style scoped>
+
+.museumSelecotr {
+    display: flex;
+  }
+.block {
+    padding: 2% 0;
+    text-align: center;
+  }
+ 
+  </style>

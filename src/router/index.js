@@ -84,6 +84,10 @@ const router = createRouter({
     {
       path: "/search",
       component: ()=> import("@/views/SearchView.vue")
+    },
+    {
+      path: "/calendar",
+      component: ()=> import("@/views/CalendarView.vue")
     }
   ]
 })
