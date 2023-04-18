@@ -17,6 +17,10 @@ const router = createRouter({
       component: AlterInfo
     },
     {
+      path: "/alterinfo/:exId",
+      component: AlterInfo
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

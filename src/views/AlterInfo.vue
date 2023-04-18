@@ -109,12 +109,13 @@
   </template>
   
   <script lang="ts" setup>
-  import { reactive } from 'vue'
+  import { onMounted, reactive } from 'vue'
   import { ref } from 'vue'  
   import { Plus } from '@element-plus/icons-vue'
   import type { UploadProps, UploadUserFile } from 'element-plus'
   import { ElMessage } from 'element-plus'
   import axios from "axios"
+import { useRoute, useRouter } from 'vue-router'
 
 const imageUrl = ref('')
   // do not use same name with ref
@@ -225,8 +226,23 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
       else {
           return true
       }
-}
- </script>
+    }
+
+  const route = useRoute();
+
+onMounted(() => {
+    if (route.params.exId == null)
+      return;
+      axios.get(
+        "/searchById",
+        {
+          params: {
+          exId: route.params.exId
+          }
+        }
+      ).then();
+});
+</script>
 
 <style>
 .demo {
