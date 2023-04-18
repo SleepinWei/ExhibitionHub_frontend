@@ -23,9 +23,6 @@
       <el-form-item label="邮箱" :inline="true">
         <el-input v-model="user.email" placeholder="" :disabled="true"></el-input>
       </el-form-item>
-      <el-form-item label="手机号">
-        <el-input v-model="user.phone" placeholder="" :disabled="true"></el-input>
-      </el-form-item>
       <!-- 修改信息按钮和修改密码按钮 -->
       <el-form-item>
         <el-button type="primary" @click="changeBasicInfo">保存基本信息</el-button>
@@ -140,9 +137,10 @@
         confirmVercode:'',//邮箱收到的验证码
         dialogChangePw: false,//修改密码对话框
         dialogChangEmail:false,//修改邮箱对话框
-        formLabelWidth: '150px'
-       
-        ,uid:'1'//????当前登录用户Id
+        formLabelWidth: '150px',
+        
+        // uid:'1'//????当前登录用户Id
+        uid:this.$cookies.get("cookieAccount")
       } 
     },
     created:function(){//根据Id查询用户信息
