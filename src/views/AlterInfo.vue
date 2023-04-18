@@ -1,21 +1,21 @@
 <template>
-    <el-container>
-        <el-header>Header</el-header>
-        <el-main class="demo">
-        <el-form :model="form" label-width="120px">
+    <!-- <el-container> -->
+        <!-- <el-header>Header</el-header> -->
+        <!-- <el-main class="demo"> -->
+      <el-form :model="form" label-width="120px">
       <el-form-item label="展览名称">
-        <el-input v-model="form.exhibition_name" />
+        <el-input v-model="form.name" />
       </el-form-item>
       <el-form-item label="展馆名称">
-        <el-input v-model="form.exhibition_area_name" />
+        <el-input v-model="form.venue_name" />
       </el-form-item>
       <el-form-item label="主办方">
-        <el-input v-model="form.sponsor_name" />
+        <el-input v-model="form.organizer" />
       </el-form-item>
-      <el-form-item label="活动开始时间">
+      <el-form-item label="活动日期">
         <el-col :span="11">
           <el-date-picker
-            v-model="form.date1"
+            v-model="form.begin_date"
             type="date"
             placeholder="选择开始日期"
             style="width: 100%"
@@ -25,19 +25,19 @@
           <span class="text-gray-500">-</span>
         </el-col>
         <el-col :span="11">
-          <el-time-picker
-            v-model="form.time1"
-            placeholder="选择开始时间"
+          <el-date-picker
+            v-model="form.end_date"
+            placeholder="选择结束日期"
             style="width: 100%"
           />
         </el-col>
       </el-form-item>
-      <el-form-item label="活动结束时间">
+      <el-form-item label="活动时间">
         <el-col :span="11">
           <el-date-picker
-            v-model="form.date2"
+            v-model="form.begin_time"
             type="date"
-            placeholder="选择开始日期"
+            placeholder="选择开始时间"
             style="width: 100%"
           />
         </el-col>
@@ -46,8 +46,8 @@
         </el-col>
         <el-col :span="11">
           <el-time-picker
-            v-model="form.time2"
-            placeholder="选择开始时间"
+            v-model="form.end_time"
+            placeholder="选择结束时间"
             style="width: 100%"
           />
         </el-col>
@@ -59,10 +59,10 @@
         <el-input v-model="form.ticket_info" />
       </el-form-item>
       <el-form-item label="官方链接">
-        <el-input v-model="form.official_link" />
+        <el-input v-model="form.link" />
       </el-form-item>
       <el-form-item label="展览活动简介">
-        <el-input :autosize="{ minRows: 2, maxRows: 6}" v-model="form.desc" type="textarea" />
+        <el-input :autosize="{ minRows: 2, maxRows: 6}" v-model="form.introduction" type="textarea" />
       </el-form-item>
       <el-form-item label="海报">
         <el-upload
@@ -92,18 +92,19 @@
       </el-form-item>
         <el-form-item label="标签">
           <el-row>
+            <!-- todo: 改为 v-for，从后端获取所有的 tags -->
           <el-check-tag class="check_tag" :checked="form.checked_tech" @change="onChange_tech">科技</el-check-tag>
           <el-check-tag class="check_tag" :checked="form.checked_sports" @change="onChange_sports">体育</el-check-tag>
           <el-check-tag class="check_tag" :checked="form.checked_art" @change="onChange_art">艺术</el-check-tag>
           </el-row>
         </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
+        <el-button type="primary" @click="onSubmit">Submit</el-button>
         <!-- <el-button>Cancel</el-button> -->
       </el-form-item>
     </el-form>
-    </el-main>
-    </el-container>
+    <!-- </el-main> -->
+    <!-- </el-container> -->
     
   </template>
   
@@ -118,21 +119,21 @@
 const imageUrl = ref('')
   // do not use same name with ref
   const form = reactive({
-    exhibition_name: '',
-    exhibition_area_name:'',
-    sponsor_name: '',
+    name: '',
+    venue_name:'',
+    organizer: '',
     location: '',
-    official_link:'',
+    link:'',
     ticket_info:'',
-    region: '',
-    date1: '',
-    date2: '',
-    time1: '',
-    time2: '',
+    // region: '',
+    begin_date: '',
+    end_date: '',
+    begin_time: '',
+    end_time: '',
     delivery: false,
     type: [],
     resource: '',
-    desc: '',
+    introduction: '',
     checked_sports:false,
     checked_art:false,
     checked_tech:false
@@ -140,23 +141,24 @@ const imageUrl = ref('')
   
   const onSubmit = () => {
     axios({
-    method:"post",
-    url:"/alterinfo",
-    data:{
-      name:form.exhibition_name,
-      site_name:form.exhibition_area_name,
-      organizer:form.sponsor_name,
-      begin_date:form.date1,
-      end_date:form.date2,
-      begin_time:form.time1,
-      end_time:form.time2,
-      location:form.location,
-      ticket_info:form.ticket_info,
-      introduction:form.desc,
-      link:form.official_link
-    }
+        method: "post",
+        url: "/alterinfo",
+        // data:{
+        //   name:form.exhibition_name,
+        //   site_name:form.exhibition_area_name,
+        //   organizer:form.sponsor_name,
+        //   begin_date:form.date1,
+        //   end_date:form.date2,
+        //   begin_time:form.time1,
+        //   end_time:form.time2,
+        //   location:form.location,
+        //   ticket_info:form.ticket_info,
+        //   introduction:form.desc,
+        //   link:form.official_link
+        // }
+        data: form,
     })
-    .then()
+        .then();
   }
 
   // const checked_sports = ref(false)
