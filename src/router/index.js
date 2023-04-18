@@ -24,10 +24,17 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
     {
-      path: '/regularuser',
-      name: 'regularuser',
-      //账户主页
-      component: () => import('../views/HeaderView.vue')
+      path: '/personal',
+      name: 'personal',
+      redirect:'/info',
+      component: () => import('../views/Person/Personal.vue'),
+      children:[
+        {
+          path:'/info',
+          name:'info',
+          component: () => import('../views/Person/Info.vue')
+        }
+      ]
     }
   ]
 })

@@ -9,9 +9,9 @@
       <el-sub-menu index="1">
         <template #title>
             Welcome
-            <div v-if="user.account">,{{ user.account }}</div>
+            <div v-if="username">,{{ username }}</div>
         </template> 
-        <el-menu-item index="1-1">个人中心</el-menu-item>
+        <el-menu-item index="1-1" @click="toPerson()">个人中心</el-menu-item>
         <el-menu-item index="1-2" @click="logout()">退出账号</el-menu-item>
       </el-sub-menu>
     </el-menu>
@@ -20,13 +20,20 @@
 <script>
     export default {
             data() {return {
-                user : {
-                    // 这里的数据保证跟数据接口一致
-                    account : '',
-                    password : '',
-                }
+                username : '',
+                uid : this.$cookies.get("cookieAccount")
             }},
             methods : {
+                loadUserName(){
+                    this.$axios.get("http://localhost:8080/user/find/"+this.uid)
+                    .then((response)=>{
+                        console.log(response)
+                        this.username=response.data.username//user赋值
+                    })
+                    .catch(response=>{
+                        console.log("请求失败")
+                    })
+                },
                 logout(){
                     this.$confirm('您确定要退出当前账户吗?', '提示', {
                         confirmButtonText: '确定',  //确认按钮的文字显示
@@ -49,30 +56,17 @@
                                 type:'info',
                                 message:'取消退出登录'
                             })
-                        })   
-
-                    
-                        
-            })
-                     
-                    
-                    
-				// this.$axios.post('http://localhost:8080/login',qs.stringify(this.user)) // 加了个stringify就不404辣？!
-				// .then(res=>{
-				// 	if(res.data.code == 300 ){// 300：是普通用户，跳转普通用户界面
-				// 		this.$router.replace("/regularuser");//用户主页
-				// 	}
-                //     else if(res.data.code == 400){// 400：是管理员，跳转管理员界面
-                //         this.$router.replace("/administrator");//管理员主页
-                //     }
-                //     else{
-                //         console.log(res.data.msg);
-                //     }
-				// })
-				// .catch(err=>{
-				// 	console.log(err);
-				// })
-			}
+                        })    
+                    })
+                },
+                toPerson(){
+                    console.log("toperson")
+                    this.$router.push("/personal")
+                },
+            },
+            beforeMount() {
+                this.loadUserName()
             }
+            
         }
 </script>

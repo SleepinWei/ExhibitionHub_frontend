@@ -9,8 +9,8 @@
     <div class="frame">
         <div class="frame-input">
             <h1>登录</h1>
-            <el-input class="frame-el-input" v-model="user.account" placeholder="用户名" />
-            <el-input class="frame-el-input" v-model="user.password" placeholder="密码" />
+            <el-input class="frame-el-input" v-model="user.idOrEmail" placeholder="用户名" />
+            <el-input class="frame-el-input" v-model="user.password" placeholder="密码" type="password"/>
             <div class="frame-el-button">
                 <el-button type="primary" size="large" @click="login()">登录</el-button>
             </div>
@@ -74,7 +74,7 @@
             data() {return {
                 user : {
                     // 这里的数据保证跟数据接口一致
-                    account : '',
+                    idOrEmail : '',
                     password : '',
                 }
             }},
@@ -103,13 +103,26 @@
 				this.$axios.post('http://localhost:8080/login',qs.stringify(this.user)) // 加了个stringify就不404辣？!
 				.then(res=>{
 					if(res.data.code == 300 ){// 300：是普通用户，跳转普通用户界面
-						this.$router.push("/regularuser");//用户主页
+						this.$router.push("/personal");//用户主页
+                        this.$message({
+                            message:'登陆成功！',
+                            type:'success!'
+                        })
 					}
                     else if(res.data.code == 400){// 400：是管理员，跳转管理员界面
-                        this.$router.push("/administrator");//管理员主页
+                        this.$router.push("/personal");//管理员主页
+                        this.$message({
+                            message:'登陆成功！',
+                            type:'success!'
+                        })
                     }
                     else{
+                        console.log(res);
                         console.log(res.data.msg);
+                        this.$message({
+                            message:'账号不存在或密码错误，登陆失败！',
+                            type:'success!'
+                        })
                     }
 				})
 				.catch(err=>{
