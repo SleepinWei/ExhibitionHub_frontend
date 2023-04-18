@@ -119,6 +119,7 @@
 const imageUrl = ref('')
   // do not use same name with ref
   const form = reactive({
+    id: 0,
     name: '',
     venue_name:'',
     organizer: '',
@@ -156,6 +157,7 @@ const imageUrl = ref('')
         //   introduction:form.desc,
         //   link:form.official_link
         // }
+        
         data: form,
     })
         .then();
