@@ -1,6 +1,7 @@
 <template>
 <el-row style="margin-left: 50px; margin-right: 50px;">
-    <el-card :body-style="{padding: '0px'}" style="width: 100%;" shadow="hover">
+    <el-card :body-style="{padding: '0px'}" style="width: 100%;" shadow="hover" 
+        @click.native="jumpToExInfo">
         <el-row>
             <el-col :span="6">
             <el-image style="width: 200px;height: 200px;" :src="this.params.poster_url" fit="contain" />
@@ -30,7 +31,9 @@ export default {
         }
     },
     methods: {
-
+        jumpToExInfo() {
+            this.$router.push(`/exhibition/${this.params.id}`)
+        }
     }
 }
 </script>
