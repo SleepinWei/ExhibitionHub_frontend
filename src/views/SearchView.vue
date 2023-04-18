@@ -1,24 +1,28 @@
 <template>
-    <el-row style="margin-bottom: 50px;">
-        <el-col :span="12" :offset="6" style="margin-top: 50px;">
+    <el-row style="margin-bottom: 50px; margin-top: 50px;" align="middle">
+        <el-col :span="12" :offset="6"> 
             <el-input
                 v-model="inputText" 
                 size="large"
                 placeholder="Input"
                 >
                 <template #prepend>
-                    <el-button>
+                    <!-- <el-button @click="submitSearch"> -->
                         <el-icon>
                             <Search />         
                         </el-icon>
-                    </el-button>
+                    <!-- </el-button> -->
                 </template>
             </el-input>
+        </el-col>
+        <el-col :span="3" style="height: 100%; margin-left: 10px;">
+            <el-button @click="submitSearch">搜索</el-button>
         </el-col>
     </el-row>
 
     <!-- <ExThumbnail v-for="result in searchResult" :params="{ -->
     <ExThumbnail :params="{
+        id : result.id,
         poster_url: result.poster_url,
         name : result.name,
         location : result.location,
@@ -39,6 +43,7 @@ export default {
             // searchResult: 
             result:
                 {
+                    id : 0,
                     name: "Ex1",
                     poster_url : "/src/assets/posters/saber.png",
                     location: "locaiton1",
@@ -50,44 +55,52 @@ export default {
     },
     methods: {
         submitSearch() {
-            this.$router.push({
-                path: "/searchByKeyword", query: { querytext: this.inputText }
+            this.$router.replace({
+                path: "/search" , query: { querytext: this.inputText }
             });
             // 调用一次查询
-            this.searchRequest();
+            this.searchRequest(this.inputText);
         },
-        searchRequest() {
-            if (this.$route.query.querytext == null) {
-                return;
-            }
+        searchRequest(query) {
+            console.log(query);
             axios.get(
-                `/search`,
+                `/searchByKeyword`,
                 {
                     params: {
-                        querytext: String(this.$route.query.querytext)
+                        querytext: String(query)
                     }
                 }
             ).then(
                 (response) => {
                     // this.searchResult = response.data;
+                    // console.log(response.data);
                     this.result = response.data;
                     //TODO: this.searchResult should be an array
                 }
-            )
+            );
         },
         keyListener(event) {
             if (event.keyCode == 13) {
                 this.submitSearch();
             }
+        },
+
+    },
+    watch: {
+        'route'(to, from) {
+            let that = this;
+            if (to.params.id != from.params.id) {
+                that.id = to.params.id;
+                that.getData(); // 重新加载数据
+            }
         }
     },
     mounted() {
-        window.addEventListener('keydown', this.keyListener,true);
         // 从其他页面跳转过来，需要进行一次查询
-        this.searchRequest();
+        if (this.$route.query.querytext != null) {
+            this.inputText = this.$route.query.querytext;
+        }
+        this.searchRequest(this.inputText);
     },
-    unmounted() {
-        window.removeEventListener('keydown', this.keyListener,false);
-    }
 }
 </script>

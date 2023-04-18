@@ -115,7 +115,7 @@ export default {
                 }).catch((error) => {
                     if (error.response.status == 400) {
                         // exhibition is not found
-                        this.$router.push("/error400")
+                        // this.$router.push("/error400")
                     }
                 });
         },

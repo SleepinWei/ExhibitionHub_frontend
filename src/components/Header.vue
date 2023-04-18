@@ -85,10 +85,10 @@ export default {
     },
     mounted() {
         this.checkLoginStatus();
-        window.addEventListener('keydown', this.keyListener,true);
+        // window.addEventListener('keydown', this.keyListener,true);
     },
     unmounted() {
-        window.removeEventListener('keydown', this.keyListener,false);
+        // window.removeEventListener('keydown', this.keyListener,false);
     }
 }
 </script>
