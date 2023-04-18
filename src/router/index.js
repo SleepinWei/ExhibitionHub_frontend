@@ -22,6 +22,12 @@ const router = createRouter({
       name: 'login',
       //登陆页面
       component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/regularuser',
+      name: 'regularuser',
+      //账户主页
+      component: () => import('../views/HeaderView.vue')
     }
   ]
 })

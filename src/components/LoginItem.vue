@@ -9,10 +9,10 @@
     <div class="frame">
         <div class="frame-input">
             <h1>登录</h1>
-            <el-input class="frame-el-input" v-model="input" placeholder="用户名" />
-            <el-input class="frame-el-input" v-model="input" placeholder="密码" />
+            <el-input class="frame-el-input" v-model="user.account" placeholder="用户名" />
+            <el-input class="frame-el-input" v-model="user.password" placeholder="密码" />
             <div class="frame-el-button">
-                <el-button type="primary" size="large">登录</el-button>
+                <el-button type="primary" size="large" @click="login()">登录</el-button>
             </div>
             <el-row style="text-align: center;justify-content: center;margin-left: 10px;">
                 <el-link type="primary">用户注册</el-link>
@@ -67,9 +67,58 @@
 }
 </style>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
 
-const input = ref('')
-
+<script>
+    import qs from 'qs';
+    export default {
+            data() {return {
+                user : {
+                    // 这里的数据保证跟数据接口一致
+                    account : '',
+                    password : '',
+                }
+            }},
+            methods : {
+                /*register() {
+                    this.$Axios.post(
+                        "https://www.xxx.com/member/xxxxx.php",
+                        qs.stringify(this.user),
+                        {
+                            // 这里qs使用的stringify方法可以将对象序列化，形成json的形式进行数据获取
+                            headers : {"content-type": "application/x-www-form-urlencoded"}
+                        }
+                    ).then( res => {
+                        console.log(res);
+                        // 当获取数据的状态码等于1时，相当于获取到了
+                        if(res.data.status == 1) {
+                            var flag = window.confirm("确定注册码");
+                            if(flag) {
+                                // 跳转到登录页面
+                                this.$router.replace("/login");
+                            }
+                        }
+                    })
+                },*/
+                login(){
+				this.$axios.post('http://localhost:8080/login',qs.stringify(this.user)) // 加了个stringify就不404辣？!
+				.then(res=>{
+					if(res.data.code == 300 ){// 300：是普通用户，跳转普通用户界面
+						this.$router.push("/regularuser");//用户主页
+					}
+                    else if(res.data.code == 400){// 400：是管理员，跳转管理员界面
+                        this.$router.push("/administrator");//管理员主页
+                    }
+                    else{
+                        console.log(res.data.msg);
+                    }
+				})
+				.catch(err=>{
+					console.log(err);
+				})
+			}
+            }
+        }
 </script>
+    
+
+
