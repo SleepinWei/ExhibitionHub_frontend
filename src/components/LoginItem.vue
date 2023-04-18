@@ -15,8 +15,10 @@
                 <el-button type="primary" size="large" @click="login()">登录</el-button>
             </div>
             <el-row style="text-align: center;justify-content: center;margin-left: 10px;">
-                <el-link type="primary">用户注册</el-link>
-                <el-link type="primary" style="margin-left: 10px;">忘记密码</el-link>
+                <!-- <el-link type="primary">用户注册</el-link> -->
+                <router-link to="/signup" type="primary">用户注册</router-link>
+                <!-- <el-link type="primary" style="margin-left: 10px;">忘记密码</el-link> -->
+                <router-link to="/resetPassword" style="margin-left:10px">忘记密码</router-link>
             </el-row>
         </div>
     </div>

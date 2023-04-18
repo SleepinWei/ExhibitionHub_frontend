@@ -42,12 +42,12 @@
 
         <!-- 用户头像 -->
         <el-col :span="4">
-            <el-row v-if="isLogin" justify="center">
+            <el-row v-if="!isLogin" justify="center">
                 <router-link to="/login">
                     登录
                 </router-link>
             </el-row>
-            <el-row v-if="!isLogin" justify="center">
+            <el-row v-if="isLogin" justify="center">
                 <router-link :to="{path:'/personal'}">
                 {{ username }}
                 </router-link>
@@ -69,7 +69,9 @@ export default {
     },
     methods: {
         checkLoginStatus() {
-
+            if (this.$cookies.get("cookieName") != null) {
+                this.isLogin = true;
+            }
         },
         submitSearch() {
             this.$router.push({ path: "/search", query: { querytext: this.inputText } });
