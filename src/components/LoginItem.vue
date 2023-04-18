@@ -16,7 +16,7 @@
             </div>
             <el-row style="text-align: center;justify-content: center;margin-left: 10px;">
                 <!-- <el-link type="primary">用户注册</el-link> -->
-                <router-link to="/signup" type="primary">用户注册</router-link>
+                <router-link to="/register" type="primary">用户注册</router-link>
                 <!-- <el-link type="primary" style="margin-left: 10px;">忘记密码</el-link> -->
                 <router-link to="/resetPassword" style="margin-left:10px">忘记密码</router-link>
             </el-row>
@@ -72,6 +72,7 @@
 
 <script>
     import qs from 'qs';
+    import {ElMessage} from 'element-plus'
     export default {
             data() {return {
                 user : {
@@ -102,20 +103,20 @@
                     })
                 },*/
                 login(){
-				this.$axios.post('http://localhost:8080/login',qs.stringify(this.user)) // 加了个stringify就不404辣？!
-				.then(res=>{
+				this.$axios.post('/login',qs.stringify(this.user)) // 加了个stringify就不404辣？!
+				.then((res)=>{
 					if(res.data.code == 300 ){// 300：是普通用户，跳转普通用户界面
 						this.$router.push("/personal");//用户主页
                         this.$message({
                             message:'登陆成功！',
-                            type:'success!'
+                            type:'success'
                         })
 					}
                     else if(res.data.code == 400){// 400：是管理员，跳转管理员界面
                         this.$router.push("/personal");//管理员主页
                         this.$message({
                             message:'登陆成功！',
-                            type:'success!'
+                            type:'success'
                         })
                     }
                     else{
@@ -123,7 +124,7 @@
                         console.log(res.data.msg);
                         this.$message({
                             message:'账号不存在或密码错误，登陆失败！',
-                            type:'success!'
+                            type:'success'
                         })
                     }
 				})
