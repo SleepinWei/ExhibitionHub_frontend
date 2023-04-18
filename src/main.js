@@ -14,7 +14,7 @@ app.config.globalProperties.$axios=axios
 
 app.use(ElementPlus, {locale : zhCn})
 app.use(router)
-app.use(VueCookies,{expires:'7d'})
+app.use(VueCookies)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }

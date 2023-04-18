@@ -72,6 +72,7 @@
 
 <script>
     import qs from 'qs';
+    import "element-plus/theme-chalk/el-message.css"
     import {ElMessage} from 'element-plus'
     export default {
             data() {return {
@@ -81,59 +82,60 @@
                     password : '',
                 }
             }},
-            methods : {
-                /*register() {
-                    this.$Axios.post(
-                        "https://www.xxx.com/member/xxxxx.php",
-                        qs.stringify(this.user),
-                        {
-                            // 这里qs使用的stringify方法可以将对象序列化，形成json的形式进行数据获取
-                            headers : {"content-type": "application/x-www-form-urlencoded"}
-                        }
-                    ).then( res => {
-                        console.log(res);
-                        // 当获取数据的状态码等于1时，相当于获取到了
-                        if(res.data.status == 1) {
-                            var flag = window.confirm("确定注册码");
-                            if(flag) {
-                                // 跳转到登录页面
-                                this.$router.replace("/login");
-                            }
-                        }
-                    })
-                },*/
-                login(){
-				this.$axios.post('/login',qs.stringify(this.user)) // 加了个stringify就不404辣？!
-				.then((res)=>{
-					if(res.data.code == 300 ){// 300：是普通用户，跳转普通用户界面
-						this.$router.push("/personal");//用户主页
+    methods: {
+        /*register() {
+            this.$Axios.post(
+                "https://www.xxx.com/member/xxxxx.php",
+                qs.stringify(this.user),
+                {
+                    // 这里qs使用的stringify方法可以将对象序列化，形成json的形式进行数据获取
+                    headers : {"content-type": "application/x-www-form-urlencoded"}
+                }
+            ).then( res => {
+                console.log(res);
+                // 当获取数据的状态码等于1时，相当于获取到了
+                if(res.data.status == 1) {
+                    var flag = window.confirm("确定注册码");
+                    if(flag) {
+                        // 跳转到登录页面
+                        this.$router.replace("/login");
+                    }
+                }
+            })
+        },*/
+        login() {
+            this.$axios.post('/login', qs.stringify(this.user)) // 加了个stringify就不404辣？!
+                .then((res) => {
+                    if (res.data.code == 300) {// 300：是普通用户，跳转普通用户界面
+                        this.$router.push("/personal");//用户主页
                         this.$message({
-                            message:'登陆成功！',
-                            type:'success'
-                        })
-					}
-                    else if(res.data.code == 400){// 400：是管理员，跳转管理员界面
-                        this.$router.push("/personal");//管理员主页
-                        this.$message({
-                            message:'登陆成功！',
-                            type:'success'
+                            message: '登陆成功！',
+                            type: 'success'
                         })
                     }
-                    else{
+                    else if (res.data.code == 400) {// 400：是管理员，跳转管理员界面
+                        this.$router.push("/personal");//管理员主页
+                        this.$message({
+                            // ElMessage({
+                            message: '登陆成功！',
+                            type: 'success'
+                        })
+                    }
+                    else {
                         console.log(res);
                         console.log(res.data.msg);
                         this.$message({
-                            message:'账号不存在或密码错误，登陆失败！',
-                            type:'success'
+                            message: '账号不存在或密码错误，登陆失败！',
+                            type: 'success'
                         })
                     }
-				})
-				.catch(err=>{
-					console.log(err);
-				})
-			}
-            }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
+    }
+}
 </script>
     
 

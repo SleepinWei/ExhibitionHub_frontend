@@ -48,7 +48,10 @@
                 </router-link>
             </el-row>
             <el-row v-if="isLogin" justify="center">
-                <router-link :to="{path:'/personal'}">
+                <router-link :to="{path:'/personal'}" style="text-decoration: none;">
+                    <el-icon>
+                        <Avatar/>
+                    </el-icon>
                 {{ username }}
                 </router-link>
             </el-row>
@@ -62,7 +65,7 @@
 export default {
     data() {
         return {
-            username: "test_username",
+            username: this.$cookies.get("cookieName"),
             isLogin: false,
             inputText: "",
         };

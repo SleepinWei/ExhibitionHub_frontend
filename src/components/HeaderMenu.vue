@@ -4,7 +4,7 @@
       class="el-menu-demo"
       mode="horizontal"
     >
-      <el-menu-item index="0">首页</el-menu-item>
+      <el-menu-item index="0"><router-link to="/" style="text-decoration: none;">首页</router-link></el-menu-item>
       <div class="flex-grow" />
       <el-sub-menu index="1">
         <template #title>

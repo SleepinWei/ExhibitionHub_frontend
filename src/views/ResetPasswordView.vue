@@ -7,7 +7,7 @@
             <el-step title="设置新密码"></el-step>
         </el-steps>
         <div v-if="active === 0" class="common_div">
-            <el-form :model="Form" class="user-container" label-position="left" label-width="60px" size="medium">
+            <el-form :model="Form" class="user-container" label-position="left" label-width="60px" size="default">
                 <el-form-item style="float: right; width: 80%" label="邮箱号">
                     <el-input type="text" v-model="Form.email" autofocus ref="email" auto-complete="off"
                         placeholder="请输入用来找回密码的邮箱" prefix-icon="el-icon-message" spellcheck="false">
@@ -16,7 +16,7 @@
             </el-form>
         </div>
         <div v-if="active === 1" class="common_div">
-            <el-form :model="codeForm" class="user-container" label-position="left" label-width="60px" size="medium">
+            <el-form :model="codeForm" class="user-container" label-position="left" label-width="60px" size="default">
                 <el-form-item style="float: right; width: 80%" label="验证码">
                     <el-input type="text" v-model="codeForm.code" autofocus ref="code" auto-complete="off"
                         placeholder="请输入邮箱验证码" prefix-icon="el-icon-s-promotion" spellcheck="false">
@@ -25,7 +25,7 @@
             </el-form>
         </div>
         <div v-if="active === 2" class="common_div">
-            <el-form :model="passwordForm" class="user-container" label-position="left" label-width="60px" size="medium">
+            <el-form :model="passwordForm" class="user-container" label-position="left" label-width="60px" size="default">
                 <el-form-item style="float: right; width: 80%" label="新密码">
                     <el-input type="password" v-model="passwordForm.password" autofocus ref="password" auto-complete="off"
                         placeholder="请输入新密码" prefix-icon="el-icon-key">
