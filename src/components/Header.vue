@@ -26,12 +26,12 @@
         </el-col>
         <el-col :span="8">
             <el-input
-                v-model="input" 
+                v-model="inputText" 
                 size="large"
                 placeholder="Input"
             >
             <template #prepend>
-                <el-button>
+                <el-button @click="submitSearch">
                     <el-icon>
                         <Search />         
                     </el-icon>
@@ -63,12 +63,21 @@ export default {
     data() {
         return {
             username: "test_username",
-            isLogin : false
+            isLogin: false,
+            inputText: "",
         };
     },
     methods: {
         checkLoginStatus() {
 
+        },
+        submitSearch() {
+            this.$router.push({ path: "/search", query: { querytext: this.inputText } });
+        },
+        keyListener(event) {
+            if (event.keyCode == 13) {
+                this.submitSearch();
+            }
         }
     },
     setup() {
@@ -76,6 +85,10 @@ export default {
     },
     mounted() {
         this.checkLoginStatus();
+        // window.addEventListener('keydown', this.keyListener,true);
+    },
+    unmounted() {
+        // window.removeEventListener('keydown', this.keyListener,false);
     }
 }
 </script>
