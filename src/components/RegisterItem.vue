@@ -37,7 +37,8 @@
         <el-button type="primary" size="large" @click="register()">用户注册</el-button>
       </div>
       <el-row style="text-align: center;justify-content: center">
-        <el-link type="primary" href="" @click="gotoLogin()">已有账号登录</el-link>
+        <!-- <el-link type="primary" href="" @click="gotoLogin()">已有账号登录</el-link> -->
+        <router-link type="primary" to="/login" style="text-decoration: none;">已有帐号登录</router-link>
       </el-row>
     </div>
   </div>
@@ -92,12 +93,12 @@ export default {
     };
   },
   methods: {
-    gotoLogin() {
-      // let target = this.$refs.target
-      // target.setAttribute('href', window.location.origin + '/home/integral-record')
-      // target.click()
+    // gotoLogin() {
+    //   // let target = this.$refs.target
+    //   // target.setAttribute('href', window.location.origin + '/home/integral-record')
+    //   // target.click()
 
-    },
+    // },
 
 
     sendEmail() {
@@ -152,7 +153,7 @@ export default {
                   type: 'success'
                 })
                 setTimeout(() => {
-                  this.$router.push('/')
+                  this.$router.push('/login')
                 }, 2000)
               } else {
                 this.$message({

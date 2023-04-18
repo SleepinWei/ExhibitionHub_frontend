@@ -43,7 +43,7 @@
         <!-- 用户头像 -->
         <el-col :span="4">
             <el-row v-if="!isLogin" justify="center">
-                <router-link to="/login">
+                <router-link class="link" to="/login">
                     登录
                 </router-link>
             </el-row>
