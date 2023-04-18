@@ -103,7 +103,12 @@ export default {
     },
     methods: {
         async getRequest(){
-            axios.get(`/exhibition/${this.$route.params.exId}`)
+            axios.get(`/searchById`,
+                {
+                    params: {
+                        exId: this.$route.params.exId
+                    }
+                })
                 .then((response) => {
 
                     this.form = response.data;

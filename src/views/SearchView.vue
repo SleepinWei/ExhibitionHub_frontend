@@ -51,7 +51,7 @@ export default {
     methods: {
         submitSearch() {
             this.$router.push({
-                path: "/search", query: { querytext: this.inputText }
+                path: "/searchByKeyword", query: { querytext: this.inputText }
             });
             // 调用一次查询
             this.searchRequest();
