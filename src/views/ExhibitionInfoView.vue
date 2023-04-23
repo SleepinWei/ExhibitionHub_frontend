@@ -1,80 +1,83 @@
 <template>
-<el-row>
-    <el-col :span="18">
-    <el-row class="basic_info">
-        <el-col :span="9" class="poster">
-            <el-row justify="center" class="poster-image">
-                <el-image style="width: 250px;height: 300px;" :src="form.poster_url" fit="contain">
-                </el-image>
+    <el-row>
+        <el-col :span="18">
+            <el-row class="basic_info">
+                <el-col :span="9" class="poster">
+                    <el-row justify="center" class="poster-image">
+                        <el-image style="width: 250px;height: 300px;" :src="form.poster_url" fit="contain">
+                        </el-image>
+                    </el-row>
+                </el-col>
+                <el-col :span="13" :offset="0" class="simple_info">
+                    <el-row class="sub_info" align="middle">
+                        <el-col :span="18">
+                            <h2>
+                                {{ form.name }}
+                            </h2>
+                        </el-col>
+                        <el-col :span="6" v-if="isAdmin" class="change_info_button">
+                            <el-button type="primary" @click="onChangeInfo">
+                                修改信息
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                    <el-row class="sub_info">
+                        时间：{{ form.begin_date }} - {{ form.end_date }}
+                    </el-row>
+                    <el-row class="sub_info">
+                        主办方：{{ form.organizer }}
+                    </el-row>
+                    <el-row class="sub_info">
+                        票价: {{ form.tickets }}
+                    </el-row>
+                    <el-row class="sub_info">
+                        官方链接:
+                        <a :href="form.link">
+                            {{ form.link }}
+                        </a>
+                    </el-row>
+                    <el-row class="sub_info">
+                        标签:
+                        <el-tag v-for="tag in form.tags"> {{ tag }} </el-tag>
+                    </el-row>
+                    <el-row class="subscribe_button">
+                        <div v-if="isLogin && !isSubscribed">
+                            <el-date-picker v-model="subscribeData" type="date" placeholder="选择日期"
+                                style="margin-right: 20px;"></el-date-picker>
+                            <el-button @click="onSubscribe" type="success">订阅</el-button>
+                        </div>
+                        <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag>
+                    </el-row>
+                </el-col>
+            </el-row>
+
+            <el-row class="long_intro border_up" style="margin-top: 20px;">
+                <h3>详细介绍</h3>
+            </el-row>
+            <el-row class="long_intro border_up">
+                <!-- {{ intro }} -->
+                <div v-html="long_intros"></div>
             </el-row>
         </el-col>
-        <el-col :span="13" :offset="0" class="simple_info">
-            <el-row class="sub_info" align="middle">
-                <el-col :span="18">
-                    <h2>
-                        {{form.name}}
-                    </h2>
-                </el-col>
-                <el-col :span="6" v-if="isAdmin" class="change_info_button">
-                    <el-button type="primary" @click="onChangeInfo">
-                        修改信息
-                    </el-button>
-                </el-col>
+        <el-col :span="1">
+            <el-divider direction="vertical" />
+        </el-col>
+        <el-col :span="5">
+            <!-- 推荐信息 -->
+            <el-row>
+                <h2>
+                    推荐展览
+                </h2>
             </el-row>
-            <el-row class="sub_info">
-                时间：{{form.begin_date}} - {{ form.end_date}}
-            </el-row>
-            <el-row class="sub_info">
-                主办方：{{form.organizer }}
-            </el-row>
-            <el-row class="sub_info">
-                票价: {{form.tickets}}
-            </el-row>
-            <el-row class="sub_info">
-                官方链接: 
-                <a :href="form.link">
-                    {{form.link}}
-                </a>
-            </el-row>
-            <el-row class="sub_info">
-                标签: 
-                <el-tag v-for="tag in form.tags"> {{tag}} </el-tag>
-            </el-row>
-            <el-row class="subscribe_button">
-                <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
-                <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag> 
+            <el-row>
+                <ul>
+                    <li v-for="recommend in form.recommends">
+                        {{ recommend }}
+                    </li>
+                </ul>
             </el-row>
         </el-col>
     </el-row>
-
-    <el-row class="long_intro border_up" style="margin-top: 20px;">
-        <h3>详细介绍</h3>
-    </el-row>
-    <el-row class="long_intro border_up">
-        <!-- {{ intro }} -->
-        <div v-html="long_intros"></div>
-    </el-row>
-</el-col>
-<el-col :span="1">
-<el-divider direction="vertical" />
-</el-col>
-    <el-col :span="5">
-        <!-- 推荐信息 -->
-        <el-row>
-            <h2>
-                推荐展览
-            </h2>
-        </el-row>
-        <el-row>
-            <ul>
-                <li v-for="recommend in form.recommends">
-                    {{recommend}}
-                </li>
-            </ul>
-        </el-row>
-    </el-col>
-</el-row>
-
 </template>
 
 <script>
@@ -99,10 +102,11 @@ export default {
             isAdmin: true,
             isLogin: true,
             isSubscribed: false,
+            subscribeData: '',
         }
     },
     methods: {
-        async getRequest(){
+        async getRequest() {
             axios.get(`/searchById`,
                 {
                     params: {
@@ -137,6 +141,43 @@ export default {
         },
         onSubscribe() {
             // TODO: add to subscription sets
+            if (this.subscribeData == '') {
+                this.$message({
+                    message: '请选择订阅日期',
+                    type: 'warning'
+                });
+            }
+            else {
+                axios.post(`/subscribe/postUesrSub`, {
+                    exId: this.$route.params.exId,
+                    date: this.subscribeData
+                }).then((response) => {
+                    if (response.data === 1) {
+                        this.$message({
+                            message: '订阅成功',
+                            type: 'success'
+                        });
+                        this.isSubscribed = true;
+                    }
+                    else if (response.data === -1) {
+                        this.$message({
+                            message: '订阅时间不在展览时间内',
+                            type: 'warning'
+                        });
+                    }
+                    else {
+                        this.$message({
+                            message: '订阅失败',
+                            type: 'error'
+                        });
+                    }
+                }).catch((error) => {
+                    if (error.response.status == 400) {
+                        // exhibition is not found
+                        // this.$router.push("/error400")
+                    }
+                });
+            }
         }
     },
     mounted() {
@@ -146,7 +187,7 @@ export default {
     computed: {
         long_intros() {
             var arr = this.form.introduction.split("\n");
-            var result = ""; 
+            var result = "";
             arr.forEach((value, index, array) => {
                 result += `<p>${value}</p>`
             });
@@ -158,34 +199,35 @@ export default {
 </script>
 
 <style>
-.basic_info{
-    padding-top:30px;
+.basic_info {
+    padding-top: 30px;
 }
-.simple_info{
+
+.simple_info {
     margin-left: 20px;
 }
 
-.el-tag{
+.el-tag {
     margin-left: 5px;
 }
 
-.sub_info{
+.sub_info {
     margin-top: 5px;
 }
 
-.long_intro{
+.long_intro {
     padding-left: 50px;
 }
-.el-divider{
+
+.el-divider {
     height: 100%;
 }
 
-.subscribe_button{
+.subscribe_button {
     margin-top: 20px;
 }
 
-.border_up{
+.border_up {
     border-top: 2px solid #00000010;
 }
-
 </style>

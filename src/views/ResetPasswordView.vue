@@ -84,7 +84,9 @@ export default {
             if (this.Form.email === '') {
                 this.$message({
                     message: '警告, 邮箱未输入呀',
-                    type: 'warning'
+                    type: 'warning',
+                    duration: 2000,
+                    offset: 100
                 });
                 this.$refs.email.focus();
                 return false;
