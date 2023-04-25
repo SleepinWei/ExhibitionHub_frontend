@@ -2,7 +2,7 @@
  * @Author: yingxin wang
  * @Date: 2023-04-18 21:36:30
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-04-18 21:37:35
+ * @LastEditTime: 2023-04-24 14:16:59
  * @Description: 请填写简介
  */
 import { createRouter, createWebHistory } from 'vue-router'
@@ -17,11 +17,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: {isShowHeader:true},
+      meta: { isShowHeader: true },
     },
     {
       path: '/exhibition/:exId',
-      meta:{isShowHeader:true},
+      meta: { isShowHeader: true },
       component: () => import('@/views/ExhibitionInfoView.vue')
     },
     {
@@ -79,11 +79,11 @@ const router = createRouter({
     },
     {
       path: "/error400",
-      component: ()=> import("@/views/error/400.vue")
+      component: () => import("@/views/error/400.vue")
     },
     {
       path: "/search",
-      component: ()=> import("@/views/SearchView.vue")
+      component: () => import("@/views/SearchView.vue")
     }
   ]
 })
