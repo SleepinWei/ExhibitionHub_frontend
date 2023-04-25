@@ -157,13 +157,8 @@
         uid:this.$cookies.get("cookieAccount")
       } 
     },
-<<<<<<< Updated upstream
     created:function(){//根据Id查询用户信息
       this.$axios.get("user/find/"+this.uid)
-=======
-    created(){//根据Id查询用户信息
-      this.$axios.get("/user/find/"+this.uid)
->>>>>>> Stashed changes
       .then((response)=>{
         console.log(response),
         this.user=response.data//user赋值
