@@ -46,7 +46,7 @@
 
 
 <script>
-import qs from 'qs';
+import "element-plus/theme-chalk/el-message.css"
 export default {
   data() {
 
@@ -85,7 +85,7 @@ export default {
           { required: true, message: "邮箱不能为空！", trigger: "blur" },
           { pattern: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: "邮箱格式不正确", trigger: "blur" }
         ],
-        confirmcode: [
+        code: [
           { required: true, message: "验证码不能为空！", trigger: "blur" },
           { min: 1, max: 6, message: "6位验证码", trigger: "blur" }
         ],
@@ -106,15 +106,18 @@ export default {
       this.$axios.get('/api/sendRisVerCodeMail/' + this.ruleForm.email)
         .then(res => {
           console.log(res.data);
-          if (res.data === "404") {
+          if (res.data == "404") {
             this.$message.error('邮件发送失败，请检查邮箱是否填写正确');
-          } else if (res.data === "400") {
+          } else if (res.data == "400") {
             this.$message.error('该邮箱已注册，请更换邮箱');
-          } else {
+          } else if (res.data == "2000") {
             this.$message({
               message: '邮件发送成功，请登录邮箱获取验证码',
               type: 'success'
             });
+          } else {
+            console.log(res.data);
+            console.log("出现未知值");
           }
         })
         .catch(err => {
