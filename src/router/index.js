@@ -2,7 +2,7 @@
  * @Author: yingxin wang
  * @Date: 2023-04-18 21:36:30
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-04-24 14:16:59
+ * @LastEditTime: 2023-04-25 16:14:12
  * @Description: 请填写简介
  */
 import { createRouter, createWebHistory } from 'vue-router'
@@ -62,7 +62,13 @@ const router = createRouter({
           path: '/info',
           name: 'info',
           component: () => import('../views/Person/Info.vue')
-        }
+        },
+        {
+          path: '/subscribeInfo',
+          name: 'subscribeInfo',
+          //重设密码页面
+          component: () => import('../views/Person/SubscribeInfo.vue')
+        },
       ]
     },
     {
