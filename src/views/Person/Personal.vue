@@ -1,7 +1,11 @@
+<script setup>
+import HeaderItem from '../../components/HeaderMenu.vue'
+</script>
 <template>
+    <HeaderItem />
     <el-container>
         <!--标题-->
-        <el-header>Exhibition Hub</el-header>
+        
         
         <el-container>
             <!--侧边栏-->

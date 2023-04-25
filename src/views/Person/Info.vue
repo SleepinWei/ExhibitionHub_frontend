@@ -72,6 +72,8 @@
 </template>
 
 <script>
+  import "element-plus/theme-chalk/index.css"
+  import { ElMessageBox } from "element-plus";
   export default {
     data() {
       //确认旧密码
@@ -139,12 +141,12 @@
         dialogChangEmail:false,//修改邮箱对话框
         formLabelWidth: '150px',
         
-        // uid:'1'//????当前登录用户Id
-        uid:this.$cookies.get("cookieAccount")
+      
+        uid: this.$cookies.get("cookieAccount")
       } 
     },
     created:function(){//根据Id查询用户信息
-      this.$axios.get("user/find/"+this.uid)
+      this.$axios.get("/user/find/"+this.uid)
       .then((response)=>{
         console.log(response),
         this.user=response.data//user赋值
@@ -155,32 +157,40 @@
     },
     mounted:function(){
       console.log("组件挂载完毕");
+      console.log(this.$cookies.get("cookieName"));
+      // console.log(document.cookie);
     },
     methods: {
       //修改基本信息，用户名、性别、出生日期
       changeBasicInfo() {
         //axios.put更新信息
-        console.log("user"+this.user.username)
+        console.log("/user"+this.user.username)
         this.$axios.put("user",this.user)
         .then((response)=>{
           console.log(response.data),
           this.message=response.data
           //弹框提示信息
           if(this.message){
-            this.$alert('保存成功', '保存个人信息', {
+            ElMessageBox.alert('保存成功', '保存个人信息', {
               confirmButtonText: '确定',
+              callback:(action)=>{
+                location.reload();
+              }
             });
           }
           else{
-            this.$alert('没有修改，无需保存', '保存个人信息', {
+            ElMessageBox.alert('没有修改，无需保存', '保存个人信息', {
               confirmButtonText: '确定',
+              callback:action=>{
+                location.reload();
+              }
             });
           }
         })
        .catch(response=>{
           console.log("请求失败")
           this.message=response.data//请求失败
-          this.$alert('请求失败', '保存个人信息', {
+          ElMessageBox.alert('请求失败', '保存个人信息', {
               confirmButtonText: '确定',
             });
         })
@@ -193,7 +203,7 @@
           if (valid) {//表单验证成功
             //调用接口保存
             this.user.password=this.form.newPassword
-            this.$axios.put("user/change",this.user)
+            this.$axios.put("http://localhost:8080/user/change",this.user)
             .then((response)=>{
               this.user=response.data
               this.$alert('修改成功', '修改密码', {
@@ -247,7 +257,7 @@
       //获取验证码
       getVercode(){
         console.log("获取验证码")
-        this.$axios.get("/user/sendVerCodeMail/"+this.form.newEmail)
+        this.$axios.get("http://localhost:8080/user/sendVerCodeMail/"+this.form.newEmail)
         .then((response)=>{
           if(response.data!="404"){
             console.log("获取验证码成功")
