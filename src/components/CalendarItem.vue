@@ -53,7 +53,6 @@
 </template>
     
 <style scoped>
-
 .el-calendar{
     --el-calendar-cell-width:auto;
     flex-wrap: wrap;
@@ -70,6 +69,7 @@
     padding:2%;
     margin:2% auto;
 }
+
 .item1 {
     border-radius:50px;
     background: rgba(73, 92, 105, 0.5);
@@ -99,8 +99,6 @@ width: auto;
 height: auto;
 
 }
-
-
 
 
 </style>
@@ -168,9 +166,7 @@ export default {
                     return 'item2'
             }
         },
-        
-
-
+    
 
     },
         
