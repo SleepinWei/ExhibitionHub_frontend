@@ -40,13 +40,13 @@
         <el-col :span="4">
             <el-row>
                 <el-dropdown class="welcome">
-                    <span class="el-dropdown-link">
-                        Welcome
-                        <div v-if="username">,{{ username }}</div>
-                        <el-icon class="el-icon--right">
+                    <div class="el-dropdown-link">
+                        <div style="display: inline-block;">Welcome</div>
+                        <div v-if="username" style="display: inline-block;">,{{ username }}</div>
+                        <el-icon class="el-icon--right" style="display: inline-block;">
                             <arrow-down />
                         </el-icon>
-                    </span>
+                    </div>
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item @click="toPerson()">个人中心</el-dropdown-item>
@@ -120,5 +120,10 @@ export default {
     font-size: 16px;
     font-weight: 500;
     margin: auto;
+}
+
+.el-dropdown-link:hover {
+    color: #409EFF;
+    border: none;
 }
 </style>

@@ -149,7 +149,8 @@ export default {
             }
             else {
                 axios.post(`/subscribe/postUesrSub`, {
-                    exId: this.$route.params.exId,
+                    user_id: this.$cookies.get("cookieAccount"),
+                    ex_Id: this.$route.params.exId,
                     date: this.subscribeData
                 }).then((response) => {
                     if (response.data === 1) {
@@ -173,8 +174,10 @@ export default {
                     }
                 }).catch((error) => {
                     if (error.response.status == 400) {
-                        // exhibition is not found
-                        // this.$router.push("/error400")
+                        this.$message({
+                            message: '订阅失败',
+                            type: 'error'
+                        });
                     }
                 });
             }
