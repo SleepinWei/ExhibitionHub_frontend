@@ -9,7 +9,9 @@ import MuseumSelectorItem from '../components/MuseumSelectorItem.vue';
 <template>
     <body>
         <div class="calendar">
-            <CalendarItem />
+            <CalendarItem 
+            :ExhibitonArr="ExhibitonArr"
+            />
         </div>
         <div class="Selector">
             <div class="demonstration">日程显示</div>
@@ -22,7 +24,9 @@ import MuseumSelectorItem from '../components/MuseumSelectorItem.vue';
                     <el-radio label="noDateLimit" size="large">日期不限</el-radio>
                     <el-radio label="DateLimit" size="large">选择日期</el-radio>
                     <div class="selectItem" v-if="showDateSelector==1">
-                        <DateSelectorItem />
+                        <DateSelectorItem 
+                        @change="dateChange"
+                        />
                     </div>
                 </el-radio-group>
                 <br/>
@@ -51,12 +55,24 @@ import MuseumSelectorItem from '../components/MuseumSelectorItem.vue';
 
 <script>
 export default {
+      components:{
+        AddressSelectorItem,
+        CalendarItem,
+        DateSelectorItem,
+        TypeSelectorItem,
+        MuseumSelectorItem
+      },
       data() {
           return{
               ifDateLimit:'noDateLimit',
               ifLocationLimit:'noLocationLimit',
               showDateSelector:0,
-              showLocationSelector:0,
+              showLocationSelector:0,              
+              userid:2,
+              startTime:'1900-01-01',
+              endTime:'2100-12-31',
+              ExhibitonArr:[]
+              
           } 
       },        
       methods:{
@@ -65,6 +81,10 @@ export default {
                 this.showDateSelector=1
             }else{
                 this.showDateSelector=0
+                //取消日期限制
+                this.startTime='1900-01-01'
+                this.endTime='2100-12-31'
+                this.loadContent()
             }
           },
           selectIfLocationLimit(data){
@@ -74,8 +94,21 @@ export default {
                 this.showLocationSelector=0
             }
           },
-          
-      }
+          dateChange(src,dst){
+            this.startTime=src
+            this.endTime=dst
+            this.loadContent()
+          },
+          loadContent(){
+              this.$axios.get('http://localhost:8080/calendar/'+this.userid+'/'+this.startTime+'/'+this.endTime).then(res=>res.data).then(res=>{
+                  this.ExhibitonArr=res
+                  console.log(this.ExhibitonArr)
+              })
+            }
+      },
+      beforeMount() {
+          this.loadContent()
+        }
   }
 </script>
 

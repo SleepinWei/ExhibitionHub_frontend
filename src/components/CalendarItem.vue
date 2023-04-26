@@ -27,20 +27,18 @@
                 {{ data.day.split("-").slice(2).join("-") }}
             </div>
 
-            <div v-for="i in scheduleData" :key="i.date" >
-                <div v-if="data.day==i.date" >
-                    <div v-for="j in i.content" :key="j.id">
-                        <el-tooltip 
-                        :content="j.name"
-                        hide-after=0
-                        >
-                            <div class="card" :class="selectItemStyle(j.type)"  >
-                                <div @click="selectItem(j.id)">
-                                    <p>{{j.name}}</p>
-                                </div>
+            <div v-for="i in ExhibitonArr" :key="i" >
+                <div v-if="data.day==i.visitdate" >
+                    <el-tooltip 
+                    :content="i.name"
+                    hide-after=0
+                    >
+                        <div class="card" :class="selectItemStyle(1)"  >
+                            <div @click="selectItem(i.ex_id)">
+                                <p>{{i.name}}</p>
                             </div>
-                        </el-tooltip>
-                    </div>
+                        </div>
+                    </el-tooltip>
                 </div>
             </div>
             <!-- <div class="item">
@@ -57,26 +55,14 @@
 <script>
 
 export default {
-    name : 'calendar',
+    props:{
+        ExhibitonArr:{
+            type:Array
+        }
+    },
     data() {
         return{
             value: new Date(),
-            scheduleData:[
-                {
-                    date:'2023-04-23',
-                    content:[
-                        {id:1,type:1,name:'玉石展'},
-                        {id:2,type:1,name:'美食展'},
-                        {id:4,type:2,name:'画展'},
-                    ]
-                },
-                {
-                    date:'2023-04-17',
-                    content:[
-                        {id:3,type:2,name:'书法展'}
-                    ]
-                }
-            ]
         } 
     },
     methods:{
@@ -88,12 +74,6 @@ export default {
             else if (flag === 'next-month') this.value = new Date(this.value.setMonth(this.value.getMonth() + 1));
             else if (flag === 'next-year') this.value = new Date(this.value.setFullYear(this.value.getFullYear() + 1));
         },
-        // loadContent(){
-        //     this.$axios.get('http://localhost:8080/searchByKeyword').then(res=>res.data).then(res=>{
-        //         console.log(res)
-        //         //this.arr=res.data
-        //     })
-        // },
         selectItem(itemid) {
             console.log(itemid)
             this.$router.push('/Exhibitionid='+itemid)
@@ -115,6 +95,8 @@ export default {
                     return 'card1'
                 case 2:
                     return 'card2'
+                default:
+                    return 'card1'
             }
         },
     },
@@ -174,8 +156,13 @@ height: auto;
 .card p {
   font-size: 14px;
   font-weight: 400;
-  line-height: 1px;
+  width:auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   color: #666;
+  margin: 0px 0px;
+  padding: 6px 0px;
 }
 
 .card {
@@ -188,7 +175,6 @@ height: auto;
   z-index: 0;
   overflow: hidden;
   height: 32px;
-  
 }
 
 .card:before {

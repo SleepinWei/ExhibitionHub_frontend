@@ -17,12 +17,11 @@
   
   <script>
   export default {
-        name : 'dateSelector',
         data() {
             return{
                 value:new Date(),
-                startTime:'',
-                endTime:''
+                startTime:'1900-01-01',
+                endTime:'2100-12-31',
             } 
         },        
         methods:{
@@ -31,9 +30,13 @@
                 this.endTime=data[1]
                 console.log(this.startTime)
                 console.log(this.endTime)
+                this.$emit('change', this.startTime,this.endTime);
             },
-            
+        },
+        beforeMount() {
+          //this.loadContent()
         }
+
     }
   </script>
   

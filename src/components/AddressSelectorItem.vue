@@ -22,6 +22,7 @@
         data() {
             return{
                 value:[],
+                userid:0,
                 areaOption: regionData,//省市区三级联动数据
             } 
         },        
@@ -32,8 +33,13 @@
                     const str = CodeToText[data[0]] +'/' +CodeToText[data[1]] +'/' + CodeToText[data[2]]
                     console.log(str)
                 }
-            }
-    }
+            },
+            
+        },
+        beforeMount() {
+            //this.loadContent()
+
+        }
   }
   </script>
   
