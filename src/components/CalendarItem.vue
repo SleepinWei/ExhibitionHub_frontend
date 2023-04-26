@@ -1,25 +1,21 @@
 <template>
 <el-calendar v-model="value">
     <template #header="{ date }">
-        <div class="leftbutton">
-            <el-button @click="selectDate('prev-year')">
-                <span>&lt&lt</span>
-            </el-button>
-            <el-button @click="selectDate('prev-month')">
-                <span>&lt</span>
-            </el-button>
-        </div>
-        <div class="middlebutton">
-            <el-button @click="selectDate('today')">
-                {{ date }}
-            </el-button>
+        <div class="currentDate">
+            {{ date }}
         </div>
         <div class="rightbutton">
-            <el-button @click="selectDate('next-month')">
-                >
+            <el-button class="hvr-grow-shadow" @click="selectDate('prev-year')">
+                <div class="order">&lt&lt</div>
             </el-button>
-            <el-button @click="selectDate('next-year')">
-                >>
+            <el-button class="hvr-grow-shadow" @click="selectDate('prev-month')">
+                <div class="order">&lt</div>
+            </el-button>
+            <el-button class="hvr-grow-shadow" @click="selectDate('next-month')">
+                <div class="order">></div>
+            </el-button>
+            <el-button class="hvr-grow-shadow" @click="selectDate('next-year')">
+                <div class="order">>></div>
             </el-button>
         </div>
     </template>
@@ -33,10 +29,15 @@
 
             <div v-for="i in scheduleData" :key="i.date" >
                 <div v-if="data.day==i.date" >
-                    <div class="item" v-for="j in i.content" :key="j.id">
-                        <el-tooltip :content="j.name">
-                            <div :class="selectItemStyle(j.type)" @click="selectItem(j.id)">
-                                <el-text >{{j.name}}</el-text>
+                    <div v-for="j in i.content" :key="j.id">
+                        <el-tooltip 
+                        :content="j.name"
+                        hide-after=0
+                        >
+                            <div class="card" :class="selectItemStyle(j.type)"  >
+                                <div @click="selectItem(j.id)">
+                                    <p>{{j.name}}</p>
+                                </div>
                             </div>
                         </el-tooltip>
                     </div>
@@ -51,57 +52,7 @@
     </template>
 </el-calendar>
 </template>
-    
-<style scoped>
-.el-calendar{
-    --el-calendar-cell-width:auto;
-    flex-wrap: wrap;
-}
 
-.weekend-date-current{
-    color: rgba(238, 63, 77, 1);
-}
-.weekend-date{
-    color: rgba(227, 180, 184, 1);
-}
-.item{
-    text-align: center;
-    padding:2%;
-    margin:2% auto;
-}
-
-.item1 {
-    border-radius:50px;
-    background: rgba(73, 92, 105, 0.5);
-}
-
-.item1:hover{
-    background: rgba(94, 121, 135, 0.5);
-}
-
-.item2 {
-    border-radius:50px;
-    background: rgba(32, 137, 77, 0.5);
-    
-}
-
-.item2:hover{
-    background: rgba(131, 161, 147, 0.5);
-}
-
-.item .el-text{
-    color:white;
-    
-}
-
-.el-calendar{
-width: auto;
-height: auto;
-
-}
-
-
-</style>
 
 <script>
 
@@ -161,13 +112,11 @@ export default {
         selectItemStyle(type){
             switch(type){
                 case 1:
-                    return 'item1'
+                    return 'card1'
                 case 2:
-                    return 'item2'
+                    return 'card2'
             }
         },
-    
-
     },
         
     beforeMount() {
@@ -178,3 +127,109 @@ export default {
 }
 
 </script>
+
+
+<style scoped>
+
+.order{
+    font-weight: 100;
+    
+}
+.currentDate{
+    font-weight: 200;
+}
+:deep(.el-calendar-table thead th){
+    font-weight: 200;
+}
+
+
+.el-calendar{
+    font-weight: 200;
+    --el-calendar-cell-width:auto;
+    flex-wrap: wrap;
+    --el-button-font-weight:200;
+}
+
+:deep(.el-calendar-day){
+    min-height: 80px;
+}
+
+.weekend-date-current{
+    color: rgba(238, 63, 77, 1);
+}
+.weekend-date{
+    color: rgba(227, 180, 184, 1);
+}
+:deep(hvr-underline-from-center){
+    text-align: center;
+    padding:2%;
+    margin:2% auto;
+}
+.el-calendar{
+width: auto;
+height: auto;
+
+}
+
+.card p {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1px;
+  color: #666;
+}
+
+.card {
+  display: block;
+  position: relative;
+  border-radius: 4px;
+  text-align:center;
+  margin: 6px auto 6px auto;
+  text-decoration: none;
+  z-index: 0;
+  overflow: hidden;
+  height: 32px;
+  
+}
+
+.card:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -16px;
+  right: -16px;
+  height: 32px;
+  width: 32px;
+  border-radius: 32px;
+  transform: scale(1);
+  transform-origin: 50% 50%;
+  transition: transform 0.25s ease-out;
+  
+}
+
+.card:hover:before {
+  transform: scale(21);
+}
+
+.card:hover p {
+  transition: all 0.3s ease-out;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/*type1*/
+.card1 {
+    background-color: #f2f8f9;
+}
+.card1:before {
+    background: #00838d;
+}
+
+.card2 {
+    background-color: #fee7e9;
+}
+.card2:before {
+    background: #b4585d;
+}
+
+
+
+</style>

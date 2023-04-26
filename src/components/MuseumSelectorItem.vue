@@ -2,6 +2,7 @@
     <div class="museumSelecotr">
         <div class="block">
             <el-select 
+            class="hvr-shadow"
             v-model="value" 
             filterable
             placeholder="---------------不限---------------"

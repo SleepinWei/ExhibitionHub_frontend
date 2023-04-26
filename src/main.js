@@ -1,6 +1,8 @@
+//安装 npm i hover.css --save
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
-// import 'element-plus/dist/index.css'
+import 'hover.css'
+import 'element-plus/dist/index.css'
 import App from './App.vue'
 import router from './router/index'
 import axios from './http'

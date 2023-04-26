@@ -1,6 +1,6 @@
 <template>
     <div class="demo-date-picker">
-      <div class="block">
+      <div class="block hvr-shadow">
         <el-date-picker
           v-model="value"
           type="daterange"
@@ -40,16 +40,15 @@
   <style scoped>
   .demo-date-picker {
     display: flex;
-    width: 10%;
+    width: 100%;
     padding: 0;
     flex-wrap: wrap;
   }
   
   .demo-date-picker .block {
-    padding: 5% 0;
     text-align: center;
     flex: 1;
-    width: 50%;
+    width: 100%;
   }
   
   .demo-date-picker .block:last-child {

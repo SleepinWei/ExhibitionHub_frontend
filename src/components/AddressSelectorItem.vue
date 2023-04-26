@@ -5,6 +5,7 @@
         <div class="block">
             <el-cascader
                 v-model="value"
+                class="hvr-shadow"
                 :options="areaOption"
                 filterable
                 @change="handleChange"
