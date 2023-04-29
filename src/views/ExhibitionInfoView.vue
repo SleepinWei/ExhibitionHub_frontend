@@ -1,3 +1,7 @@
+<script setup>
+import ImageDownloadItem from '../components/ImageDownloadItem.vue'
+</script>
+
 <template>
 <el-row>
     <el-col :span="18">
@@ -44,6 +48,12 @@
                 <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
                 <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag> 
             </el-row>
+            <el-row class="subscribe_button">
+                <el-button v-if="isLogin" @click="onShareExhibition" type="success">分享展览</el-button>
+                <div v-if="showPopup" class="popup">
+                    <ImageDownloadItem :poster_url="form.poster_url" @close="onShareExhibition" />
+                </div>
+            </el-row>
         </el-col>
     </el-row>
 
@@ -79,7 +89,11 @@
 
 <script>
 import axios from 'axios'
+
 export default {
+    components:{
+        ImageDownloadItem
+      },
     data() {
         return {
             form: {
@@ -101,6 +115,8 @@ export default {
             isAdmin: true,
             isLogin: true,
             isSubscribed: false,
+            showPopup:false,
+            imageUrl:'',
         }
     },
     methods: {
@@ -140,6 +156,11 @@ export default {
         },
         onSubscribe() {
             // TODO: add to subscription sets
+        },
+        onShareExhibition(){
+            console.log("share")
+            this.showPopup = !this.showPopup
+
         }
     },
     mounted() {
@@ -190,5 +211,21 @@ export default {
 .border_up{
     border-top: 2px solid #00000010;
 }
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .popup button {
+    margin-top: 10px;
+  }
 
 </style>
