@@ -16,7 +16,7 @@
     methods: {
       downloadImage() {
         const link = document.createElement('a');
-        link.href = this.imageUrl;
+        link.href = this.poster_url;
         link.download = 'image.jpg';
         document.body.appendChild(link);
         link.click();

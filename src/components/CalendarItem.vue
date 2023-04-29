@@ -31,7 +31,7 @@
                 <div v-if="data.day==i.visitdate" >
                     <el-tooltip 
                     :content="i.name"
-                    hide-after=0
+                    :hide-after=0
                     >
                         <div class="card" :class="selectItemStyle(1)"  >
                             <div @click="selectItem(i.ex_id)" >

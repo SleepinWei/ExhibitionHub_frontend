@@ -30,8 +30,10 @@
             handleChange(data) {
                 console.log(data)
                 if (data[0] != null && data[1] != null && data[2] != null) {
-                    const str = CodeToText[data[0]] +'/' +CodeToText[data[1]] +'/' + CodeToText[data[2]]
-                    console.log(str)
+                    this.$emit('change', CodeToText[data[0]],CodeToText[data[1]],CodeToText[data[2]]);
+
+                    // const str = CodeToText[data[0]] +'/' +CodeToText[data[1]] +'/' + CodeToText[data[2]]
+                    // console.log(str)
                 }
             },
             

@@ -26,11 +26,17 @@
                     {id:5,name:'现代'},
                     {id:6,name:'古典'},
                 ],
+                str:""
             } 
         },        
         methods:{
-            getType(data){
-                console.log(data)
+            getType(data){     
+                this.str=""
+                for(var i=0;i<data.length;++i){
+                    this.str+=data[i]+' '
+                }
+                console.log(this.str)
+                this.$emit('change', this.str);
             },
     }
   }

@@ -12,7 +12,7 @@
                 v-for="item in museumOptions"
                 :key="item.id"
                 :label="item.label"
-                :value="item.id"
+                :value="item.label"
                 />
             </el-select>
         </div>
@@ -38,6 +38,7 @@
             handleChange(data) {
                 this.option=data
                 console.log(this.option)
+                this.$emit('change', this.option);
             }
     }
   }

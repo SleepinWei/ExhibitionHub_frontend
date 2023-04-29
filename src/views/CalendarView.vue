@@ -40,13 +40,19 @@ import MuseumSelectorItem from '../components/MuseumSelectorItem.vue';
                     <el-radio label="noLocationLimit" size="large">地点不限</el-radio>
                     <el-radio label="LocationLimit" size="large">选择地点</el-radio>
                     <div class="selectItem" v-if="showLocationSelector==1">
-                        <AddressSelectorItem/>   
+                        <AddressSelectorItem
+                        @change="locationChange"
+                        />   
                     </div>
                 </el-radio-group>
                 <div class="demonstration">展览类型</div>
-                <TypeSelectorItem/>
-                <div class="demonstration">展览地点</div>
-                <MuseumSelectorItem/>
+                <TypeSelectorItem
+                @change="typeChange"
+                />
+                <div class="demonstration">展览主办方</div>
+                <MuseumSelectorItem
+                @change="venueChange"
+                />
             </div>
                  
                 
@@ -70,9 +76,14 @@ export default {
               ifLocationLimit:'noLocationLimit',
               showDateSelector:0,
               showLocationSelector:0,              
-              userid:2,
+              userid:this.$cookies.get("cookieAccount"),
               startTime:'1900-01-01',
               endTime:'2100-12-31',
+              venue:"null",
+              tags:"-1",
+              province:"null",
+              city:"null",
+              area:"null",
               ExhibitonArr:[]
               
           } 
@@ -94,6 +105,10 @@ export default {
                 this.showLocationSelector=1
             }else{
                 this.showLocationSelector=0
+                this.province="null",
+                this.city="null",
+                this.area="null",
+                this.loadContent()
             }
           },
           dateChange(src,dst){
@@ -101,10 +116,35 @@ export default {
             this.endTime=dst
             this.loadContent()
           },
+          locationChange(province,city,area){
+            this.province=province
+            this.city=city
+            this.area=area
+            this.loadContent()
+          },
+          typeChange(tags){
+            if(tags==""){
+                tags="-1"
+            }
+            this.tags=tags
+            console.log("calendar",this.tags)
+            this.loadContent()
+          },
+          venueChange(venue){
+            if(venue=="---------------不限---------------"){
+                venue="null"
+            }
+            this.venue=venue
+            this.loadContent()
+          },
           loadContent(){
-              this.$axios.get('http://localhost:8080/calendar/'+this.userid+'/'+this.startTime+'/'+this.endTime).then(res=>res.data).then(res=>{
+              this.$axios.get('http://localhost:8080/calendarByOrganizer/'+this.userid+'/'+this.startTime+'/'+this.endTime
+              +'/'+this.venue+'/'+this.tags+'/'+this.province+'/'+this.city+'/'+this.area
+              ).then(res=>res.data).then(res=>{
                   this.ExhibitonArr=res
+                  console.log(this.userid+'/'+this.startTime+'/'+this.endTime+'/'+this.venue+'/'+this.tags+'/'+this.province+'/'+this.city+'/'+this.area)
                   console.log(this.ExhibitonArr)
+                  
               })
             }
       },
