@@ -1,4 +1,5 @@
 <script setup>
+import HeaderItem from '../components/Header.vue'
 import AddressSelectorItem from '../components/AddressSelectorItem.vue';
 import CalendarItem from '../components/CalendarItem.vue'
 import DateSelectorItem from '../components/DateSelectorItem.vue';
@@ -8,6 +9,7 @@ import MuseumSelectorItem from '../components/MuseumSelectorItem.vue';
 
 <template>
     <body>
+        <HeaderItem/>
         <div class="calendar">
             <CalendarItem 
             :ExhibitonArr="ExhibitonArr"

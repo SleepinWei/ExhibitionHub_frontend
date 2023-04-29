@@ -34,7 +34,7 @@
                     hide-after=0
                     >
                         <div class="card" :class="selectItemStyle(1)"  >
-                            <div @click="selectItem(i.ex_id)">
+                            <div @click="selectItem(i.ex_id)" >
                                 <p>{{i.name}}</p>
                             </div>
                         </div>
@@ -76,7 +76,7 @@ export default {
         },
         selectItem(itemid) {
             console.log(itemid)
-            this.$router.push('/Exhibitionid='+itemid)
+            this.$router.push('/exhibition/'+itemid)
         },
         show(data){
             console.log(data)
