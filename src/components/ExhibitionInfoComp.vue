@@ -1,6 +1,6 @@
 <template>
-<el-row>
-    <el-col :span="18">
+    <el-row>
+    <el-col :span="24">
     <el-row class="basic_info">
         <el-col :span="9" class="poster">
             <el-row justify="center" class="poster-image">
@@ -55,96 +55,25 @@
         <div v-html="long_intros"></div>
     </el-row>
 </el-col>
-<el-col :span="1">
-<el-divider direction="vertical" />
-</el-col>
-    <el-col :span="5">
-        <!-- 推荐信息 -->
-        <el-row>
-            <h2>
-                推荐展览
-            </h2>
-        </el-row>
-        <el-row>
-            <ul>
-                <li v-for="recommend in form.recommends">
-                    {{recommend}}
-                </li>
-            </ul>
-        </el-row>
-    </el-col>
 </el-row>
-
 </template>
 
+
 <script>
-import axios from '@/http.ts'
 export default {
+    props: ['form'],
     data() {
         return {
-            form: {
-                exId: this.$route.params.exId,
-                poster_url: "/src/assets/posters/saber.png",
-                name: "Exhibition 1",
-                begin_date: "2001-01-01",
-                end_date: "2001-02-02",
-                organizer: "og1",
-                tickets: "2000RMB",
-                link: "https://bilibili.com",
-                tags: ["tag1", "tag2"],
-                introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
-            ssssssssssssssssssssssssssssss",
-                begin_time: "",
-                end_time: "",
-                recommends: ["ex1", "ex2", "ex3"]
-            },
-            isAdmin: true,
-            isLogin: true,
+            isAdmin: false,
+            isLogin: false,
             isSubscribed: false,
         }
     },
     methods: {
-        async getRequest(){
-            axios.get(`/searchById`,
-                {
-                    params : {
-                        exId: this.$route.params.exId
-                    }
-                })
-                .then((response) => {
-                    this.form = response.data;
-                    this.form.poster_url = 'http://127.0.0.1:8080/' + response.data.poster_url;
-                    console.log(this.form)
-                }).catch((error) => {
-                    if (error.response.status == 400) {
-                        // exhibition is not found
-                        // this.$router.push("/error400")
-                    }
-                });
-        },
-        getUserInfo() {
-            // let isAdmin = this.$cookies.get("cookieName") != null;
-            let isAdmin = true; // TODO: is admin
-            let isLogin = (this.$cookies.get("cookieName") != null);
-            if (isAdmin != null) {
-                this.isAdmin = isAdmin;
-            }
-            if (isLogin != null) {
-                this.isLogin = isLogin;
-            }
-        },
-        onChangeInfo() {
-            // TODO: 与 User 登录对接，主要为字段名
-            // redirect
-            this.$router.push(`/alterinfo/${this.$route.params.exId}`);
-        },
-        onSubscribe() {
-            // TODO: add to subscription sets
-        }
+
     },
     mounted() {
-        this.getRequest();
-        this.getUserInfo();
+
     },
     computed: {
         long_intros() {
