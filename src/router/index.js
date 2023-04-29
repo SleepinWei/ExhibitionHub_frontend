@@ -1,10 +1,3 @@
-/*
- * @Author: yingxin wang
- * @Date: 2023-04-18 21:36:30
- * @LastEditors: yingxin wang
- * @LastEditTime: 2023-04-18 21:37:35
- * @Description: 请填写简介
- */
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AddExView from '@/views/AddExView.vue'
@@ -55,15 +48,7 @@ const router = createRouter({
     {
       path: '/personal',
       name: 'personal',
-      redirect: '/info',
       component: () => import('../views/Person/Personal.vue'),
-      children: [
-        {
-          path: '/info',
-          name: 'info',
-          component: () => import('../views/Person/Info.vue')
-        }
-      ]
     },
     {
       path: '/resetPassword',
