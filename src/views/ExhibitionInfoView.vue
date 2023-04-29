@@ -43,7 +43,7 @@
                     <el-row class="subscribe_button">
                         <div v-if="isLogin && !isSubscribed">
                             <el-date-picker v-model="subscribeDate" type="date" placeholder="选择日期"
-                                style="margin-right: 20px;"></el-date-picker>
+                                style="margin-right: 20px;" format="YYYY/MM/DD" value-format="YYYY-MM-DD"></el-date-picker>
                             <el-button @click="onSubscribe" type="success">订阅</el-button>
                         </div>
                         <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag>
@@ -143,18 +143,20 @@ export default {
             this.$router.push(`/alterinfo/${this.$route.params.exId}`);
         },
         onSubscribe() {
+            console.log(this.subscribeDate)
             // TODO: add to subscription sets
-            if (this.subscribeData === '') {
+            if (this.subscribeDate === '' || this.subscribeDate === null || this.subscribeDate === undefined) {
                 this.$message({
                     message: '请选择订阅日期',
                     type: 'warning'
                 });
             }
             else {
+                console.log(this.subscribeDate)
                 axios.post(`/subscribe/postUesrSub`, {
                     user_id: this.$cookies.get("cookieAccount"),
-                    ex_Id: this.$route.params.exId,
-                    date: this.subscribeData
+                    ex_id: this.$route.params.exId,
+                    date: this.subscribeDate
                 }).then((response) => {
                     if (response.data === 1) {
                         this.$message({
@@ -176,17 +178,10 @@ export default {
                         });
                     }
                 }).catch((error) => {
-                    if (error.response.status == 400) {
-                        this.$message({
-                            message: '订阅失败',
-                            type: 'error'
-                        });
-                    } else if (error.response.status == 404) {
-                        this.$message({
-                            message: '订阅失败',
-                            type: 'error'
-                        });
-                    }
+                    this.$message({
+                        message: '订阅失败',
+                        type: 'error'
+                    });
                 });
             }
         }
