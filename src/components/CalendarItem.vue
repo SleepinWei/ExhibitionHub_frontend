@@ -33,7 +33,7 @@
                     :content="i.name"
                     :hide-after=0
                     >
-                        <div class="card" :class="selectItemStyle(1)"  >
+                        <div class="card" :class="selectItemStyle(i.tags)"  >
                             <div @click="selectItem(i.ex_id)" >
                                 <p>{{i.name}}</p>
                             </div>
@@ -89,8 +89,8 @@ export default {
                 return 'weekend-date'
             }
         },
-        selectItemStyle(type){
-            switch(type){
+        selectItemStyle(tags){
+            switch(tags[0]){
                 case 1:
                     return 'card1'
                 case 2:
