@@ -44,6 +44,15 @@
                 <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
                 <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag> 
             </el-row>
+<<<<<<< Updated upstream
+=======
+            <el-row class="subscribe_button">
+                <el-button v-if="isLogin" @click="onShareExhibition" type="success">分享展览</el-button>
+                <div v-if="showPopup" class="popup">
+                    <ImageDownloadItem :poster_url="form.poster_url" :tolink="form.link" @close="onShareExhibition" />
+                </div>
+            </el-row>
+>>>>>>> Stashed changes
         </el-col>
     </el-row>
 
