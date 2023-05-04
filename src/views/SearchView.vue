@@ -20,15 +20,14 @@
         </el-col>
     </el-row>
 
-    <!-- <ExThumbnail v-for="result in searchResult" :params="{ -->
-    <ExThumbnail :params="{
+    <ExThumbnail v-for="result in searchResult" :params="{
         id : result.id,
         poster_url: result.poster_url,
         name : result.name,
         location : result.location,
         begin_date : result.begin_date,
         end_date : result.end_date
-    }"> -->
+    }"> 
     </ExThumbnail>
 </template>
 
@@ -41,16 +40,9 @@ export default {
         return {
             inputText: "",
             // searchResult: 
-            result:
-                {
-                    id : 0,
-                    name: "Ex1",
-                    poster_url : "/src/assets/posters/saber.png",
-                    location: "locaiton1",
-                    begin_date: "2001-02-02",
-                    end_date: "2002-03-03",
-                },
+            searchResult:[
             // TODO: searchResult should be an array [] 
+            ]
         }
     },
     methods: {
@@ -73,8 +65,13 @@ export default {
             ).then(
                 (response) => {
                     // this.searchResult = response.data;
-                    // console.log(response.data);
-                    this.result = response.data;
+                    console.log(response.data);
+                    // this.result = response.data;
+                    this.searchResult = [];
+                    var data = response.data;
+                    for (var ex in data) {
+                        this.searchResult.push(data[ex]);
+                    }
                     //TODO: this.searchResult should be an array
                 }
             );

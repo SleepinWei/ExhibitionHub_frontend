@@ -42,6 +42,7 @@
 
 <script>
 import qs from 'qs';
+import 'element-plus/theme-chalk/index.css'
 export default {
     name: "ResetPassword",
 
@@ -96,7 +97,7 @@ export default {
         post() {
             console.log(this.Form.email)
             this.$axios
-                .get("/api/sendVerCodeMail/" + this.Form.email)
+            .get("/reset/sendVerCodeMail/" + this.Form.email)
                 .then(successResponse => {
                     if (successResponse.status === 200) {
                         // 如果返回的结果正确，那么需要发送邮件到对应的用户邮箱中，用户自己登录邮箱后找到对应的链接后才可以输入新密码
@@ -157,7 +158,7 @@ export default {
                     this.$refs.code.focus();
                 } else {
                     console.log(this.codeForm.code)
-                    this.$axios.post('/api/isVerCodeRight', {
+                    this.$axios.post('/reset/isVerCodeRight', {
                         email: this.Form.email,
                         code: this.codeForm.code,
                     }).then(successResponse => {
@@ -212,7 +213,7 @@ export default {
                     this.$refs.password.focus();
                 } else {
                     let password_md5 = this.$md5(this.passwordForm.password);
-                    this.$axios.post('/api/resetPassword', {
+                    this.$axios.post('/reset/resetPassword', {
                         password: password_md5,
                         email: this.Form.email,
                     }).then(successResponse => {
