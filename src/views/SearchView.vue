@@ -16,9 +16,7 @@
         </el-col>
     </el-row>
 
-    <div class="center-row">
-        <CardItem :result="this.searchResult" />
-    </div>
+    <CardItem :result="this.searchResult" />
     <!-- <ExThumbnail v-for="result in searchResult" :params="{
             id: result.id,
             poster_url: result.poster_url,
@@ -67,17 +65,12 @@ export default {
                     // this.searchResult = response.data;
                     console.log(response.data);
                     // this.result = response.data;
-                    this.searchResult = [[], [], [], []];
+                    this.searchResult = [];
                     var data = response.data;
-                    for (var i = 0; i < data.length; i += 4) {
-                        this.searchResult[0].push(data[i]);
-                        if ((i + 1) < data.length)
-                            this.searchResult[1].push(data[i + 1]);
-                        if ((i + 2) < data.length)
-                            this.searchResult[2].push(data[i + 2]);
-                        if ((i + 3) < data.length)
-                            this.searchResult[3].push(data[i + 3]);
+                    for (var i = 0; i < data.length; i += 1) {
+                        this.searchResult.push(data[i]);
                     }
+                    console.log(this.searchResult)
                 }
             );
         },
@@ -106,14 +99,3 @@ export default {
     },
 }
 </script>
-
-<style scoped>
-.center-row {
-    display: flex;
-    gap: 30px;
-    padding: 30px;
-    column-count: 4;
-    flex-direction: row;
-    text-align: left;
-}
-</style>

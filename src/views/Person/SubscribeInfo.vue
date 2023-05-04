@@ -2,7 +2,7 @@
  * @Author: yingxin wang
  * @Date: 2023-04-25 16:07:36
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-04-29 15:25:53
+ * @LastEditTime: 2023-05-04 21:37:10
  * @Description: 个人页面中查看个人订阅内容
 -->
 <template>
@@ -23,9 +23,8 @@ export default {
     methods: {
         search() {
             console.log(query);
-            axios.get(`/subscribe/getAllSub`, {
-                user_id: this.$cookies.get("cookieAccount")
-            }).then((response) => {
+            axios.get(`/subscribe/getAllSub` + this.$cookies.get("cookieAccount")
+            ).then((response) => {
                 console.log(response.data);
                 this.searchResult = [[], [], [], []];
                 var data = response.data;
