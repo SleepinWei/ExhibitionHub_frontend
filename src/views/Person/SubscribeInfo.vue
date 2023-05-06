@@ -2,40 +2,34 @@
  * @Author: yingxin wang
  * @Date: 2023-04-25 16:07:36
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-04 21:37:10
+ * @LastEditTime: 2023-05-06 14:38:41
  * @Description: 个人页面中查看个人订阅内容
 -->
 <template>
     <div>
-        <CardItem></CardItem>
+        <CardItem :result="this.searchResult" />
     </div>
 </template>
 
 <script>
 import CardItem from '../../components/CardItem.vue'
+import axios from 'axios';
 export default {
     components: { CardItem },
     data() {
         return {
-            searchResult: [[], [], [], []]
+            searchResult: [],
         }
     },
     methods: {
         search() {
-            console.log(query);
-            axios.get(`/subscribe/getAllSub` + this.$cookies.get("cookieAccount")
+            axios.get('/subscribe/getAllSub/' + this.$cookies.get("cookieAccount")
             ).then((response) => {
                 console.log(response.data);
-                this.searchResult = [[], [], [], []];
+                this.searchResult = [];
                 var data = response.data;
-                for (var i = 0; i < data.length; i += 4) {
-                    this.searchResult[0].push(data[i]);
-                    if ((i + 1) < data.length)
-                        this.searchResult[1].push(data[i + 1]);
-                    if ((i + 2) < data.length)
-                        this.searchResult[2].push(data[i + 2]);
-                    if ((i + 3) < data.length)
-                        this.searchResult[3].push(data[i + 3]);
+                for (var i = 0; i < data.length; i += 1) {
+                    this.searchResult.push(data[i]);
                 }
             }
             );
