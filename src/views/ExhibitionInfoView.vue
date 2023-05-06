@@ -46,7 +46,10 @@
                                 style="margin-right: 20px;" format="YYYY/MM/DD" value-format="YYYY-MM-DD"></el-date-picker>
                             <el-button @click="onSubscribe" type="success">订阅</el-button>
                         </div>
-                        <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag>
+                        <div v-if="isLogin && isSubscribed">
+                            <el-tag size="large" style="margin-right: 20px;">已订阅</el-tag>
+                            <el-button @click="cancelSub" type="success">取消订阅</el-button>
+                        </div>
                     </el-row>
                 </el-col>
             </el-row>
@@ -137,6 +140,30 @@ export default {
                 this.isLogin = isLogin;
             }
         },
+        getisSub() {
+            axios.get(`/subscribe/isSub`, {
+                user_id: this.$cookies.get("cookieAccount"),
+                ex_id: this.$route.params.exId
+            }).then((response) => {
+                if (response.data == 1) {
+                    this.isSubscribed = true;
+                }
+                else if (response.data == 0) {
+                    this.isSubscribed = false;
+                }
+                else {
+                    this.$message({
+                        message: '获取订阅信息失败',
+                        type: 'error'
+                    });
+                }
+            }).catch((error) => {
+                this.$message({
+                    message: '订阅失败',
+                    type: 'error'
+                });
+            });
+        },
         onChangeInfo() {
             // TODO: 与 User 登录对接，主要为字段名
             // redirect
@@ -144,7 +171,6 @@ export default {
         },
         onSubscribe() {
             console.log(this.subscribeDate)
-            // TODO: add to subscription sets
             if (this.subscribeDate === '' || this.subscribeDate === null || this.subscribeDate === undefined) {
                 this.$message({
                     message: '请选择订阅日期',
@@ -184,11 +210,38 @@ export default {
                     });
                 });
             }
+        },
+        cancelSub() {
+            console.log(this.subscribeDate)
+            axios.post(`/subscribe/cancelUesrSub`, {
+                user_id: this.$cookies.get("cookieAccount"),
+                ex_id: this.$route.params.exId
+            }).then((response) => {
+                if (response.data === 1) {
+                    this.$message({
+                        message: '成功取消订阅',
+                        type: 'success'
+                    });
+                    this.isSubscribed = true;
+                }
+                else {
+                    this.$message({
+                        message: '取消订阅失败',
+                        type: 'error'
+                    });
+                }
+            }).catch((error) => {
+                this.$message({
+                    message: '取消订阅失败',
+                    type: 'error'
+                });
+            });
         }
     },
     mounted() {
         this.getRequest();
         this.getUserInfo();
+        this.getisSub();
     },
     computed: {
         long_intros() {
