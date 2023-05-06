@@ -152,16 +152,10 @@ export default {
                     this.isSubscribed = false;
                 }
                 else {
-                    this.$message({
-                        message: '获取订阅信息失败',
-                        type: 'error'
-                    });
+                    console.log("获取订阅信息失败")
                 }
             }).catch((error) => {
-                this.$message({
-                    message: '订阅失败',
-                    type: 'error'
-                });
+                console.log(error)
             });
         },
         onChangeInfo() {
