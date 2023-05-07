@@ -52,6 +52,7 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                         </div>
                         <div v-if="isLogin && isSubscribed">
                             <el-tag size="large" style="margin-right: 20px;">已订阅</el-tag>
+                            <el-tag size="large" style="margin-right: 20px;">订阅时间：{{ subscribeDate }}</el-tag>
                             <el-button @click="cancelSub" type="success">取消订阅</el-button>
                         </div>
                     </el-row>
@@ -68,7 +69,6 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                 <h3>详细介绍</h3>
             </el-row>
             <el-row class="long_intro border_up">
-                <!-- {{ intro }} -->
                 <div v-html="long_intros"></div>
             </el-row>
         </el-col>
@@ -166,6 +166,22 @@ export default {
                 }
                 else if (response.data === 0) {
                     this.isSubscribed = false;
+                }
+                else {
+                    console.log("获取订阅信息失败")
+                }
+            }).catch((error) => {
+                console.log(error)
+            });
+        },
+        getSubDate() {
+            axios.post(`/subscribe/getSubDate`, {
+                user_id: this.$cookies.get("cookieAccount"),
+                ex_id: this.$route.params.exId
+            }).then((response) => {
+                if (response.date !== -1) {
+                    this.isSubscribed = true;
+                    subscribeDate = response.date;
                 }
                 else {
                     console.log("获取订阅信息失败")
