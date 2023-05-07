@@ -2,7 +2,7 @@
  * @Author: yingxin wang
  * @Date: 2023-04-25 17:20:15
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-07 17:06:46
+ * @LastEditTime: 2023-05-07 20:40:18
  * @Description: 卡片布局修改为动态效果
 -->
 <template>
@@ -59,34 +59,10 @@ export default {
 </script>
 
 <style>
-/* 
 .container {
-    gap: 20px;
-    padding: 20px;
-    column-count: 4;
-    flex-direction: row;
-    text-align: left;
-    margin-left: 10px;
-    flex-wrap: wrap;
-}
-
-.container>div {
-    flex: 1 0 0;
-    line-height: 1.2;
-}
-
-.card {
-    width: 10px;
-    height: 200px;
-    overflow: visible;
-}*/
-
-.container {
-    margin-top: auto;
-    margin-left: 30px;
     display: grid;
-    grid-template-columns: repeat(4, 270px);
-    grid-column-gap: 40px;
+    grid-template-columns: repeat(4, 225px);
+    grid-column-gap: 20px;
     grid-row-gap: 20px;
 }
 
@@ -96,8 +72,8 @@ export default {
 }
 
 .container .card {
-    width: 260px;
-    height: 350px;
+    width: 220px;
+    height: 300px;
     overflow: visible;
     margin-bottom: 10px;
     margin-right: 10px;
@@ -194,8 +170,9 @@ export default {
 .front-content .title {
     margin-right: 5px;
     width: fit-content;
-    font-size: x-large;
+    font-size: 20px;
     color: dimgrey;
+    text-align: left;
 }
 
 .description-box {
@@ -205,10 +182,12 @@ export default {
     background-color: #00000099;
     backdrop-filter: blur(5px);
     border-radius: 5px;
+    justify-content: left;
+    text-align: left;
 }
 
 .description {
-    font-size: 13px;
+    font-size: 12px;
     max-width: 100%;
     display: flex;
     justify-content: space-between;

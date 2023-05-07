@@ -7,7 +7,7 @@
 -->
 <template>
     <div>
-        <CardItem :result="this.searchResult" />
+        <CardItem :result="this.searchResult" style="margin-left: 40px;margin-top: 20px;" />
     </div>
 </template>
 
