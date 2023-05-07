@@ -2,7 +2,7 @@
  * @Author: yingxin wang
  * @Date: 2023-04-18 21:36:30
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-07 15:18:05
+ * @LastEditTime: 2023-04-18 21:37:35
  * @Description: 请填写简介
  */
 import { createRouter, createWebHistory } from 'vue-router'
@@ -17,11 +17,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: { isShowHeader: true },
+      meta: {isShowHeader:true},
     },
     {
       path: '/exhibition/:exId',
-      meta: { isShowHeader: true },
+      meta:{isShowHeader:true},
       component: () => import('@/views/ExhibitionInfoView.vue')
     },
     {
@@ -62,13 +62,7 @@ const router = createRouter({
           path: '/info',
           name: 'info',
           component: () => import('../views/Person/Info.vue')
-        },
-        {
-          path: '/subscribeInfo',
-          name: 'subscribeInfo',
-          //重设密码页面
-          component: () => import('../views/Person/SubscribeInfo.vue')
-        },
+        }
       ]
     },
     {
@@ -85,21 +79,21 @@ const router = createRouter({
     },
     {
       path: "/error400",
-      component: () => import("@/views/error/400.vue")
+      component: ()=> import("@/views/error/400.vue")
     },
     {
       path: "/search",
-      component: () => import("@/views/SearchView.vue")
+      component: ()=> import("@/views/SearchView.vue")
     },
     {
       path: "/calendar",
       name: 'calendar',
-      component: () => import("@/views/CalendarView.vue")
+      component: ()=> import("@/views/CalendarView.vue")
     },
     {
       path: "/test",
       name: 'test',
-      component: () => import("@/views/test.vue")
+      component: ()=> import("@/views/test.vue")
     },
   ]
 })
