@@ -1,16 +1,12 @@
 <template>
     <el-row style="margin-bottom: 50px; margin-top: 50px;" align="middle">
-        <el-col :span="12" :offset="6"> 
-            <el-input
-                v-model="inputText" 
-                size="large"
-                placeholder="Input"
-                >
+        <el-col :span="12" :offset="6">
+            <el-input v-model="inputText" size="large" placeholder="Input">
                 <template #prepend>
                     <!-- <el-button @click="submitSearch"> -->
-                        <el-icon>
-                            <Search />         
-                        </el-icon>
+                    <el-icon>
+                        <Search />
+                    </el-icon>
                     <!-- </el-button> -->
                 </template>
             </el-input>
@@ -20,35 +16,35 @@
         </el-col>
     </el-row>
 
-    <ExThumbnail v-for="result in searchResult" :params="{
-        id : result.id,
-        poster_url: result.poster_url,
-        name : result.name,
-        location : result.location,
-        begin_date : result.begin_date,
-        end_date : result.end_date
-    }"> 
-    </ExThumbnail>
+    <CardItem :result="this.searchResult" />
+    <!-- <ExThumbnail v-for="result in searchResult" :params="{
+            id: result.id,
+            poster_url: result.poster_url,
+            name: result.name,
+            location: result.location,
+            begin_date: result.begin_date,
+            end_date: result.end_date
+        }">
+    </ExThumbnail> -->
 </template>
 
 <script>
 import ExThumbnail from '@/components/ExThumbnail.vue';
+import CardItem from '@/components/CardItem.vue';
 import axios from 'axios';
 export default {
-    components:{ExThumbnail},
+    components: { ExThumbnail, CardItem },
     data() {
         return {
             inputText: "",
             // searchResult: 
-            searchResult:[
-            // TODO: searchResult should be an array [] 
-            ]
+            searchResult: []
         }
     },
     methods: {
         submitSearch() {
             this.$router.replace({
-                path: "/search" , query: { querytext: this.inputText }
+                path: "/search", query: { querytext: this.inputText }
             });
             // 调用一次查询
             this.searchRequest(this.inputText);
@@ -69,10 +65,10 @@ export default {
                     // this.result = response.data;
                     this.searchResult = [];
                     var data = response.data;
-                    for (var ex in data) {
-                        this.searchResult.push(data[ex]);
+                    for (var i = 0; i < data.length; i += 1) {
+                        this.searchResult.push(data[i]);
                     }
-                    //TODO: this.searchResult should be an array
+                    console.log(this.searchResult)
                 }
             );
         },

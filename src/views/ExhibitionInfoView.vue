@@ -58,43 +58,42 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
         </el-col>
     </el-row>
 
-    <el-row class="long_intro border_up" style="margin-top: 20px;">
-        <h3>详细介绍</h3>
+            <el-row class="long_intro border_up" style="margin-top: 20px;">
+                <h3>详细介绍</h3>
+            </el-row>
+            <el-row class="long_intro border_up">
+                <!-- {{ intro }} -->
+                <div v-html="long_intros"></div>
+            </el-row>
+        </el-col>
+        <el-col :span="1">
+            <el-divider direction="vertical" />
+        </el-col>
+        <el-col :span="5">
+            <!-- 推荐信息 -->
+            <el-row>
+                <h2>
+                    推荐展览
+                </h2>
+            </el-row>
+            <el-row>
+                <ul>
+                    <li v-for="recommend in form.recommends">
+                        {{ recommend }}
+                    </li>
+                </ul>
+            </el-row>
+        </el-col>
     </el-row>
-    <el-row class="long_intro border_up">
-        <!-- {{ intro }} -->
-        <div v-html="long_intros"></div>
-    </el-row>
-</el-col>
-<el-col :span="1">
-<el-divider direction="vertical" />
-</el-col>
-    <el-col :span="5">
-        <!-- 推荐信息 -->
-        <el-row>
-            <h2>
-                推荐展览
-            </h2>
-        </el-row>
-        <el-row>
-            <ul>
-                <li v-for="recommend in form.recommends">
-                    {{recommend}}
-                </li>
-            </ul>
-        </el-row>
-    </el-col>
-</el-row>
-
 </template>
 
 <script>
 import axios from 'axios'
 
 export default {
-    components:{
+    components: {
         ImageDownloadItem
-      },
+    },
     data() {
         return {
             form: {
@@ -116,12 +115,13 @@ export default {
             isAdmin: true,
             isLogin: true,
             isSubscribed: false,
-            showPopup:false,
-            imageUrl:'',
+            subscribeDate: '',
+            showPopup: false,
+            imageUrl: '',
         }
     },
     methods: {
-        async getRequest(){
+        async getRequest() {
             axios.get(`/searchById`,
                 {
                     params: {
@@ -150,15 +150,98 @@ export default {
                 this.isLogin = isLogin;
             }
         },
+        getisSub() {
+            axios.post(`/subscribe/isSub`, {
+                user_id: this.$cookies.get("cookieAccount"),
+                ex_id: this.$route.params.exId
+            }).then((response) => {
+                if (response.data === 1) {
+                    this.isSubscribed = true;
+                }
+                else if (response.data === 0) {
+                    this.isSubscribed = false;
+                }
+                else {
+                    console.log("获取订阅信息失败")
+                }
+            }).catch((error) => {
+                console.log(error)
+            });
+        },
         onChangeInfo() {
             // TODO: 与 User 登录对接，主要为字段名
             // redirect
             this.$router.push(`/alterinfo/${this.$route.params.exId}`);
         },
         onSubscribe() {
-            // TODO: add to subscription sets
+            console.log(this.subscribeDate)
+            if (this.subscribeDate === '' || this.subscribeDate === null || this.subscribeDate === undefined) {
+                this.$message({
+                    message: '请选择订阅日期',
+                    type: 'warning'
+                });
+            }
+            else {
+                console.log(this.subscribeDate)
+                axios.post(`/subscribe/postUesrSub`, {
+                    user_id: this.$cookies.get("cookieAccount"),
+                    ex_id: this.$route.params.exId,
+                    date: this.subscribeDate
+                }).then((response) => {
+                    if (response.data === 1) {
+                        this.$message({
+                            message: '订阅成功',
+                            type: 'success'
+                        });
+                        this.isSubscribed = true;
+                    }
+                    else if (response.data === -1) {
+                        this.$message({
+                            message: '订阅时间不在展览时间内',
+                            type: 'warning'
+                        });
+                    }
+                    else {
+                        this.$message({
+                            message: '订阅失败',
+                            type: 'error'
+                        });
+                    }
+                }).catch((error) => {
+                    this.$message({
+                        message: '订阅失败',
+                        type: 'error'
+                    });
+                });
+            }
         },
-        onShareExhibition(){
+        cancelSub() {
+            console.log(this.subscribeDate)
+            axios.post(`/subscribe/cancelUesrSub`, {
+                user_id: this.$cookies.get("cookieAccount"),
+                ex_id: this.$route.params.exId
+            }).then((response) => {
+                if (response.data === 1) {
+                    this.$message({
+                        message: '成功取消订阅',
+                        type: 'success'
+                    });
+                    this.isSubscribed = false;
+                }
+                else {
+                    this.$message({
+                        message: '取消订阅失败',
+                        type: 'error'
+                    });
+                }
+            }).catch((error) => {
+                this.$message({
+                    message: '取消订阅失败',
+                    type: 'error'
+                });
+            });
+        },
+        onShareExhibition() {
             console.log("share")
             this.showPopup = !this.showPopup
 
@@ -167,11 +250,12 @@ export default {
     mounted() {
         this.getRequest();
         this.getUserInfo();
+        this.getisSub();
     },
     computed: {
         long_intros() {
             var arr = this.form.introduction.split("\n");
-            var result = ""; 
+            var result = "";
             arr.forEach((value, index, array) => {
                 result += `<p>${value}</p>`
             });
@@ -183,33 +267,35 @@ export default {
 </script>
 
 <style>
-.basic_info{
-    padding-top:30px;
+.basic_info {
+    padding-top: 30px;
 }
-.simple_info{
+
+.simple_info {
     margin-left: 20px;
 }
 
-.el-tag{
+.el-tag {
     margin-left: 5px;
 }
 
-.sub_info{
+.sub_info {
     margin-top: 5px;
 }
 
-.long_intro{
+.long_intro {
     padding-left: 50px;
 }
-.el-divider{
+
+.el-divider {
     height: 100%;
 }
 
-.subscribe_button{
+.subscribe_button {
     margin-top: 20px;
 }
 
-.border_up{
+.border_up {
     border-top: 2px solid #00000010;
 }
 
@@ -223,7 +309,6 @@ export default {
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 100;/* 最前显示 */
   }
   
   .popup button {
