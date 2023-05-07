@@ -163,6 +163,7 @@ export default {
             }).then((response) => {
                 if (response.data === 1) {
                     this.isSubscribed = true;
+                    this.getSubDate();
                 }
                 else if (response.data === 0) {
                     this.isSubscribed = false;
@@ -181,7 +182,7 @@ export default {
             }).then((response) => {
                 if (response.date !== -1) {
                     this.isSubscribed = true;
-                    subscribeDate = response.date;
+                    this.subscribeDate = response.date;
                 }
                 else {
                     console.log("获取订阅信息失败")
