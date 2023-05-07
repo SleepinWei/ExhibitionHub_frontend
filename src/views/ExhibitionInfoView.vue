@@ -59,7 +59,8 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                     <el-row class="subscribe_button">
                         <el-button v-if="isLogin" @click="onShareExhibition" type="success">分享展览</el-button>
                         <div v-if="showPopup" class="popup">
-                            <ImageDownloadItem :poster_url="form.poster_url" @close="onShareExhibition" />
+                            <ImageDownloadItem :poster_url="form.poster_url" :tolink="form.link"
+                                @close="onShareExhibition" />
                         </div>
                     </el-row>
                 </el-col>
@@ -321,5 +322,23 @@ export default {
 
 .border_up {
     border-top: 2px solid #00000010;
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    /* 最前显示 */
+}
+
+.popup button {
+    margin-top: 10px;
 }
 </style>

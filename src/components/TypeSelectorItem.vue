@@ -31,12 +31,7 @@
         },        
         methods:{
             getType(data){     
-                this.str=""
-                for(var i=0;i<data.length;++i){
-                    this.str+=data[i]+' '
-                }
-                console.log(this.str)
-                this.$emit('change', this.str);
+                this.$emit('selectType', data);
             },
     }
   }
