@@ -7,7 +7,6 @@
   
   <script>
   import QRCode from 'qrcode';
-  import { saveAs } from 'file-saver'
   
   export default {
     name: 'Poster',

@@ -20,9 +20,6 @@ import PosterWithQRcode from './PosterWithQRcode.vue'
   
   <script>
 
-  import { saveAs } from 'file-saver'
-  import axios from 'axios'
-
   export default {
     components:{
         PosterWithQRcode
