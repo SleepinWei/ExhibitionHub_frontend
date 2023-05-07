@@ -180,9 +180,10 @@ export default {
                 user_id: this.$cookies.get("cookieAccount"),
                 ex_id: this.$route.params.exId
             }).then((response) => {
-                if (response.date !== -1) {
+                if (response.data !== -1) {
                     this.isSubscribed = true;
-                    this.subscribeDate = response.date;
+                    this.subscribeDate = response.data;
+                    console.log(this.subscribeDate);
                 }
                 else {
                     console.log("获取订阅信息失败")
