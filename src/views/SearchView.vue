@@ -1,23 +1,54 @@
 <template>
-    <el-row style="margin-bottom: 50px; margin-top: 50px;" align="middle">
-        <el-col :span="12" :offset="6">
-            <el-input v-model="inputText" size="large" placeholder="Input">
-                <template #prepend>
-                    <!-- <el-button @click="submitSearch"> -->
-                    <el-icon>
-                        <Search />
-                    </el-icon>
-                    <!-- </el-button> -->
-                </template>
-            </el-input>
-        </el-col>
-        <el-col :span="3" style="height: 100%; margin-left: 10px;">
-            <el-button @click="submitSearch">搜索</el-button>
-        </el-col>
-    </el-row>
+    <body>
+        <!-- <HeaderItem /> -->
+        <el-row style="margin-bottom: 50px; margin-top: 50px;" align="middle">
+            <el-col :span="12" :offset="6">
+                <el-input v-model="inputText" size="large" placeholder="Input">
+                    <template #prepend>
+                        <el-icon>
+                            <Search />
+                        </el-icon>
+                    </template>
+                </el-input>
+            </el-col>
+            <el-col :span="3" style="height: 100%; margin-left: 10px;">
+                <el-button @click="submitSearch">搜索</el-button>
+            </el-col>
+        </el-row>
 
-    <CardItem :result="this.searchResult" />
-    <!-- <ExThumbnail v-for="result in searchResult" :params="{
+        <div class="flex-container">
+            <div class="CardItem">
+                <CardItem :result="this.searchResult" />
+            </div>
+            <div class="Selector">
+                <div class="demonstration">日程显示</div>
+                <div class="selectBlock">
+                    <div class="demonstration">展览日期</div>
+                    <el-radio-group v-model="ifDateLimit" @change="selectIfDateLimit">
+                        <el-radio label="noDateLimit" size="large">日期不限</el-radio>
+                        <el-radio label="DateLimit" size="large">选择日期</el-radio>
+                        <div class="selectItem" v-if="showDateSelector == 1">
+                            <DateSelectorItem @change="dateChange" />
+                        </div>
+                    </el-radio-group>
+                    <br />
+                    <div class="demonstration">展览地点</div>
+                    <el-radio-group v-model="ifLocationLimit" @change="selectIfLocationLimit">
+                        <el-radio label="noLocationLimit" size="large">地点不限</el-radio>
+                        <el-radio label="LocationLimit" size="large">选择地点</el-radio>
+                        <div class="selectItem" v-if="showLocationSelector == 1">
+                            <AddressSelectorItem @change="locationChange" />
+                        </div>
+                    </el-radio-group>
+                    <div class="demonstration">展览类型</div>
+                    <TypeSelectorItem @change="typeChange" />
+                    <div class="demonstration">展览主办方</div>
+                    <MuseumSelectorItem @change="venueChange" />
+                </div>
+            </div>
+        </div>
+
+        <!-- <ExThumbnail v-for="result in searchResult" :params="{
             id: result.id,
             poster_url: result.poster_url,
             name: result.name,
@@ -26,19 +57,46 @@
             end_date: result.end_date
         }">
     </ExThumbnail> -->
+    </body>
 </template>
 
 <script>
-import ExThumbnail from '@/components/ExThumbnail.vue';
+import HeaderItem from '../components/Header.vue'
 import CardItem from '@/components/CardItem.vue';
+import ExThumbnail from '@/components/ExThumbnail.vue';
+import CalendarItem from '../components/CalendarItem.vue'
+import DateSelectorItem from '../components/DateSelectorItem.vue';
+import TypeSelectorItem from '../components/TypeSelectorItem.vue';
+import AddressSelectorItem from '../components/AddressSelectorItem.vue';
+import MuseumSelectorItem from '../components/MuseumSelectorItem.vue';
 import axios from 'axios';
 export default {
-    components: { ExThumbnail, CardItem },
+    components: {
+        ExThumbnail,
+        CardItem,
+        AddressSelectorItem,
+        CalendarItem,
+        DateSelectorItem,
+        TypeSelectorItem,
+        MuseumSelectorItem
+    },
     data() {
         return {
             inputText: "",
-            // searchResult: 
-            searchResult: []
+            searchResult: [],
+            ifDateLimit: 'noDateLimit',
+            ifLocationLimit: 'noLocationLimit',
+            showDateSelector: 0,
+            showLocationSelector: 0,
+            userid: this.$cookies.get("cookieAccount"),
+            startTime: '1900-01-01',
+            endTime: '2100-12-31',
+            venue: "null",
+            tags: "-1",
+            province: "null",
+            city: "null",
+            area: "null",
+            ExhibitonArr: []
         }
     },
     methods: {
@@ -78,6 +136,57 @@ export default {
             }
         },
 
+        selectIfDateLimit(data) {
+            if (data == 'DateLimit') {
+                this.showDateSelector = 1
+            } else {
+                this.showDateSelector = 0
+                //取消日期限制
+                this.startTime = '1900-01-01'
+                this.endTime = '2100-12-31'
+                this.loadContent()
+            }
+        },
+        selectIfLocationLimit(data) {
+            if (data == 'LocationLimit') {
+                this.showLocationSelector = 1
+            } else {
+                this.showLocationSelector = 0
+                this.province = "null",
+                    this.city = "null",
+                    this.area = "null",
+                    this.loadContent()
+            }
+        },
+        dateChange(src, dst) {
+            this.startTime = src
+            this.endTime = dst
+            this.loadContent()
+        },
+        locationChange(province, city, area) {
+            this.province = province
+            this.city = city
+            this.area = area
+            this.loadContent()
+        },
+        typeChange(tags) {
+            if (tags == "") {
+                tags = "-1"
+            }
+            this.tags = tags
+            console.log("calendar", this.tags)
+            this.loadContent()
+        },
+        venueChange(venue) {
+            if (venue == "---------------不限---------------") {
+                venue = "null"
+            }
+            this.venue = venue
+            this.loadContent()
+        },
+        loadContent() {
+            //TODO:根据条件加载展览
+        }
     },
     watch: {
         'route'(to, from) {
@@ -97,3 +206,56 @@ export default {
     },
 }
 </script>
+
+
+<style scoped>
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.CardItem {
+    position: fixed;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 30px;
+    left: 0;
+}
+
+.Selector {
+    position: fixed;
+    display: inline-block;
+    width: 30%;
+    margin-top: 2%;
+    right: 0;
+}
+
+.demonstration {
+    font-weight: bold;
+    size: 20px;
+}
+
+.selectBlock .demonstration {
+    font-weight: 400;
+    display: block;
+    color: var(--el-text-color-secondary);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+
+.selectBlock {
+    margin-top: 5%;
+}
+
+.selectItem {
+    margin-left: 125px;
+}
+
+.el-radio-group {
+    margin-bottom: 10px;
+}
+</style>

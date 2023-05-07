@@ -2,42 +2,40 @@
  * @Author: yingxin wang
  * @Date: 2023-04-25 17:20:15
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-07 15:30:47
+ * @LastEditTime: 2023-05-07 20:40:18
  * @Description: 卡片布局修改为动态效果
 -->
 <template>
     <div class="container">
-        <div v-for="item in this.result">
-            <div class="card" style="margin-bottom: 35px;" @click.native="jumpToExInfo(item.id)">
-                <div class="content">
-                    <div class="back">
-                        <div class="back-content">
-                            <img :src="'http://127.0.0.1:8080/' + item.poster_url" style="width: 100%">
+        <div v-for="item in this.result" class="card" style="margin-bottom: 35px;" @click.native="jumpToExInfo(item.id)">
+            <div class="content">
+                <div class="back">
+                    <div class="back-content">
+                        <img :src="'http://127.0.0.1:8080/' + item.poster_url" style="width: 100%">
+                    </div>
+                </div>
+                <div class="front">
+
+                    <div class="img">
+                        <div class="circle">
+                        </div>
+                        <div class="circle" id="right">
+                        </div>
+                        <div class="circle" id="bottom">
                         </div>
                     </div>
-                    <div class="front">
 
-                        <div class="img">
-                            <div class="circle">
-                            </div>
-                            <div class="circle" id="right">
-                            </div>
-                            <div class="circle" id="bottom">
-                            </div>
-                        </div>
-
-                        <div class="front-content">
-                            <small class="title">{{ item.name }}</small>
-                            <div class="description-box">
-                                <div class="description">
-                                    <p class="description">
-                                        <strong>{{ item.introduction }}</strong>
-                                    </p>
-                                </div>
-                                <p class="card-footer">
-                                    {{ item.begin_date }} - {{ item.end_date }}
+                    <div class="front-content">
+                        <small class="title">{{ item.name }}</small>
+                        <div class="description-box">
+                            <div class="description">
+                                <p class="description">
+                                    <strong>{{ item.introduction }}</strong>
                                 </p>
                             </div>
+                            <p class="card-footer">
+                                {{ item.begin_date }} - {{ item.end_date }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -62,13 +60,10 @@ export default {
 
 <style>
 .container {
-    gap: 40px;
-    padding: 30px;
-    column-count: 4;
-    display: flow-root;
-    flex-direction: row;
-    text-align: left;
-    margin-left: 50px;
+    display: grid;
+    grid-template-columns: repeat(4, 225px);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
 }
 
 .container>div {
@@ -76,12 +71,16 @@ export default {
     line-height: 1.2;
 }
 
-.card {
+.container .card {
+    width: 220px;
+    height: 300px;
     overflow: visible;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
 
-    /**要改大小在这里改 */
-    width: 250px;
-    height: 340px;
+.container .card:nth-of-type(4n) {
+    margin-right: 0;
 }
 
 .content {
@@ -171,8 +170,9 @@ export default {
 .front-content .title {
     margin-right: 5px;
     width: fit-content;
-    font-size: x-large;
+    font-size: 20px;
     color: dimgrey;
+    text-align: left;
 }
 
 .description-box {
@@ -182,10 +182,12 @@ export default {
     background-color: #00000099;
     backdrop-filter: blur(5px);
     border-radius: 5px;
+    justify-content: left;
+    text-align: left;
 }
 
 .description {
-    font-size: 13px;
+    font-size: 12px;
     max-width: 100%;
     display: flex;
     justify-content: space-between;
