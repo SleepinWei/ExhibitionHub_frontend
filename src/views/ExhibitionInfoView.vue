@@ -38,7 +38,7 @@
             </el-row>
             <el-row class="sub_info">
                 标签: 
-                <el-tag v-for="tag in form.tags"> {{tag}} </el-tag>
+                <el-tag v-for="tag in form.tags"> {{tag.name}} </el-tag>
             </el-row>
             <el-row class="subscribe_button">
                 <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
@@ -91,7 +91,16 @@ export default {
                 organizer: "og1",
                 tickets: "2000RMB",
                 link: "https://bilibili.com",
-                tags: ["tag1", "tag2"],
+                tags: [  
+                    {
+                        id:1,
+                        name: "tag1"
+                    },
+                    {
+                        id:2,
+                        name: "tag2"
+                    }
+                ],
                 introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
             ssssssssssssssssssssssssssssss",
                 begin_time: "",
@@ -114,7 +123,16 @@ export default {
                 .then((response) => {
                     this.form = response.data;
                     this.form.poster_url = 'http://127.0.0.1:8080/' + response.data.poster_url;
-                    console.log(this.form)
+                    console.log(this.form.exId);
+
+                    axios.get("/searchTagById", {
+                        params: {
+                            ex_id: this.$route.params.exId
+                        }
+                    }).then((response) => {
+                        console.log(response.data);
+                        this.form.tags = response.data
+                    })
                 }).catch((error) => {
                     if (error.response.status == 400) {
                         // exhibition is not found
