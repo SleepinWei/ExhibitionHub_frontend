@@ -216,7 +216,7 @@ export default {
                         message: '成功取消订阅',
                         type: 'success'
                     });
-                    this.isSubscribed = true;
+                    this.isSubscribed = false;
                 }
                 else {
                     this.$message({
