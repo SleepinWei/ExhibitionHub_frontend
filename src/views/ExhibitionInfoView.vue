@@ -3,66 +3,60 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
 </script>
 
 <template>
-    <el-row>
-        <el-col :span="18">
-            <el-row class="basic_info">
-                <el-col :span="9" class="poster">
-                    <el-row justify="center" class="poster-image">
-                        <el-image style="width: 250px;height: 300px;" :src="form.poster_url" fit="contain">
-                        </el-image>
-                    </el-row>
+<el-row>
+    <el-col :span="18">
+    <el-row class="basic_info">
+        <el-col :span="9" class="poster">
+            <el-row justify="center" class="poster-image">
+                <el-image style="width: 250px;height: 300px;" :src="form.poster_url" fit="contain">
+                </el-image>
+            </el-row>
+        </el-col>
+        <el-col :span="13" :offset="0" class="simple_info">
+            <el-row class="sub_info" align="middle">
+                <el-col :span="18">
+                    <h2>
+                        {{this.form.name}}
+                    </h2>
                 </el-col>
-                <el-col :span="13" :offset="0" class="simple_info">
-                    <el-row class="sub_info" align="middle">
-                        <el-col :span="18">
-                            <h2>
-                                {{ form.name }}
-                            </h2>
-                        </el-col>
-                        <el-col :span="6" v-if="isAdmin" class="change_info_button">
-                            <el-button type="primary" @click="onChangeInfo">
-                                修改信息
-                            </el-button>
-                        </el-col>
-                    </el-row>
-                    <el-row class="sub_info">
-                        时间：{{ form.begin_date }} - {{ form.end_date }}
-                    </el-row>
-                    <el-row class="sub_info">
-                        主办方：{{ form.organizer }}
-                    </el-row>
-                    <el-row class="sub_info">
-                        票价: {{ form.tickets }}
-                    </el-row>
-                    <el-row class="sub_info">
-                        官方链接:
-                        <a :href="form.link">
-                            {{ form.link }}
-                        </a>
-                    </el-row>
-                    <el-row class="sub_info">
-                        标签:
-                        <el-tag v-for="tag in form.tags"> {{ tag }} </el-tag>
-                    </el-row>
-                    <el-row class="subscribe_button">
-                        <div v-if="isLogin && !isSubscribed">
-                            <el-date-picker v-model="subscribeDate" type="date" placeholder="选择日期"
-                                style="margin-right: 20px;" format="YYYY/MM/DD" value-format="YYYY-MM-DD"></el-date-picker>
-                            <el-button @click="onSubscribe" type="success">订阅</el-button>
-                        </div>
-                        <div v-if="isLogin && isSubscribed">
-                            <el-tag size="large" style="margin-right: 20px;">已订阅</el-tag>
-                            <el-button @click="cancelSub" type="success">取消订阅</el-button>
-                        </div>
-                    </el-row>
-                    <el-row class="subscribe_button">
-                        <el-button v-if="isLogin" @click="onShareExhibition" type="success">分享展览</el-button>
-                        <div v-if="showPopup" class="popup">
-                            <ImageDownloadItem :poster_url="form.poster_url" @close="onShareExhibition" />
-                        </div>
-                    </el-row>
+                <el-col :span="6" v-if="isAdmin" class="change_info_button">
+                    <el-button type="primary" @click="onChangeInfo">
+                        修改信息
+                    </el-button>
                 </el-col>
             </el-row>
+            <el-row class="sub_info">
+                时间：{{form.begin_date}} - {{ form.end_date}} {{ form.begin_time }} - {{ form.end_time }}
+            </el-row>
+            <el-row class="sub_info">
+                主办方：{{form.organizer }}
+            </el-row>
+            <el-row class="sub_info">
+                票价: {{form.ticket_info}}
+            </el-row>
+            <el-row class="sub_info">
+                官方链接: 
+                <a :href="form.link">
+                    {{form.link}}
+                </a>
+            </el-row>
+            <el-row class="sub_info">
+                标签: 
+                <el-tag v-for="tag in form.tags"> {{tag}} </el-tag>
+            </el-row>
+            <el-row class="subscribe_button">
+                <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
+                <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag> 
+            </el-row>
+            <el-row class="subscribe_button">
+                <el-button v-if="isLogin" @click="onShareExhibition" type="success">分享展览</el-button>
+                <div v-if="showPopup" class="popup">
+                    <ImageDownloadItem :poster_url="form.poster_url" :tolink="form.link" @close="onShareExhibition" />
+                </div>
+            </el-row>
+
+        </el-col>
+    </el-row>
 
             <el-row class="long_intro border_up" style="margin-top: 20px;">
                 <h3>详细介绍</h3>
@@ -304,4 +298,21 @@ export default {
 .border_up {
     border-top: 2px solid #00000010;
 }
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .popup button {
+    margin-top: 10px;
+  }
+
 </style>

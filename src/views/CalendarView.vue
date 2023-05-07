@@ -47,7 +47,7 @@ import MuseumSelectorItem from '../components/MuseumSelectorItem.vue';
                 </el-radio-group>
                 <div class="demonstration">展览类型</div>
                 <TypeSelectorItem
-                @change="typeChange"
+                @selectType="typeChange"
                 />
                 <div class="demonstration">展览主办方</div>
                 <MuseumSelectorItem
@@ -122,12 +122,16 @@ export default {
             this.area=area
             this.loadContent()
           },
-          typeChange(tags){
-            if(tags==""){
-                tags="-1"
+          typeChange(data){
+            if(data.length==0){
+                this.tags="-1";
+            }else{
+                this.tags=""
+                for(var i=0;i<data.length;++i){
+                    this.tags+=data[i]+' '
+                }
             }
-            this.tags=tags
-            console.log("calendar",this.tags)
+            console.log("calendarrrrrrrr",this.tags)
             this.loadContent()
           },
           venueChange(venue){
@@ -145,7 +149,10 @@ export default {
                   console.log(this.userid+'/'+this.startTime+'/'+this.endTime+'/'+this.venue+'/'+this.tags+'/'+this.province+'/'+this.city+'/'+this.area)
                   console.log(this.ExhibitonArr)
                   
-              })
+              }).catch((error) => {
+                //为什么报错但是能够运行请问
+                    console.log(error)
+                });
             }
       },
       beforeMount() {
