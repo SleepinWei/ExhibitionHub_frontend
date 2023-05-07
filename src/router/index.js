@@ -2,7 +2,7 @@
  * @Author: yingxin wang
  * @Date: 2023-04-18 21:36:30
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-04-25 16:14:12
+ * @LastEditTime: 2023-05-07 15:18:05
  * @Description: 请填写简介
  */
 import { createRouter, createWebHistory } from 'vue-router'
@@ -90,7 +90,17 @@ const router = createRouter({
     {
       path: "/search",
       component: () => import("@/views/SearchView.vue")
-    }
+    },
+    {
+      path: "/calendar",
+      name: 'calendar',
+      component: () => import("@/views/CalendarView.vue")
+    },
+    {
+      path: "/test",
+      name: 'test',
+      component: () => import("@/views/test.vue")
+    },
   ]
 })
 

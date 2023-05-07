@@ -38,9 +38,7 @@ export default {
         return {
             inputText: "",
             // searchResult: 
-            searchResult: [
-                // TODO: searchResult should be an array [] 
-            ]
+            searchResult: []
         }
     },
     methods: {

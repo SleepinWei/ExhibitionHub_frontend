@@ -6,7 +6,7 @@
  * @Description: 请填写简介
 -->
 <script setup>
-import HeaderItem from '../../components/HeaderMenu.vue'
+import HeaderItem from '../../components/Header.vue'
 </script>
 <template>
     <HeaderItem />

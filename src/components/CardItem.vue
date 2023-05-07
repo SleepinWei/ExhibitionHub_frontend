@@ -2,7 +2,7 @@
  * @Author: yingxin wang
  * @Date: 2023-04-25 17:20:15
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-04 21:38:31
+ * @LastEditTime: 2023-05-07 15:30:47
  * @Description: 卡片布局修改为动态效果
 -->
 <template>
@@ -64,7 +64,8 @@ export default {
 .container {
     gap: 40px;
     padding: 30px;
-    column-count: 3;
+    column-count: 4;
+    display: flow-root;
     flex-direction: row;
     text-align: left;
     margin-left: 50px;
@@ -79,8 +80,8 @@ export default {
     overflow: visible;
 
     /**要改大小在这里改 */
-    width: 280px;
-    height: 380px;
+    width: 250px;
+    height: 340px;
 }
 
 .content {

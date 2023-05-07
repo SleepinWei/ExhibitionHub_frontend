@@ -1,3 +1,7 @@
+<script setup>
+import ImageDownloadItem from '../components/ImageDownloadItem.vue'
+</script>
+
 <template>
     <el-row>
         <el-col :span="18">
@@ -12,7 +16,7 @@
                     <el-row class="sub_info" align="middle">
                         <el-col :span="18">
                             <h2>
-                                {{ this.form.name }}
+                                {{ form.name }}
                             </h2>
                         </el-col>
                         <el-col :span="6" v-if="isAdmin" class="change_info_button">
@@ -22,13 +26,13 @@
                         </el-col>
                     </el-row>
                     <el-row class="sub_info">
-                        时间：{{ form.begin_date }} - {{ form.end_date }} {{ form.begin_time }} - {{ form.end_time }}
+                        时间：{{ form.begin_date }} - {{ form.end_date }}
                     </el-row>
                     <el-row class="sub_info">
                         主办方：{{ form.organizer }}
                     </el-row>
                     <el-row class="sub_info">
-                        票价: {{ form.ticket_info }}
+                        票价: {{ form.tickets }}
                     </el-row>
                     <el-row class="sub_info">
                         官方链接:
@@ -49,6 +53,12 @@
                         <div v-if="isLogin && isSubscribed">
                             <el-tag size="large" style="margin-right: 20px;">已订阅</el-tag>
                             <el-button @click="cancelSub" type="success">取消订阅</el-button>
+                        </div>
+                    </el-row>
+                    <el-row class="subscribe_button">
+                        <el-button v-if="isLogin" @click="onShareExhibition" type="success">分享展览</el-button>
+                        <div v-if="showPopup" class="popup">
+                            <ImageDownloadItem :poster_url="form.poster_url" @close="onShareExhibition" />
                         </div>
                     </el-row>
                 </el-col>
@@ -85,7 +95,11 @@
 
 <script>
 import axios from 'axios'
+
 export default {
+    components: {
+        ImageDownloadItem
+    },
     data() {
         return {
             form: {
@@ -108,6 +122,8 @@ export default {
             isLogin: true,
             isSubscribed: false,
             subscribeDate: '',
+            showPopup: false,
+            imageUrl: '',
         }
     },
     methods: {
@@ -141,14 +157,14 @@ export default {
             }
         },
         getisSub() {
-            axios.get(`/subscribe/isSub`, {
+            axios.post(`/subscribe/isSub`, {
                 user_id: this.$cookies.get("cookieAccount"),
                 ex_id: this.$route.params.exId
             }).then((response) => {
-                if (response.data == 1) {
+                if (response.data === 1) {
                     this.isSubscribed = true;
                 }
-                else if (response.data == 0) {
+                else if (response.data === 0) {
                     this.isSubscribed = false;
                 }
                 else {
@@ -230,6 +246,11 @@ export default {
                     type: 'error'
                 });
             });
+        },
+        onShareExhibition() {
+            console.log("share")
+            this.showPopup = !this.showPopup
+
         }
     },
     mounted() {
