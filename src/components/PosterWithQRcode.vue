@@ -38,7 +38,6 @@
       };
     },
     mounted() {
-      // 创建 Canvas 上下文对象
       const canvas = this.$refs.canvas;
       const ctx = canvas.getContext('2d');
 
@@ -47,7 +46,9 @@
   
       // 加载背景图片
       const backgroundImage = new Image();
+      backgroundImage.setAttribute("crossOrigin", "anonymous");
       backgroundImage.onload = () => {
+        console.log("onload background")
         ctx.drawImage(backgroundImage, 0, 0, this.ImageWidth, this.ImageHeight);
   
         // 添加文字
@@ -57,20 +58,23 @@
 
         // 生成二维码
         QRCode.toDataURL(this.qrCodeContent, { width: this.qrCodeSize }, (err, url) => {
+          console.log("onload qrcode")
           if (err) throw err;
   
           // 添加二维码
           const qrCodeImageObj = new Image();
+          qrCodeImageObj.setAttribute("crossOrigin", "anonymous");
           qrCodeImageObj.onload = () => {
             ctx.drawImage(qrCodeImageObj, this.qrCodeX, this.qrCodeY, this.qrCodeSize, this.qrCodeSize);
           };
           qrCodeImageObj.src = url;
         });
       };
-      backgroundImage.src = this.backgroundImage;     
-      this.posterImageUrl = canvas.toDataURL('image/png');
+      backgroundImage.src = this.backgroundImage;
+      this.posterImageUrl = canvas.toDataURL('image/png');//得到图片的base64编码数据
       this.$emit('getPosterUrl', this.posterImageUrl);
     },
+
   };
   </script>
   
