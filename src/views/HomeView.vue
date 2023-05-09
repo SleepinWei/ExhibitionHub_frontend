@@ -1,6 +1,8 @@
 <script setup>
+import ExhibitionMap from '../components/ExhibitionMap.vue';
 </script>
 
 <template>
-  <h1>Exhibition Hub</h1>
+  <ExhibitionMap/>
+  
 </template>
