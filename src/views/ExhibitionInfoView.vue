@@ -90,13 +90,35 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                     </li>
                 </ul>
             </el-row>
+            <el-row class="sub_info">
+                时间：{{form.begin_date}} - {{ form.end_date}} {{ form.begin_time }} - {{ form.end_time }}
+            </el-row>
+            <el-row class="sub_info">
+                主办方：{{form.organizer }}
+            </el-row>
+            <el-row class="sub_info">
+                票价: {{form.ticket_info}}
+            </el-row>
+            <el-row class="sub_info">
+                官方链接: 
+                <a :href="form.link">
+                    {{form.link}}
+                </a>
+            </el-row>
+            <el-row class="sub_info">
+                标签: 
+                <el-tag v-for="tag in form.tags"> {{tag.name}} </el-tag>
+            </el-row>
+            <el-row class="subscribe_button">
+                <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
+                <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag> 
+            </el-row>
         </el-col>
     </el-row>
 </template>
 
 <script>
-import axios from 'axios'
-
+import axios from '@/http.ts'
 export default {
     components: {
         ImageDownloadItem
@@ -112,7 +134,16 @@ export default {
                 organizer: "og1",
                 tickets: "2000RMB",
                 link: "https://bilibili.com",
-                tags: ["tag1", "tag2"],
+                tags: [  
+                    {
+                        id:1,
+                        name: "tag1"
+                    },
+                    {
+                        id:2,
+                        name: "tag2"
+                    }
+                ],
                 introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
             ssssssssssssssssssssssssssssss",
                 begin_time: "",
@@ -131,14 +162,23 @@ export default {
         async getRequest() {
             axios.get(`/searchById`,
                 {
-                    params: {
+                    params : {
                         exId: this.$route.params.exId
                     }
                 })
                 .then((response) => {
                     this.form = response.data;
                     this.form.poster_url = 'http://127.0.0.1:8080/' + response.data.poster_url;
-                    console.log(this.form)
+                    console.log(this.form.exId);
+
+                    axios.get("/searchTagById", {
+                        params: {
+                            ex_id: this.$route.params.exId
+                        }
+                    }).then((response) => {
+                        console.log(response.data);
+                        this.form.tags = response.data
+                    })
                 }).catch((error) => {
                     if (error.response.status == 400) {
                         // exhibition is not found

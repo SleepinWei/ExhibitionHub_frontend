@@ -32,18 +32,17 @@ const router = createRouter({
       //TODO:动态
       path: '/addEx',
       name: 'AddExView',
-      component: AddExView
+      component: AddExView,
+      meta:{isShowHeader:true}
     },
     {
       path: "/alterinfo/:exId",
-      component: AlterInfoView
+      component: AlterInfoView,
+      meta:{isShowHeader:true}
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
     },
     {
@@ -62,12 +61,6 @@ const router = createRouter({
           path: '/info',
           name: 'info',
           component: () => import('../views/Person/Info.vue')
-        },
-        {
-          path: '/subscribeInfo',
-          name: 'subscribeInfo',
-          //重设密码页面
-          component: () => import('../views/Person/SubscribeInfo.vue')
         },
       ]
     },
@@ -101,6 +94,10 @@ const router = createRouter({
       name: 'test',
       component: () => import("@/views/test.vue")
     },
+    {
+      path: "/audit",
+      component: ()=> import("@/views/AuditView.vue") 
+    }
   ]
 })
 
