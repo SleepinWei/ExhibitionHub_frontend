@@ -2,17 +2,17 @@
  * @Author: yingxin wang
  * @Date: 2023-04-25 16:07:36
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-06 14:38:41
+ * @LastEditTime: 2023-05-09 20:05:00
  * @Description: 个人页面中查看个人订阅内容
 -->
 <template>
     <div>
-        <CardItem :result="this.searchResult" style="margin-left: 40px;margin-top: 20px;" />
+        <CardItem :result="this.searchResult" style="margin-left: 20px;margin-top: 35px;" />
     </div>
 </template>
 
 <script>
-import CardItem from '../../components/CardItem.vue'
+import CardItem from '../components/CardItem.vue'
 import axios from 'axios';
 export default {
     components: { CardItem },

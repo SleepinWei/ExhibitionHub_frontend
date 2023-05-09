@@ -2,12 +2,12 @@
  * @Author: yingxin wang
  * @Date: 2023-04-25 17:20:15
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-07 20:40:18
+ * @LastEditTime: 2023-05-09 20:03:54
  * @Description: 卡片布局修改为动态效果
 -->
 <template>
-    <div class="container">
-        <div v-for="item in this.result" class="card" style="margin-bottom: 35px;" @click.native="jumpToExInfo(item.id)">
+    <div class="top">
+        <div v-for="item in this.result" class="it" style="margin-bottom: 35px;" @click.native="jumpToExInfo(item.id)">
             <div class="content">
                 <div class="back">
                     <div class="back-content">
@@ -33,7 +33,7 @@
                                     <strong>{{ item.introduction }}</strong>
                                 </p>
                             </div>
-                            <p class="card-footer">
+                            <p class="it-footer">
                                 {{ item.begin_date }} - {{ item.end_date }}
                             </p>
                         </div>
@@ -59,27 +59,27 @@ export default {
 </script>
 
 <style>
-.container {
+.top {
     display: grid;
     grid-template-columns: repeat(4, 225px);
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
 }
 
-.container>div {
+.top>div {
     flex: 1 0 0;
     line-height: 1.2;
 }
 
-.container .card {
-    width: 220px;
-    height: 300px;
+.top .it {
+    width: 210px;
+    height: 280px;
     overflow: visible;
     margin-bottom: 10px;
     margin-right: 10px;
 }
 
-.container .card:nth-of-type(4n) {
+.top .it:nth-of-type(4n) {
     margin-right: 0;
 }
 
@@ -137,7 +137,7 @@ export default {
     gap: 30px;
 }
 
-.card:hover .content {
+.it:hover .content {
     transform: rotateY(180deg);
 }
 
@@ -170,7 +170,7 @@ export default {
 .front-content .title {
     margin-right: 5px;
     width: fit-content;
-    font-size: 20px;
+    font-size: 18px;
     color: dimgrey;
     text-align: left;
 }
@@ -178,7 +178,7 @@ export default {
 .description-box {
     box-shadow: 0px 0px 10px 5px #00000088;
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     background-color: #00000099;
     backdrop-filter: blur(5px);
     border-radius: 5px;
@@ -194,13 +194,13 @@ export default {
 }
 
 .description p {
-    width: 80%;
+    width: 85%;
 }
 
-.card-footer {
+.it-footer {
     color: #ffffff88;
     margin-top: 5px;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .front .img {
