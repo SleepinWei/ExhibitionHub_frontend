@@ -106,17 +106,10 @@
         login() {
             this.$axios.post('/login', qs.stringify(this.user)) // 加了个stringify就不404辣？!
                 .then((res) => {
-                    if (res.data.code == 300) {// 300：是普通用户，跳转普通用户界面
+                    console.log("lx+"+res.data.code)
+                    if (res.data.code != -100) {// -100：错误
                         this.$router.push("/personal");//用户主页
                         this.$message({
-                            message: '登陆成功！',
-                            type: 'success'
-                        })
-                    }
-                    else if (res.data.code == 400) {// 400：是管理员，跳转管理员界面
-                        this.$router.push("/personal");//管理员主页
-                        this.$message({
-                            // ElMessage({
                             message: '登陆成功！',
                             type: 'success'
                         })
@@ -126,7 +119,7 @@
                         console.log(res.data.msg);
                         this.$message({
                             message: '账号不存在或密码错误，登陆失败！',
-                            type: 'success'
+                            type: 'error'
                         })
                     }
                 })
