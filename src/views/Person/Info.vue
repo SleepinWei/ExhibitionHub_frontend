@@ -11,7 +11,6 @@
       <el-form-item label="用户类型" >
         <el-radio-group v-model="user.role" :disabled="true">
           <el-radio label="普通用户" />
-          <el-radio label="博物馆" />
           <el-radio label="管理员" />
         </el-radio-group>
       </el-form-item>
@@ -25,85 +24,56 @@
         <el-input v-model="user.email" placeholder="" :disabled="true"></el-input>
       </el-form-item>
       <!-- 修改信息按钮和修改密码按钮 -->
-      <div class="frame-el-button">
-        <el-button type="primary" round @click="changeBasicInfo">保存基本信息</el-button>
-        <el-button type="primary" round @click="dialogInputPw=true">修改邮箱</el-button>
-        <el-button type="primary" round @click="dialogChangePw=true">修改密码</el-button>
-      </div>
-    </el-form>    
+      <el-form-item>
+        <el-button type="primary" @click="changeBasicInfo">保存基本信息</el-button>
+        <el-button type="warning" @click="inputPassword">修改邮箱</el-button>
+        <el-button type="warning" @click="dialogChangePw=true">修改密码</el-button>
+      </el-form-item>
+    </el-form>
+    
   </div>
 
   <!-- 修改密码对话框 -->
   <el-dialog v-model="dialogChangePw"  title="" :visible.sync="dialogChangePw" :show-close="false">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      <el-form-item label="旧密码" prop="oldPassword">
-        <el-input v-model="form.oldPassword" placeholder="请输入旧密码" type="password" />
-      </el-form-item>
-      <el-form-item label="新密码" prop="newPassword">
-        <el-input v-model="form.newPassword" placeholder="请输入新密码" type="password" />
-      </el-form-item>
-      <el-form-item label="确认密码" prop="confirmPassword">
-        <el-input v-model="form.confirmPassword" placeholder="请确认密码" type="password" />
-      </el-form-item>
-      <div class="frame-el-button">
-        <el-button type="primary" size="mini" @click="changePassword">保存</el-button>
-        <el-button size="mini" @click="cancelPassword">关闭</el-button>
-      </div>
-    </el-form>
-    
-  </el-dialog>
-
-  <!-- 输入密码对话框 -->
-  <el-dialog v-model="dialogInputPw"  title="" :visible.sync="dialogInputPw" :show-close="false">
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      <el-form-item label="密码" prop="oldPassword">
-        <el-input v-model="form.oldPassword" placeholder="请输入当前密码" type="password" />
-      </el-form-item>
-      <div class="frame-el-button">
-        <el-button type="primary" size="mini" @click="Next()">下一步</el-button>
-        <el-button size="mini" @click="cancelEmail">取消</el-button>
-      </div>
+    <el-form-item label="旧密码" prop="oldPassword">
+      <el-input v-model="form.oldPassword" placeholder="请输入旧密码" type="password" />
+    </el-form-item>
+    <el-form-item label="新密码" prop="newPassword">
+      <el-input v-model="form.newPassword" placeholder="请输入新密码" type="password" />
+    </el-form-item>
+    <el-form-item label="确认密码" prop="confirmPassword">
+      <el-input v-model="form.confirmPassword" placeholder="请确认密码" type="password" />
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" size="mini" @click="changePassword">保存</el-button>
+      <el-button type="danger" size="mini" @click="cancelPassword">关闭</el-button>
+    </el-form-item>
     </el-form>
   </el-dialog>
 
   <!-- 修改邮箱对话框 -->
   <el-dialog v-model="dialogChangEmail"  title="" :visible.sync="dialogChangEmail" :show-close="false">
-    <el-form ref="form" :model="form" :rules="rules">
-      <el-row>
-        <el-space wrap :size="20">
-          <el-col>
-            <el-form-item  label="新邮箱" prop="newEmail" :label-width="formLabelWidth">
-              <el-input v-model="form.newEmail" placeholder="请输入新邮箱"></el-input>
-            </el-form-item>
-          </el-col>
-
-          <el-form-item>
-            <el-button type="primary" size="middle" @click="getVercode">获取验证码</el-button>
-          </el-form-item>
-        </el-space>
-      </el-row>
-      
-      <el-form-item label="验证码" prop="vercode" :label-width="formLabelWidth">
-        <el-input v-model="form.vercode" placeholder="请输入验证码" ></el-input>
+    <el-form ref="form" :model="form" :rules="rules"  :inline="true" class="demo-form-inline">
+      <el-form-item label="新邮箱" prop="newEmail">
+        <el-input v-model="form.newEmail" placeholder="请输入新邮箱"></el-input>
       </el-form-item>
-
-      <div class="frame-el-button">
-        <el-button type="primary" size="mini" @click="changeEmail">保存</el-button>
-        <el-button size="mini" @click="cancelEmail">关闭</el-button> 
-      </div>
-      
+      <el-form-item>
+        <el-button type="primary" @click="getVercode">获取验证码</el-button>
+      </el-form-item>
+      <el-form-item label="验证码" prop="vercode">
+        <el-input v-model="form.vercode" placeholder="请输入验证码"></el-input>
+      </el-form-item>
     </el-form>
-
+    <el-button type="primary" size="mini" @click="changeEmail">保存</el-button>
+      <el-button type="danger" size="mini" @click="cancelEmail">关闭</el-button>
   </el-dialog>
 
 </template>
 
 <script>
-  import "element-plus/theme-chalk/el-message.css"
-  import { ElMessage, ElMessageBox } from 'element-plus'
-  import {ElNotification } from 'element-plus'
-  import { ref } from 'vue'
-
+  import "element-plus/theme-chalk/index.css"
+  import { ElMessageBox } from "element-plus";
   export default {
     data() {
       //确认旧密码
@@ -144,11 +114,11 @@
         // 表单校验
         rules: {
           oldPassword: [
-          { required: true, message: "密码不能为空", trigger: "blur" },
+          { required: true, message: "旧密码不能为空", trigger: "blur" },
           { required: true, validator: correctPassword, trigger: "blur" }
           ],
           newPassword: [
-          { required: true, message: "密码不能为空", trigger: "blur" },
+          { required: true, message: "新密码不能为空", trigger: "blur" },
           { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
           ],
           confirmPassword: [
@@ -169,15 +139,14 @@
         confirmVercode:'',//邮箱收到的验证码
         dialogChangePw: false,//修改密码对话框
         dialogChangEmail:false,//修改邮箱对话框
-        dialogInputPw:false,//修改邮箱前输入密码对话框
         formLabelWidth: '150px',
         
-        // uid:'1'//????当前登录用户Id
-        uid:this.$cookies.get("cookieAccount")
+      
+        uid: this.$cookies.get("cookieAccount")
       } 
     },
     created:function(){//根据Id查询用户信息
-      this.$axios.get("user/find/"+this.uid)
+      this.$axios.get("/user/find/"+this.uid)
       .then((response)=>{
         console.log(response),
         this.user=response.data//user赋值
@@ -188,37 +157,42 @@
     },
     mounted:function(){
       console.log("组件挂载完毕");
+      console.log(this.$cookies.get("cookieName"));
+      // console.log(document.cookie);
     },
     methods: {
       //修改基本信息，用户名、性别、出生日期
       changeBasicInfo() {
         //axios.put更新信息
-        console.log("user"+this.user.username)
+        console.log("/user"+this.user.username)
         this.$axios.put("user",this.user)
         .then((response)=>{
-          console.log("what+"+response.data),
+          console.log(response.data),
           this.message=response.data
           //弹框提示信息
           if(this.message){
-            this.$message({
-              message: '保存成功！',
-              type: 'success'
-            })
+            ElMessageBox.alert('保存成功', '保存个人信息', {
+              confirmButtonText: '确定',
+              callback:(action)=>{
+                location.reload();
+              }
+            });
           }
           else{
-            this.$message({
-              message: '没有修改，无需保存！',
-              type: 'warning'
-            })
+            ElMessageBox.alert('没有修改，无需保存', '保存个人信息', {
+              confirmButtonText: '确定',
+              callback:action=>{
+                location.reload();
+              }
+            });
           }
         })
        .catch(response=>{
           console.log("请求失败")
           this.message=response.data//请求失败
-          this.$message({
-            message: '请求失败',
-            type: 'error'
-          })
+          ElMessageBox.alert('请求失败', '保存个人信息', {
+              confirmButtonText: '确定',
+            });
         })
         
         
@@ -229,26 +203,21 @@
           if (valid) {//表单验证成功
             //调用接口保存
             this.user.password=this.form.newPassword
-            this.$axios.put("user/change",this.user)
+            this.$axios.put("/user/change",this.user)
             .then((response)=>{
               this.user=response.data
-              this.$message({
-                message: '修改密码成功！',
-                type: 'success'
-              })
+              this.$alert('修改成功', '修改密码', {
+              confirmButtonText: '确定',
+              });
             })
             .catch(response=>{
-              this.$message({
-                message: '请求失败！',
-                type: 'error'
-              })
+              this.$alert('请求失败', '修改密码', {
+                confirmButtonText: '确定',
+              });
             })
-            this.$refs["form"].clearValidate()//清空校验规则
-            this.form.oldPassword=''
-            this.form.newPassword=''
-            this.form.confirmPassword=''
-            this.form.newEmail=''
-            this.form.vercode=''
+          this.form.oldPassword=''//清空
+          this.form.newPassword=''
+          this.form.confirmPassword=''
           this.dialogChangePw = false//关闭对话框
           } 
           else {
@@ -259,36 +228,36 @@
       },
       //取消修改密码
       cancelPassword() {
-        this.$refs["form"].clearValidate()//清空校验规则
-        this.form.oldPassword=''
+        this.form.oldPassword=''//清空
         this.form.newPassword=''
         this.form.confirmPassword=''
-        this.form.newEmail=''
-        this.form.vercode=''
         this.dialogChangePw = false//关闭对话框
       },
-      Next(){
-        this.$refs.form.validate((valid) => {
-          if (valid) {//表单验证成功
-            this.dialogInputPw=false;
-            this.dialogChangEmail=true;
-            this.$refs["form"].clearValidate()//清空校验规则
-            this.form.oldPassword=''
-            this.form.newPassword=''
-            this.form.confirmPassword=''
-            this.form.newEmail=''
-            this.form.vercode=''
-          } 
-          else {
-            this.$message.error('请重新输入密码！');
-            return false;
-          }
-        });        
+      //修改邮箱前先输入密码
+      inputPassword(){
+        this.$prompt('请输入密码', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputErrorMessage: '密码错误',
+          inputType:'password',
+          inputValidator:(value)=>{
+            if(value==this.user.password)
+              return true;
+            else
+              return false;
+          },})
+          .then(({ value }) => {
+            this.dialogChangEmail=true//显示修改邮箱对话框
+            console.log("正确")
+          })
+          .catch(() => {
+            console.log("错误")    
+          })
       },
       //获取验证码
       getVercode(){
         console.log("获取验证码")
-        this.$axios.get("/user/sendVerCodeMail/"+this.form.newEmail)
+        this.$axios.get("http://localhost:8080/user/sendVerCodeMail/"+this.form.newEmail)
         .then((response)=>{
           if(response.data!="404"){
             console.log("获取验证码成功")
@@ -304,12 +273,8 @@
           }
         })
         .catch(response=>{
-          this.$notify({
-              title:'错误',
-              message:'验证码获取失败',
-              type:'warning',
-              offset:100
-            })
+          console.log("www="+this.form.newEmail)
+          console.log("获取验证码失败")
       })
       },
       //修改邮箱
@@ -324,31 +289,25 @@
               .then((response)=>{
                 this.user=response.data
                 this.oldinfo=response.data
-                this.$message({
-                  message: '修改邮箱成功！',
-                  type: 'success'
-                })
+                this.$alert('修改成功', '修改邮箱', {
+                  confirmButtonText: '确定',
+                });
               })
               .catch(response=>{
-                this.$message({
-                  message: '修改邮箱请求失败！',
-                  type: 'error'
-                })
+                this.$alert('请求失败', '修改邮箱', {
+                confirmButtonText: '确定',
+                });
               })
               //关闭对话框
-              this.$refs["form"].clearValidate()//清空校验规则
-              this.form.oldPassword=''
-              this.form.newPassword=''
-              this.form.confirmPassword=''
               this.form.newEmail=''
               this.form.vercode=''
+              this.confirmVercode=''
               this.dialogChangEmail = false//关闭对话框
             }
             else{
-              this.$message({
-                  message: '验证码错误！',
-                  type: 'error'
-                })
+              this.$alert('验证码错误', '修改邮箱', {
+                  confirmButtonText: '确定',
+              });
             }
           } 
           else {
@@ -358,16 +317,10 @@
         }); 
       },
       cancelEmail(){
-        this.$refs["form"].clearValidate()//清空校验规则
-        this.form.oldPassword=''
-        this.form.newPassword=''
-        this.form.confirmPassword=''
         this.form.newEmail=''
         this.form.vercode=''
-        this.dialogChangEmail = false//关闭对话框
-        this.dialogInputPw=false;
+        this.dialogChangEmail = false
       }
-      
     },
   }
 </script>
@@ -381,13 +334,5 @@
   display:flex;
   margin:20px 0 0 80px;    
 }
-.frame-el-button {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
 
-}
-
-
-         
 </style>

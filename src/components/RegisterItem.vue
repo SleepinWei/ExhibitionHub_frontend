@@ -1,14 +1,7 @@
-<!--
- * @Author: yang duan
- * @Date: 2023-04-17 16:20:22
- * @LastEditors: yingxin wang
- * @LastEditTime: 2023-04-18 21:20:11
- * @Description: Regiter Item
--->
 <template>
-  <div class="frame">
-    <div class="frame-input">
-      <h1>注册</h1>
+  <div class="login-bg">
+    <div class="login-box">
+      <p id="heading">注册</p>
       <el-form class="login-from" :model="ruleForm" :rules="rules" ref="ruleForm">
         <el-form-item class="frame-el-item" label="昵称" prop="username" label-width=90px>
           <el-input v-model="ruleForm.username"></el-input>
@@ -29,35 +22,34 @@
             </el-form-item>
           </el-col>
           <el-form-item>
-            <el-button type="primary" size="middle" @click="sendEmail()">发送验证码</el-button>
+            <el-button size="middle" @click="sendEmail()">发送验证码</el-button>
           </el-form-item>
         </el-row>
       </el-form>
-      <div class="frame-el-button">
-        <el-button type="primary" size="large" @click="register()">用户注册</el-button>
-      </div>
-      <el-row style="text-align: center;justify-content: center">
-        <!-- <el-link type="primary" href="" @click="gotoLogin()">已有账号登录</el-link> -->
-        <router-link type="primary" to="/login" style="text-decoration: none;">已有帐号登录</router-link>
-      </el-row>
+      <form>
+        <div class="login-button">
+          <a href="#"  @click="register()">注册<span></span></a>
+        </div>
+        <div class="options">
+          <a href="/login">已有帐号登录</a>
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
-
 <script>
-import "element-plus/theme-chalk/el-message.css"
-export default {
-  data() {
-
-    return {
-      ruleForm: {
-        username: "",
-        password: "",
-        passwordconfirm: "",
-        email: "",
-        code: "",
-      },
+  import "element-plus/theme-chalk/el-message.css"
+  export default {
+    data() {
+      return {
+        ruleForm: {
+          username: "",
+          password: "",
+          passwordconfirm: "",
+          email: "",
+          code: "",
+        },
       rules: {
         username: [
           { required: true, message: "昵称不能为空！", trigger: "blur" },
@@ -68,18 +60,18 @@ export default {
         ],
         passwordconfirm: [
           { required: true, message: "确认密码不能为空！", trigger: "blur" },
-          {
-            validator: (rule, value, callback) => {
-              if (value === "") {
-                callback(new Error("请再次输入密码"));
-              } else if (value !== this.ruleForm.password) {
-                callback(new Error("两次输入密码不一致!"));
-              } else {
-                callback();
-              }
-            },
-            trigger: 'blur'
-          }
+            {
+              validator: (rule, value, callback) => {
+                if (value === "") {
+                  callback(new Error("请再次输入密码"));
+                } else if (value !== this.ruleForm.password) {
+                  callback(new Error("两次输入密码不一致!"));
+                } else {
+                  callback();
+                }
+              },
+              trigger: 'blur'
+            }
         ],
         email: [
           { required: true, message: "邮箱不能为空！", trigger: "blur" },
@@ -93,14 +85,6 @@ export default {
     };
   },
   methods: {
-    // gotoLogin() {
-    //   // let target = this.$refs.target
-    //   // target.setAttribute('href', window.location.origin + '/home/integral-record')
-    //   // target.click()
-
-    // },
-
-
     sendEmail() {
       console.log('http://localhost:8080//api/sendRisVerCodeMail/' + this.ruleForm.email);
       this.$axios.get('/api/sendRisVerCodeMail/' + this.ruleForm.email)
@@ -124,7 +108,6 @@ export default {
           console.log(err);
         })
     },
-
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -135,8 +118,6 @@ export default {
         }
       });
     },
-
-
     // 用户注册
     register() {
       this.$refs['ruleForm'].validate((valid) => {
@@ -172,27 +153,107 @@ export default {
         }
       })
     }
-
   },
 };
 </script>
 
 <style scoped>
-.frame {
-  border: 1px solid gainsboro;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  width: 400px;
-  height: 520px;
-  padding: 20px 35px 0;
+#heading {
+  text-align: center;
+  /* margin: 1em; */
+  color: rgb(255, 255, 255);
+  font-size: 2em;
+}
+.login-bg{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url("../assets/loginbg.png");
+  background-size: cover;
+}
+.login-box {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin: -210px 0 0 -300px;
+  width: 450px;
+  padding: 40px;
+  padding-top: 0px;
+  padding-bottom: 10px;
+  transform: translate(-50%, -50%);
+  background: rgba(158, 177, 184, 0.5);
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0,0,0,.6);
+  border-radius: 10px;
+  /* background-image: url("../assets/lx.jpg"); */
+}
+.login-box form a {
+  position: relative;
+  display: inline-block;
+  padding: 6px 20px;
+  color: #ffffff;
+  font-size: 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: .5s;
+  margin-top: 40px;
+  letter-spacing: 4px
+}
+.login-button{
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+}
+.login-button a:hover {
+  background: #788EBD;
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #788EBD,
+              0 0 10px #788EBD,
+              0 0 15px #788EBD,
+              0 0 20px #788EBD;
 }
 
-.frame h1 {
-  text-align: center;
+.login-button a span {
+  position: absolute;
+  display: block;
+}
+
+@keyframes btn-anim1 {
+  0% {
+    left: -100%;
+  }
+
+  50%,100% {
+    left: 100%;
+  }
+}
+
+.login-button a span:nth-child(1) {
+  bottom: 2px;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #788EBD);
+  animation: btn-anim1 2s linear infinite;
+}
+.options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #fff;
+}
+
+.options a {
+  text-decoration: none;
+  color: #fff;
+  transition: all .3s ease;
+}
+
+.options a:hover {
+  color: #00000096;
 }
 
 .frame-input {
@@ -202,7 +263,7 @@ export default {
   right: 0;
   width: 70%;
   height: auto;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   margin: auto;
 }
 
@@ -225,11 +286,19 @@ export default {
   margin-bottom: 20px;
 
 }
+
+.el-form {
+  margin-bottom: 0;
+}
+form {
+  margin-top: 0;
+}
+
+.el-input {
+  border-color: #dcdfe6;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0);
+  color: #606266;
+}
+
 </style>
-<!-- 
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const input = ref('')
-
-</script> -->

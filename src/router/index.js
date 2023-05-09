@@ -1,3 +1,10 @@
+/*
+ * @Author: yingxin wang
+ * @Date: 2023-04-18 21:36:30
+ * @LastEditors: yingxin wang
+ * @LastEditTime: 2023-05-07 15:18:05
+ * @Description: 请填写简介
+ */
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AddExView from '@/views/AddExView.vue'
@@ -10,11 +17,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: {isShowHeader:true},
+      meta: { isShowHeader: true },
     },
     {
       path: '/exhibition/:exId',
-      meta:{isShowHeader:true},
+      meta: { isShowHeader: true },
       component: () => import('@/views/ExhibitionInfoView.vue')
     },
     {
@@ -25,18 +32,17 @@ const router = createRouter({
       //TODO:动态
       path: '/addEx',
       name: 'AddExView',
-      component: AddExView
+      component: AddExView,
+      meta:{isShowHeader:true}
     },
     {
       path: "/alterinfo/:exId",
-      component: AlterInfoView
+      component: AlterInfoView,
+      meta:{isShowHeader:true}
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
     },
     {
@@ -49,6 +55,13 @@ const router = createRouter({
       path: '/personal',
       name: 'personal',
       component: () => import('../views/Person/Personal.vue'),
+      children: [
+        {
+          path: '/info',
+          name: 'info',
+          component: () => import('../views/Person/Info.vue')
+        }
+      ]
     },
     {
       path: '/resetPassword',
@@ -64,11 +77,25 @@ const router = createRouter({
     },
     {
       path: "/error400",
-      component: ()=> import("@/views/error/400.vue")
+      component: () => import("@/views/error/400.vue")
     },
     {
       path: "/search",
-      component: ()=> import("@/views/SearchView.vue")
+      component: () => import("@/views/SearchView.vue")
+    },
+    {
+      path: "/calendar",
+      name: 'calendar',
+      component: () => import("@/views/CalendarView.vue")
+    },
+    {
+      path: "/test",
+      name: 'test',
+      component: () => import("@/views/test.vue")
+    },
+    {
+      path: "/audit",
+      component: ()=> import("@/views/AuditView.vue") 
     }
   ]
 })
