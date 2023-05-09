@@ -18,6 +18,7 @@
             v-model="form.begin_date"
             type="date"
             placeholder="选择开始日期"
+            value-format="YYYY-MM-DD"
             style="width: 100%"
           />
         </el-col>
@@ -28,16 +29,18 @@
           <el-date-picker
             v-model="form.end_date"
             placeholder="选择结束日期"
+            value-format="YYYY-MM-DD"
             style="width: 100%"
           />
         </el-col>
       </el-form-item>
       <el-form-item label="活动时间">
         <el-col :span="11">
-          <el-date-picker
+          <el-time-picker
             v-model="form.begin_time"
             type="date"
             placeholder="选择开始时间"
+            value-format="HH:mm:ss"
             style="width: 100%"
           />
         </el-col>
@@ -49,6 +52,7 @@
             v-model="form.end_time"
             placeholder="选择结束时间"
             style="width: 100%"
+            value-format="HH:mm:ss"
           />
         </el-col>
       </el-form-item>
