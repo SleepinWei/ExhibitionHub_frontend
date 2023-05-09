@@ -459,7 +459,7 @@ export default {
     width: 100%;
     height: 70px;
     box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, .2);
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
     background: linear-gradient(to bottom,rgba(255,255,255,1),rgba(255,255,255,0.9),rgba(255,255,255,0.7));
 }
 .link{

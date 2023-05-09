@@ -1,18 +1,24 @@
 <script>
-export default {
-  beforeCreate: function () {
-  document.getElementsByTagName("body")[0].className="active"
-  },
-  beforeUnmount: function () {
-    document.body.removeAttribute("class", "active");
-  }
-}
+import ExhibitionMap from '../components/ExhibitionMap.vue';
+
+// export default {
+//   beforeCreate: function () {
+//   document.getElementsByTagName("body")[0].className="active"
+//   },
+//   beforeUnmount: function () {
+//     document.body.removeAttribute("class", "active");
+//   }
+// }
 </script>
 
 <template>
-  <el-row justify="center">
-    <h1>EXHIBITION HUB</h1>
-  </el-row>
+  <!-- <el-row justify="center"> -->
+    <!-- <h1>EXHIBITION HUB</h1> -->
+  <!-- </el-row> -->
+
+<!-- <template> -->
+  <ExhibitionMap/>
+  
 </template>
 
 <style>
