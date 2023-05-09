@@ -28,7 +28,7 @@
             </div>
 
             <div v-for="i in ExhibitonArr" :key="i" >
-                <div v-if="data.day==i.visitdate" >
+                <div v-if="data.day==i.date" >
                     <el-tooltip 
                     :content="i.name"
                     :hide-after=0
