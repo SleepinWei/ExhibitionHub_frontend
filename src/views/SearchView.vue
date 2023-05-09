@@ -89,7 +89,6 @@ export default {
             province: "null",
             city: "null",
             area: "null",
-            ExhibitonArr: []
         }
     },
     methods: {
@@ -131,9 +130,8 @@ export default {
                 this.submitSearch(false);
             }
         },
-
         selectIfDateLimit(data) {
-            if (data == 'DateLimit') {
+            if (data === 'DateLimit') {
                 this.showDateSelector = 1
             } else {
                 this.showDateSelector = 0
@@ -144,7 +142,7 @@ export default {
             }
         },
         selectIfLocationLimit(data) {
-            if (data == 'LocationLimit') {
+            if (data === 'LocationLimit') {
                 this.showLocationSelector = 1
             } else {
                 this.showLocationSelector = 0
@@ -166,7 +164,7 @@ export default {
             this.loadContent()
         },
         typeChange(tags) {
-            if (tags == "") {
+            if (tags === "") {
                 tags = "-1"
             }
             this.tags = tags
@@ -182,6 +180,16 @@ export default {
         },
         loadContent() {
             //TODO:根据条件加载展览
+            this.$axios.get('/searchByData/' + this.inputText + '/' + this.userid + '/' + this.startTime + '/' + this.endTime
+                + '/' + this.venue + '/' + this.tags + '/' + this.province + '/' + this.city + '/' + this.area
+            ).then(res => res.data).then(res => {
+                this.searchResult = res
+                console.log(this.userid + '/' + this.startTime + '/' + this.endTime + '/' + this.venue + '/' + this.tags + '/' + this.province + '/' + this.city + '/' + this.area)
+                console.log(this.searchResult)
+            }).catch((error) => {
+                //为什么报错但是能够运行请问
+                console.log(error)
+            });
         }
     },
     watch: {

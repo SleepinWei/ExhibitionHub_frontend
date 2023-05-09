@@ -10,6 +10,7 @@
 </template>
   
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
@@ -37,9 +38,9 @@ export default {
                         this.museumOptions = [{ id: 0, label: '---------------不限---------------' },];
                         var data = response.data;
                         for (var i = 0; i < data.length; i += 1) {
-                            this.museumOptions.push({ id: i, name: data[i] });
+                            this.museumOptions.push({ id: i + 1, label: data[i] });
                         }
-                        console.log(this.types)
+                        console.log(this.museumOptions)
                     }
                 );
         }

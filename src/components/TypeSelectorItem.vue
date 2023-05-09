@@ -37,7 +37,7 @@ export default {
                         this.types = [];
                         var data = response.data;
                         for (var i = 0; i < data.length; i += 1) {
-                            this.types.push({ id: data[i].id, name: data[i].name });
+                            this.types.push({ id: i, name: data[i] });
                         }
                         console.log(this.types)
                     }
