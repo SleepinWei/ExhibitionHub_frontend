@@ -43,7 +43,7 @@
                         </div>
                     </el-radio-group>
                     <div class="demonstration">展览类型</div>
-                    <TypeSelectorItem @change="typeChange" />
+                    <TypeSelectorItem @selectType="typeChange" />
                     <div class="demonstration">展览主办方</div>
                     <MuseumSelectorItem @change="venueChange" />
                 </div>
@@ -163,12 +163,16 @@ export default {
             this.area = area
             this.loadContent()
         },
-        typeChange(tags) {
-            if (tags === "") {
-                tags = "-1"
+        typeChange(data) {
+            if (data.length == 0) {
+                this.tags = "-1";
+            } else {
+                this.tags = ""
+                for (var i = 0; i < data.length; ++i) {
+                    this.tags += data[i] + ' '
+                }
             }
-            this.tags = tags
-            console.log("calendar", this.tags)
+            console.log("calendarrrrrrrr", this.tags)
             this.loadContent()
         },
         venueChange(venue) {
@@ -180,11 +184,19 @@ export default {
         },
         loadContent() {
             //TODO:根据条件加载展览
-            this.$axios.get('/searchByData/' + this.inputText + '/' + this.userid + '/' + this.startTime + '/' + this.endTime
-                + '/' + this.venue + '/' + this.tags + '/' + this.province + '/' + this.city + '/' + this.area
-            ).then(res => res.data).then(res => {
-                this.searchResult = res
-                console.log(this.userid + '/' + this.startTime + '/' + this.endTime + '/' + this.venue + '/' + this.tags + '/' + this.province + '/' + this.city + '/' + this.area)
+            axios.post('/tagSelection/searchByData', {
+                query: this.inputText,
+                src: this.startTime,
+                dst: this.endTime,
+                venue: this.venue,
+                tags: this.tags,
+                province: this.province,
+                city: this.city,
+                area: this.area
+            }
+            ).then((response) => {
+                this.searchResult = response.data
+                console.log(this.startTime + '/' + this.endTime + '/' + this.venue + '/' + this.tags + '/' + this.province + '/' + this.city + '/' + this.area)
                 console.log(this.searchResult)
             }).catch((error) => {
                 //为什么报错但是能够运行请问
