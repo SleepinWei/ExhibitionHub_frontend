@@ -15,9 +15,11 @@
                 <el-button @click="submitSearch">搜索</el-button>
             </el-col>
         </el-row>
-
         <div class="flex-container">
             <div class="CardItem">
+                <el-row v-if="searchText !== null" style="margin-bottom: 20px;margin-top: -20px;color: dimgrey;">
+                    下面是" {{ searchText }} "的搜索结果
+                </el-row>
                 <CardItem :result="this.searchResult" />
             </div>
             <div class="Selector">
@@ -47,16 +49,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- <ExThumbnail v-for="result in searchResult" :params="{
-            id: result.id,
-            poster_url: result.poster_url,
-            name: result.name,
-            location: result.location,
-            begin_date: result.begin_date,
-            end_date: result.end_date
-        }">
-    </ExThumbnail> -->
     </body>
 </template>
 
@@ -83,6 +75,7 @@ export default {
     data() {
         return {
             inputText: "",
+            searchText: "",
             searchResult: [],
             ifDateLimit: 'noDateLimit',
             ifLocationLimit: 'noLocationLimit',
@@ -105,10 +98,13 @@ export default {
                 path: "/search", query: { querytext: this.inputText }
             });
             // 调用一次查询
-            this.searchRequest(this.inputText);
+            this.searchRequest(this.inputText, false);
         },
         searchRequest(query) {
             console.log(query);
+            this.searchText = query
+            if (this.searchText === "")
+                this.searchText = null
             axios.get(
                 `/searchByKeyword`,
                 {
@@ -132,7 +128,7 @@ export default {
         },
         keyListener(event) {
             if (event.keyCode == 13) {
-                this.submitSearch();
+                this.submitSearch(false);
             }
         },
 
