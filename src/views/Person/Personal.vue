@@ -5,6 +5,7 @@ import MuseumSubmitItem from '../../components/MuseumSubmitted.vue'
 import AdminAuditItem from '../../components/AdminAudit.vue'
 import AdminPassedItem from '../../components/AdminPassed.vue'
 import SubscribeItem from '../../components/SubscribeItem.vue'
+import CalendarView from '../../views/CalendarView.vue'
 </script>
 
 <template>
@@ -14,8 +15,9 @@ import SubscribeItem from '../../components/SubscribeItem.vue'
     <div v-if="user.role === '普通用户'">
       <el-menu :default-active="activeIndex" class="menu" mode="horizontal">
         <!--  -->
-        <el-menu-item index="1">我的订阅</el-menu-item>
-        <el-menu-item index="2">更多</el-menu-item>
+        <el-menu-item index="1" @click="ToSubscribe()">我的订阅</el-menu-item>
+        <el-menu-item index="2" @click="ToCalender()">我的日历</el-menu-item>
+        <el-menu-item index="3">更多</el-menu-item>
       </el-menu>
     </div>
     <div v-else-if="user.role === '博物馆'">
@@ -34,7 +36,7 @@ import SubscribeItem from '../../components/SubscribeItem.vue'
     </div>
 
 
-    <el-row class="main">
+    <el-row v-if="!userCalenderToReview" class="main">
       <!-- 左侧头像和个人信息 -->
       <el-col :xs="24" :sm="24" :md="8" class="left-col">
         <el-card class="card">
@@ -99,11 +101,10 @@ import SubscribeItem from '../../components/SubscribeItem.vue'
         <el-card class="card" :body-style="{ padding: '10px', height: '100%', width: '98%' }">
           <!--  -->
           <div v-if="user.role === '普通用户'">
-            <h2>我的订阅</h2>
-            <div>
+            <div v-if="userSubscribeToReview">
+              <h2>我的订阅</h2>
               <SubscribeItem />
             </div>
-            <!--  -->
           </div>
           <div v-else-if="user.role === '博物馆'">
             <div v-if="museumToReview">
@@ -123,8 +124,13 @@ import SubscribeItem from '../../components/SubscribeItem.vue'
           </div>
         </el-card>
       </el-col>
+
     </el-row>
 
+    <!-- 普通用户的日历信息查看 --->
+    <el-row v-if="user.role === '普通用户' && userCalenderToReview" :xs="24" :sm="24" :md="16">
+      <CalendarView />
+    </el-row>
   </div>
 </template>
   
@@ -141,6 +147,8 @@ export default {
       message: '',      //弹窗信息显示
       imageUrl: '',
 
+      userSubscribeToReview: true,
+      userCalenderToReview: false,
       museumToReview: true,
       museumSubmitted: false,
       adminAudit: true,
@@ -255,6 +263,15 @@ export default {
     ToPassed() {
       this.adminAudit = false;
       this.adminPassed = true;
+    },
+    ToSubscribe() {
+      this.userSubscribeToReview = true;
+      this.userCalenderToReview = false;
+    },
+    ToCalender() {
+      this.userSubscribeToReview = false;
+      this.userCalenderToReview = true;
+      console.log(this.userCalenderToReview)
     }
   }
 }
