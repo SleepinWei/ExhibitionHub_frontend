@@ -4,7 +4,7 @@
         @click.native="jumpToExInfo">
         <el-row>
             <el-col :span="6">
-            <el-image style="width: 200px;height: 200px;" :src="poster_url" fit="contain" />
+            <el-image style="width: 200px;height: 200px;" :src="this.params.poster_url" fit="contain" />
             </el-col>
             <el-col :span="8">
                 <p>
@@ -27,7 +27,7 @@ export default {
     props: ['params'],
     data() {
         return {
-            poster_url : 'http://127.0.0.1:8080/' + this.params.poster_url
+
         }
     },
     methods: {

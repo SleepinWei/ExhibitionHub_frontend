@@ -34,10 +34,10 @@
       </el-form-item>
       <el-form-item label="活动时间">
         <el-col :span="11">
-          <el-time-picker
+          <el-date-picker
             v-model="form.begin_time"
+            type="date"
             placeholder="选择开始时间"
-            value-format="HH:mm:ss"
             style="width: 100%"
           />
         </el-col>
@@ -48,7 +48,6 @@
           <el-time-picker
             v-model="form.end_time"
             placeholder="选择结束时间"
-            value-format="HH:mm:ss"
             style="width: 100%"
           />
         </el-col>
@@ -118,9 +117,6 @@
   import axios from "axios"
 import { useRoute, useRouter } from 'vue-router'
 
-const router = useRouter();
-const route = useRoute();
-
 const imageUrl = ref('')
   // do not use same name with ref
   const form = ref({
@@ -164,11 +160,8 @@ const imageUrl = ref('')
         // }
         
         data: form.value,
-    }).then(
-        (response) => {
-          router.push(`/exhibition/${route.params.exId}`)
-      }
-    );
+    })
+    .then();
   }
 
   // const checked_sports = ref(false)
@@ -235,6 +228,8 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
       }
     }
 
+  const route = useRoute();
+
 onMounted(() => {
     if (route.params.exId == null)
     return;
@@ -247,7 +242,6 @@ onMounted(() => {
         }
       }
       ).then((response) => {
-        console.log(response.data);
         form.value = response.data;
     });
 });
