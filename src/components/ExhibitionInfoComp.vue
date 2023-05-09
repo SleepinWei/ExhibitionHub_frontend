@@ -1,0 +1,123 @@
+<template>
+    <el-row>
+    <el-col :span="24">
+    <el-row class="basic_info">
+        <el-col :span="9" class="poster">
+            <el-row justify="center" class="poster-image">
+                <el-image style="width: 250px;height: 300px;" :src="form.poster_url" fit="contain">
+                </el-image>
+            </el-row>
+        </el-col>
+        <el-col :span="13" :offset="0" class="simple_info">
+            <el-row class="sub_info" align="middle">
+                <el-col :span="18">
+                    <h2>
+                        {{this.form.name}}
+                    </h2>
+                </el-col>
+                <el-col :span="6" v-if="isAdmin" class="change_info_button">
+                    <el-button type="primary" @click="onChangeInfo">
+                        修改信息
+                    </el-button>
+                </el-col>
+            </el-row>
+            <el-row class="sub_info">
+                时间：{{form.begin_date}} - {{ form.end_date}} {{ form.begin_time }} - {{ form.end_time }}
+            </el-row>
+            <el-row class="sub_info">
+                主办方：{{form.organizer }}
+            </el-row>
+            <el-row class="sub_info">
+                票价: {{form.ticket_info}}
+            </el-row>
+            <el-row class="sub_info">
+                官方链接: 
+                <a :href="form.link">
+                    {{form.link}}
+                </a>
+            </el-row>
+            <el-row class="sub_info">
+                标签: 
+                <el-tag v-for="tag in form.tags"> {{tag}} </el-tag>
+            </el-row>
+            <el-row class="subscribe_button">
+                <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
+                <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag> 
+            </el-row>
+        </el-col>
+    </el-row>
+
+    <el-row class="long_intro border_up" style="margin-top: 20px;">
+        <h3>详细介绍</h3>
+    </el-row>
+    <el-row class="long_intro border_up">
+        <!-- {{ intro }} -->
+        <div v-html="long_intros"></div>
+    </el-row>
+</el-col>
+</el-row>
+</template>
+
+
+<script>
+export default {
+    props: ['form'],
+    data() {
+        return {
+            isAdmin: false,
+            isLogin: false,
+            isSubscribed: false,
+        }
+    },
+    methods: {
+
+    },
+    mounted() {
+
+    },
+    computed: {
+        long_intros() {
+            var arr = this.form.introduction.split("\n");
+            var result = ""; 
+            arr.forEach((value, index, array) => {
+                result += `<p>${value}</p>`
+            });
+            return result;
+        }
+    }
+}
+
+</script>
+
+<style>
+.basic_info{
+    padding-top:30px;
+}
+.simple_info{
+    margin-left: 20px;
+}
+
+.el-tag{
+    margin-left: 5px;
+}
+
+.sub_info{
+    margin-top: 5px;
+}
+
+.long_intro{
+    padding-left: 50px;
+}
+.el-divider{
+    height: 100%;
+}
+
+.subscribe_button{
+    margin-top: 20px;
+}
+
+.border_up{
+    border-top: 2px solid #00000010;
+}
+
+</style>

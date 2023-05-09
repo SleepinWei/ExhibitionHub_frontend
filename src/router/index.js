@@ -32,11 +32,13 @@ const router = createRouter({
       //TODO:动态
       path: '/addEx',
       name: 'AddExView',
-      component: AddExView
+      component: AddExView,
+      meta:{isShowHeader:true}
     },
     {
       path: "/alterinfo/:exId",
-      component: AlterInfoView
+      component: AlterInfoView,
+      meta:{isShowHeader:true}
     },
     {
       path: '/about',
@@ -92,6 +94,10 @@ const router = createRouter({
       name: 'test',
       component: () => import("@/views/test.vue")
     },
+    {
+      path: "/audit",
+      component: ()=> import("@/views/AuditView.vue") 
+    }
   ]
 })
 

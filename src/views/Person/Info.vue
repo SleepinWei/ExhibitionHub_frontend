@@ -203,7 +203,7 @@
           if (valid) {//表单验证成功
             //调用接口保存
             this.user.password=this.form.newPassword
-            this.$axios.put("http://localhost:8080/user/change",this.user)
+            this.$axios.put("/user/change",this.user)
             .then((response)=>{
               this.user=response.data
               this.$alert('修改成功', '修改密码', {
