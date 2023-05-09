@@ -459,6 +459,7 @@ export default {
     width: 100%;
     height: 70px;
     box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, .2);
+    margin-bottom: 50px;
 }
 .link{
     text-decoration: none;
