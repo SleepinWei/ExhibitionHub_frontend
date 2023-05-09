@@ -12,7 +12,7 @@
             <el-row class="sub_info" align="middle">
                 <el-col :span="18">
                     <h2>
-                        {{form.name}}
+                        {{this.form.name}}
                     </h2>
                 </el-col>
                 <el-col :span="6" v-if="isAdmin" class="change_info_button">
@@ -22,13 +22,13 @@
                 </el-col>
             </el-row>
             <el-row class="sub_info">
-                时间：{{form.begin_date}} - {{ form.end_date}}
+                时间：{{form.begin_date}} - {{ form.end_date}} {{ form.begin_time }} - {{ form.end_time }}
             </el-row>
             <el-row class="sub_info">
                 主办方：{{form.organizer }}
             </el-row>
             <el-row class="sub_info">
-                票价: {{form.tickets}}
+                票价: {{form.ticket_info}}
             </el-row>
             <el-row class="sub_info">
                 官方链接: 
@@ -94,6 +94,8 @@ export default {
                 tags: ["tag1", "tag2"],
                 introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
             ssssssssssssssssssssssssssssss",
+                begin_time: "",
+                end_time: "",
                 recommends: ["ex1", "ex2", "ex3"]
             },
             isAdmin: true,
@@ -110,8 +112,9 @@ export default {
                     }
                 })
                 .then((response) => {
-
                     this.form = response.data;
+                    this.form.poster_url = 'http://127.0.0.1:8080/' + response.data.poster_url;
+                    console.log(this.form)
                 }).catch((error) => {
                     if (error.response.status == 400) {
                         // exhibition is not found
