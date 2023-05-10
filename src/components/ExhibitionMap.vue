@@ -1,5 +1,7 @@
 <template>
+  <el-row justify="center">
     <h1>Exhibition Hub</h1>
+    </el-row>
     <div id="allmap"></div>
   </template>
   

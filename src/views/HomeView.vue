@@ -22,16 +22,16 @@ import ExhibitionMap from '../components/ExhibitionMap.vue';
 </template>
 
 <style>
-h1{
+/* h1{
   font-family:Helvetica, sans-serif;
   font-weight: 700;
   color: white;
-}
+} */
 
-.active{
+/* .active{
   background-image: url("@/assets/starry_night.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
-}
+} */
 </style>
