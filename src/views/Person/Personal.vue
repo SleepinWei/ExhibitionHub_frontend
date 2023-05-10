@@ -116,7 +116,8 @@ import CalendarView from '../../views/CalendarView.vue'
           </div>
           <div v-else-if="user.role === '管理员'">
             <div v-if="adminAudit">
-              <AdminAuditItem />
+              <!-- <AdminAuditItem /> -->
+              <AuditView />
             </div>
             <div v-else-if="adminPassed">
               <AdminPassedItem />
@@ -135,6 +136,7 @@ import CalendarView from '../../views/CalendarView.vue'
 </template>
   
 <script>
+import AuditView from '@/views/AuditView.vue'
 export default {
   data() {
     return {

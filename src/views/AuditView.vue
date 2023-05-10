@@ -1,8 +1,8 @@
 <template>
     <el-row>
-        <el-col :span="12" :offset="2">
+        <!-- <el-col :span="12" :offset="2">
         <h1>审核信息</h1>
-        </el-col>
+        </el-col> -->
     </el-row>
     <el-row justify="center">
     <el-table :data="tableData" stripe style="width: 80%">
@@ -16,7 +16,7 @@
                 <el-button size="small" type="info" @click="approve(scope.row)">
                     Approve
                 </el-button>
-                <el-button size="small" type="danger" @click="decline(scope.row)">
+                <el-button size="small" type="danger" @click="refuse(scope.row)">
                     Decline
                 </el-button>
             </template>
@@ -88,9 +88,14 @@ export default {
         // },
         view(row) {
             // 查看展览具体信息
+            console.log(row);
             this.dialogVisible = true;
             this.$axios.get(
-                `/audit/view/${row.exId}`
+                `/audit/view`, {
+                params: {
+                    id : parseInt(row.id)
+                }
+            }
             ).then((response) => {
                 //
                 this.exhibitionViewed = response.data; 
@@ -98,20 +103,35 @@ export default {
         },
         approve(row) {
             // 通过
-            this.$axios.post(
-                `/audit/pass/${row.exId}`
+            this.$axios.get(
+                `/audit/pass`, {
+                    params: {
+                        id : parseInt(row.id)
+                    }
+                }
             ).then((response) => {
 
             });
         },
         refuse(row) {
             // 
-            this.$axios.post(
-                `/audit/refuse/${row.exId}`
+            this.$axios.get(
+                `/audit/refuse`,
+                {
+                    params: {
+                        id : parseInt(row.id)
+                    }
+                }
             ).then((response) => {
                 
             });
         }
+    },
+    mounted() {
+        this.$axios.get("/getUncheckedEx")
+            .then((response) => {
+                this.tableData = response.data;
+            });
     }
 }
 

@@ -1,6 +1,6 @@
 <template>
   <el-row justify="center">
-    <h1>Exhibition Hub</h1>
+    <h1 class="title">Exhibition Hub</h1>
     </el-row>
     <div id="allmap"></div>
   </template>
@@ -94,7 +94,7 @@
   </script>
   
   <style>
-  h1 {
+  .title {
     position: absolute;
     z-index: 2;
     color: #fff;
