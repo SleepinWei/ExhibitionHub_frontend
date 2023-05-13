@@ -13,14 +13,12 @@
     data () {
       return {
         inmap: '',
-        overlay: '',
+        polygonOverlay: '',
         animationOverlay: '',
         pointOverlay: '',
-        geodata:ShanghaiGeoData,
       }
     },
     mounted () {
-      
       //待从后端传数据
       var data = [
           { name: '北京', geometry: { type: 'Point', coordinates: ['116.3', '39.9'] }, style: { speed: 1 } },
@@ -31,7 +29,7 @@
       this.inmap = new inMap.Map({
         id: 'allmap',
         skin: 'Blueness',
-        center: ["121.0585508638092", "31.092552191760852"],
+        center: ["121.27931842594131", "31.236916805104883"],
         zoom: {
           value: 10,
           show: true,
@@ -39,11 +37,11 @@
           min: 5
         }
       })
-      var overlay = new inMap.PolygonOverlay({
+      this.polygonOverlay = new inMap.PolygonOverlay({
         style: {
             normal: {
                 borderWidth: 1.5,        
-                backgroundColor: "rgba(252,196,95,0.71)",
+                backgroundColor: "rgba(134,157,157,0.7)",
                 label: {
                   show: true, // 是否显示
                   font: "13px bold ",
@@ -52,11 +50,11 @@
               },
         },
         data: ShanghaiGeoData.features,
-    });
+      });
      
-    // this.inmap.add(overlay);
-    // // 将地图视图调整到合适的显示范围
-    // this.inmap.setFitView([overlay]);
+      this.inmap.add(this.polygonOverlay);
+      // 将地图视图调整到合适的显示范围
+      this.inmap.setFitView([this.polygonOverlay]);
 
       this.pointOverlay = new inMap.PointOverlay({
           tooltip: {
@@ -77,7 +75,7 @@
               onMouseClick(val) {
                   console.log(val[0].name);
                   let myGeo = new BMap.Geocoder()
-                  let address="上海市"
+                  let address="北京市海淀区中关村南大街33号国家图书馆内(首都体育馆)国家典籍博物馆"
                   myGeo.getPoint(address,function(point){
                   if(point){
                       console.log(point.lat)
@@ -86,10 +84,8 @@
                       // that.latitude=point.lat
                       // that.longitude=point.lng
                       // that.infoWindowShow=true
-        }
-        })
-                  
-                  
+                  }
+                  })
               }
           }
       })
@@ -105,14 +101,7 @@
         data: data
       })
       this.inmap.add(this.animationOverlay)
-      this.inmap.add(overlay)
     },
-    methods:{
-      getLocation(){
-        let that=this
-        
-      }
-    }
   }
   
   </script>
