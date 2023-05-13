@@ -6,6 +6,7 @@
     </el-row>
     <el-row justify="left">
     <el-table :data="tableData" stripe style="width: 80%">
+        <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
         <el-table-column prop="name" label="Exhibition Name"/>
         <el-table-column prop="last_edit" label="Last Edit"/>
         <el-table-column label="Operations">

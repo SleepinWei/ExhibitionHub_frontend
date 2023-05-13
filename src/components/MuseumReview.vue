@@ -1,46 +1,129 @@
-  <template>
-    <div class="table-container">
-      <el-table :data="exhibitions" border>
-        <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
-        <el-table-column prop="id" label="展览ID" align="center"></el-table-column>
-        <el-table-column prop="name" label="展览名称" align="center"></el-table-column>
-        <el-table-column prop="venue_name" label="展览地点" align="center"></el-table-column>
-        <el-table-column prop="organizer" label="主办方" align="center"></el-table-column>
-        <el-table-column prop="begin_date" label="展览开始日期" align="center"></el-table-column>
-        <el-table-column prop="end_date" label="展览结束日期" align="center"></el-table-column>
+<template class="wrapper">
+  <el-row>
+      <!-- <el-col :span="12" :offset="2">
+      <h1>审核信息</h1>
+      </el-col> -->
+  </el-row>
+  <el-row justify="left">
+  <el-table :data="tableData" stripe style="width: 100%">
+      <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
+      <el-table-column prop="name" label="展览名称" align="center"/>
+      <el-table-column prop="organizer" label="主办方" align="center"/>
+      <el-table-column prop="venue_name" label="地点"  align="center"/>
+      <el-table-column prop="date" label="提交时间"  align="center"/>
+      <el-table-column label="查看详情" align="center">
+          <template #default="scope">
+              <el-button  @click="view(scope.row)">
+                点击查看
+              </el-button>
+          </template>
+      </el-table-column>
+  </el-table>
+  </el-row>
 
-        <el-table-column label="待审核" v-slot="{ row }" align="center">
-          <el-button type="primary" size="mini" @click="verifyExhibition(row.id)">
-            查看详情
+  <!-- dialog -->
+  <el-dialog 
+      v-model="dialogVisible" 
+      title="Changes"
+      width="100%"
+  >
+
+  <ExhibitionInfoComp :form="exhibitionViewed" />
+
+  <template #footer>
+      <span style="margin-right:10px">
+          <el-button type="primary" @click="dialogVisible=false">
+              Confirm
           </el-button>
-        </el-table-column>
-
-      </el-table>
-    </div>
+      </span>
   </template>
-  
-  <script>
-    export default {
-        data() {
-          return {
-              exhibitions: [
-              { id: 1, name: "展览A", date: "2023-06-01", venue_name: "上海市某展馆", organizer: "刘欣" , begin_date:"2023-5-7" , end_date:"2023-5-8"},
-              { id: 2, name: "展览B", date: "2023-07-01", venue_name: "北京市某展馆", organizer: "小牛" , begin_date:"2023-5-7" , end_date:"2023-5-8" },
-              { id: 3, name: "展览C", date: "2023-08-01", venue_name: "广州市某展馆", organizer: "亦菲" , begin_date:"2023-5-7" , end_date:"2023-5-8" }
-              ]
-          };
-        },
-        methods:{
-          verifyExhibition(row){
-            console.log("博物馆查看详情+"+row)
+  </el-dialog>
+</template>
+
+<script>
+import ExhibitionInfoComp from '@/components/ExhibitionInfoComp.vue'
+
+export default {
+  data() {
+      return {
+          tableData: [],
+          exhibitionViewed: {
+              exId: this.$route.params.exId,
+              poster_url: "/src/assets/posters/saber.png",
+              name: "Exhibition 1",
+              begin_date: "2001-01-01",
+              end_date: "2001-02-02",
+              organizer: "og1",
+              tickets: "2000RMB",
+              link: "https://bilibili.com",
+              tags: ["tag1", "tag2"],
+              introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
+          ssssssssssssssssssssssssssssss",
+              begin_time: "",
+              end_time: "",
+              recommends: ["ex1", "ex2", "ex3"]
+        
+          },
+          dialogVisible : false
+      }
+  },
+  methods: {
+      // dbclick(row,col,event){
+      //     var exId = row.exId;
+      //     // this.$router.push(`/exhibition/${exId}`)
+      // },
+      view(row) {
+          // 查看展览具体信息
+          console.log(row);
+          this.dialogVisible = true;
+          this.$axios.get(
+              `/audit/view`, {
+              params: {
+                  id : parseInt(row.id)
+              }
           }
-        }
-    };
-  </script>
-  
-  <style scoped>
-    .table-container {
-        width: 100%;
-        height: 100%;
-    }
-    </style>
+          ).then((response) => {
+              //
+              this.exhibitionViewed = response.data; 
+          });
+      },
+      approve(row) {
+          // 通过
+          this.$axios.get(
+              `/audit/pass`, {
+                  params: {
+                      id : parseInt(row.id)
+                  }
+              }
+          ).then((response) => {
+
+          });
+      },
+      refuse(row) {
+          // 
+          this.$axios.get(
+              `/audit/refuse`,
+              {
+                  params: {
+                      id : parseInt(row.id)
+                  }
+              }
+          ).then((response) => {
+              
+          });
+      }
+  },
+  mounted() {
+    this.$axios.get("/getUncheckedEx")
+      .then((response) => {
+        // console.log(response.data);
+        this.tableData = response.data;
+      });
+  }
+}
+
+</script>
+
+<style scoped>
+
+</style>

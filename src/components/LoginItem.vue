@@ -44,11 +44,11 @@
           .then((res) => {
             console.log(res.data.code)
             if (res.data.code != -100) {// -100：错误
-              this.$router.push("/personal");//用户主页
               this.$message({
                   message: '登陆成功！',
                   type: 'success'
               })
+              this.$router.push("/personal");//用户主页
             }
             else {
               console.log(res);
