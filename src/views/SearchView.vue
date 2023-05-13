@@ -18,6 +18,9 @@
 
         <el-row style="width: 100%;height: 100%; position: absolute;">
             <el-col :span="18" class="CardItem">
+                <el-row v-if="searchText !== null" style="margin-bottom: 20px;margin-top: -20px;color: dimgrey;">
+                    下面是" {{ searchText }} "的搜索结果
+                </el-row>
                 <CardItem :result="this.searchResult" />
             </el-col>
             <el-col class="Selector">
@@ -84,6 +87,7 @@ export default {
     data() {
         return {
             inputText: "",
+            searchText: "",
             searchResult: [],
             ifDateLimit: 'noDateLimit',
             ifLocationLimit: 'noLocationLimit',
@@ -110,6 +114,9 @@ export default {
         },
         searchRequest(query) {
             console.log(query);
+            this.searchText = query
+            if (this.searchText === "")
+                this.searchText = null
             axios.get(
                 `/searchByKeyword`,
                 {
