@@ -54,14 +54,7 @@ const router = createRouter({
     {
       path: '/personal',
       name: 'personal',
-      component: () => import('../views/Person/Personal.vue'),
-      children: [
-        {
-          path: '/info',
-          name: 'info',
-          component: () => import('../views/Person/Info.vue')
-        }
-      ]
+      component: () => import('../views/PersonalView.vue'),
     },
     {
       path: '/resetPassword',
