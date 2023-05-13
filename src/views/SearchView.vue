@@ -16,12 +16,12 @@
             </el-col>
         </el-row>
 
-        <!-- <div class="flex-container"> -->
-            <el-row style="width: 100%;height: 100%; position: absolute;">
+        <el-row style="width: 100%;height: 100%; position: absolute;">
             <el-col :span="18" class="CardItem">
                 <CardItem :result="this.searchResult" />
             </el-col>
-            <el-col :span="6" class="Selector">
+            <el-col class="Selector">
+                <!-- 'Selector': this.scrollTop < 20, -->
                 <div class="demonstration">日程显示</div>
                 <div class="selectBlock">
                     <div class="demonstration">展览日期</div>
@@ -47,8 +47,7 @@
                     <MuseumSelectorItem @change="venueChange" />
                 </div>
             </el-col>
-            </el-row>
-        <!-- </div> -->
+        </el-row>
 
         <!-- <ExThumbnail v-for="result in searchResult" :params="{
             id: result.id,
@@ -98,7 +97,7 @@ export default {
             province: "null",
             city: "null",
             area: "null",
-            ExhibitonArr: []
+            ExhibitonArr: [],
         }
     },
     methods: {
@@ -187,7 +186,24 @@ export default {
             this.loadContent()
         },
         loadContent() {
-            //TODO:根据条件加载展览
+            axios.post('/tagSelection/searchByData', {
+                query: this.inputText,
+                src: this.startTime,
+                dst: this.endTime,
+                organizer: this.venue,
+                tags: this.tags,
+                province: this.province,
+                city: this.city,
+                area: this.area
+            }
+            ).then((response) => {
+                this.searchResult = response.data
+                console.log(this.startTime + '/' + this.endTime + '/' + this.venue + '/' + this.tags + '/' + this.province + '/' + this.city + '/' + this.area)
+                console.log(this.searchResult)
+            }).catch((error) => {
+                //为什么报错但是能够运行请问
+                console.log(error)
+            });
         }
     },
     watch: {
@@ -220,7 +236,6 @@ export default {
 }
 
 .CardItem {
-    position: fixed;
     margin-top: 50px;
     margin-bottom: 50px;
     margin-left: 30px;
