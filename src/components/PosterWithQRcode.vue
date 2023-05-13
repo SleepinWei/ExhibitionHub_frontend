@@ -1,7 +1,7 @@
 <template>
     <div class="posterQRcode">
         <!-- 提高分辨率 -->
-      <canvas ref="canvas" width="480" height="640" ></canvas>
+      <canvas ref="canvas" width="540" height="720" ></canvas>
     </div>
   </template>
   
@@ -21,10 +21,10 @@
     data() {
       return {
         //backgroundImage: '/src/assets/posters/saber.png', // 背景图片地址
-        ImageWidth0:480,//图片宽度
-        ImageHeight:640,//图片高度
+        ImageWidth:540,//图片宽度
+        ImageHeight:720,//图片高度
         //qrCodeContent: 'https://www.baidu.com/', // 二维码内容，即要跳转的网页地址
-        qrCodeSize: 90, // 二维码大小
+        qrCodeSize: 120, // 二维码大小
         qrCodeX: 0, // 二维码横坐标
         qrCodeY: 0, // 二维码纵坐标
 
@@ -81,8 +81,8 @@
   <style>
   .posterQRcode {
     position: relative;
-    width: 480px;
-    height: 640px;
+    width: 540px;
+    height: 720px;
   }
   
   canvas {
