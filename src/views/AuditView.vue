@@ -7,7 +7,7 @@
     <el-row justify="left">
     <el-table :data="tableData" stripe style="width: 80%">
         <el-table-column prop="name" label="Exhibition Name"/>
-        <el-table-column prop="last_edit" label="Last Edit"/>
+        <el-table-column prop="date" label="Edit Time"/>
         <el-table-column label="Operations">
             <template #default="scope">
                 <el-button size="small" @click="view(scope.row)">
@@ -52,12 +52,12 @@ export default {
             tableData: [
                 {
                     name : "Tom",
-                    last_edit : "2002-04-01 23:00:00",
+                    date: "2002-04-01 23:00:00",
                     exId : 2
                 },
                 {
                     name : "Jerry",
-                    last_edit : "2002-04-02 21:00:00",
+                    date: "2002-04-02 21:00:00",
                     exId: 1 
                 }
             ],
@@ -130,6 +130,7 @@ export default {
     mounted() {
         this.$axios.get("/getUncheckedEx")
             .then((response) => {
+                console.log(response.data);
                 this.tableData = response.data;
             });
     }
