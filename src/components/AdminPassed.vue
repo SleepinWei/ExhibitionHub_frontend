@@ -76,14 +76,11 @@
         }
       },
       mounted() {
-        this.$axios.get("/getCheckedEx", {
-          params: {
-            id : this.uid,
-          }
-        })
+        this.$axios.get("/admin/getChecked")
         .then((response) => {
-          console.log(response.data);
-          this.exhibitions = response.data;
+          console.log("/admin/getChecked");
+            console.log(response.data);
+            this.exhibitions = response.data;
         });
       }
   };
