@@ -96,7 +96,7 @@ import CalendarView from '../views/CalendarView.vue'
 
       <!-- 右侧更多信息 -->
       <el-col :xs="24" :sm="24" :md="16" class="right-col">
-        <el-card class="card" :body-style="{ padding: '10px', height: '100%', width: '98%' }">
+        <el-card class="card" :body-style="{ padding: '8px', height: '100%', width: '98%' }">
           <!--  -->
           <div v-if="user.role === '普通用户'">
             <div v-if="userSubscribeToReview">
@@ -158,7 +158,7 @@ export default {
       .then((response) => {
         console.log("created:user/find"),
           this.user = response.data//user赋值
-          this.subuser = this.user
+        this.subuser = this.user
       })
       .catch(response => {
         console.log("请求失败")
@@ -190,17 +190,17 @@ export default {
           //弹框提示信息
           if (this.message) {
             this.$axios.get("/user/find/" + this.uid)
-            .then((response) => {
+              .then((response) => {
                 this.user = response.data
                 this.subuser = this.user
-            })
-            .catch(response => {
-              console.log("请求失败")
-            }),
-            this.$message({
-              message: '保存成功！',
-              type: 'success'
-            })
+              })
+              .catch(response => {
+                console.log("请求失败")
+              }),
+              this.$message({
+                message: '保存成功！',
+                type: 'success'
+              })
           }
           else {
             this.$message({
@@ -298,13 +298,15 @@ export default {
 .left-col {
   display: flex;
   justify-content: center;
-  align-items: center;
+  height: 100%;
+  flex-grow: 1;
   /* margin-bottom: 80px; */
 }
 
 .right-col {
   display: flex;
   flex-direction: column;
+  weight: 100%;
   height: 100%;
 }
 
@@ -359,6 +361,5 @@ export default {
   margin: 0 auto;
   display: block;
 }
-
 </style>
   

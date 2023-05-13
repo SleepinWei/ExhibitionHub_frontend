@@ -2,7 +2,7 @@
  * @Author: yingxin wang
  * @Date: 2023-04-25 17:20:15
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-13 15:27:38
+ * @LastEditTime: 2023-05-13 20:05:15
  * @dis: 卡片布局修改为动态效果
 -->
 <template>
@@ -72,8 +72,8 @@ export default {
 }
 
 .top .it {
-    width: 210px;
-    height: 280px;
+    width: 200px;
+    height: 270px;
     overflow: visible;
     margin-bottom: 10px;
     margin-right: 10px;
@@ -170,7 +170,7 @@ export default {
 .card-front-content .card-title {
     margin-right: 5px;
     width: fit-content;
-    font-size: 18px;
+    font-size: 16px;
     color: dimgrey;
     text-align: left;
 }
@@ -187,20 +187,20 @@ export default {
 }
 
 .dis {
-    font-size: 12px;
+    font-size: 10px;
     max-width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
 .dis p {
-    width: 85%;
+    width: 88%;
 }
 
 .it-footer {
     color: #ffffff88;
     margin-top: 5px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .card-front .img {
