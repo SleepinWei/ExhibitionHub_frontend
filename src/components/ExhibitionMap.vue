@@ -12,6 +12,7 @@
 
   let location
   export default {
+    
     data () {
       return {
         inmap: '',
@@ -38,7 +39,7 @@
       
     },
     methods:{
-      async getVenues(){
+     getVenues(){
         axios.get(`/ExhibitionMap/getAllVenue`)
         .then((response) => {
           this.venue=response.data
@@ -58,7 +59,6 @@
         this.venue.forEach(function(item,index){ 
           let newList = {
             name:item.venue_name,
-            address:item.venue_address,
             geometry: { 
               type: 'Point', 
               coordinates: ['-1', '-1'] 
@@ -68,9 +68,9 @@
             }//随机速度
           }
         let myGeo = new BMap.Geocoder()
-        myGeo.getPoint(item.address,function(point){
+        myGeo.getPoint(item.venue_address,function(point){
           if(point){
-            newList.geometry.coordinates=[point.lat,point.lng]
+            newList.geometry.coordinates=[String(point.lng),String(point.lat)]
             venuedata.push(newList);
           }
         })         
@@ -78,6 +78,7 @@
         location=venuedata
       },
       loadMap(){
+        console.log(location)
         this.inmap = new inMap.Map({
         id: 'allmap',
         skin: 'Blueness',
@@ -103,16 +104,11 @@
         },
         data: ShanghaiGeoData.features,
       });
-      //console.log(this.polygonOverlay.data)
      
-      this.inmap.add(this.polygonOverlay);
-      // 将地图视图调整到合适的显示范围
-      this.inmap.setFitView([this.polygonOverlay]);
-
       this.pointOverlay = new inMap.PointOverlay({
           tooltip: {
             show: true,
-            formatter: "{venue_name}"
+            formatter: "{name}"
           },
           style: {
               normal: {
@@ -142,18 +138,22 @@
               }
           }
       })
-      this.inmap.add(this.pointOverlay)
 
       this.animationOverlay = new inMap.PointAnimationOverlay({
         style: {
           fps: 25, // 动画帧数
-          color: '#8fb2c9',//红色点？
-          size: 15,
+          color: '#f07c82',//红色点？
+          size: 20,
           speed: 0.4
         },
         data: location
       })
+
+      this.inmap.add(this.pointOverlay)
       this.inmap.add(this.animationOverlay)
+      this.inmap.add(this.polygonOverlay);
+      // 将地图视图调整到合适的显示范围
+      this.inmap.setFitView([this.polygonOverlay]);
       }
       
     }
