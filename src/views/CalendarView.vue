@@ -140,14 +140,6 @@ export default {
     },
     beforeMount() {
         this.loadContent()
-    },
-    unmounted(){
-        this.$axios.get('http://localhost:8080/calendar/cleancache/' + this.userid
-            ).then(res => res.data).then(res => {
-                console.log("clean cache success")
-            }).catch((error) => {
-                console.log(error)
-            });
     }
 }
 </script>
