@@ -2,7 +2,7 @@
     <!-- <el-container> -->
         <!-- <el-header>Header</el-header> -->
         <!-- <el-main class="demo"> -->
-      <el-form :model="form" label-width="120px">
+      <el-form :model="form" label-width="120px" style="margin-top: 20px;">
       <el-form-item label="展览名称">
         <el-input v-model="form.name" />
       </el-form-item>
@@ -57,7 +57,16 @@
         </el-col>
       </el-form-item>
       <el-form-item label="地点">
-        <el-input v-model="form.location" />
+        <!-- <el-input v-model="form.location" /> -->
+        <el-select v-model="form.province" placeholder="省" @change="province_change">
+          <el-option v-for="item in province_options" :value="item"/>
+        </el-select>
+        <el-select v-model="form.city" placeholder="市" @change="city_change">
+          <el-option v-for="item in city_options" :value="item"/>
+        </el-select>
+        <el-select v-model="form.area" placeholder="区">
+          <el-option v-for="item in area_options" :value="item"/>
+        </el-select>
       </el-form-item>
       <el-form-item label="票务信息">
         <el-input v-model="form.ticket_info" />
@@ -116,10 +125,10 @@
   import { onMounted, reactive } from 'vue'
   import { ref } from 'vue'  
   import { Plus } from '@element-plus/icons-vue'
-  import type { UploadProps, UploadUserFile } from 'element-plus'
+  import { UploadProps, UploadUserFile, messageConfig } from 'element-plus'
   import { ElMessage } from 'element-plus'
-  import axios from "axios"
-import { useRoute, useRouter } from 'vue-router'
+  import axios from "../http.ts"
+import { routerKey, useRoute, useRouter } from 'vue-router'
 
 const imageUrl = ref('')
   // do not use same name with ref
@@ -128,10 +137,11 @@ const imageUrl = ref('')
     name: '',
     venue_name:'',
     organizer: '',
-    location: '',
+    province: '',
+    city: '',
+    area: '',
     link:'',
     ticket_info:'',
-    // region: '',
     begin_date: '',
     end_date: '',
     begin_time: '',
@@ -144,7 +154,40 @@ const imageUrl = ref('')
     // checked_art:false,
     // checked_tech:false
   })
+
+const province_options = ref([]);
+const city_options = ref([]);
+const area_options = ref([]);
+
+onMounted(() => {
+  axios.get("/location/province").then(
+    (response) => {
+      province_options.value = response.data;
+    }
+  )
+});
+
+const province_change = (value) => {
+  axios.get("/location/city_list", {
+    params: {
+      province: value
+    }
+  }).then((response) => {
+    city_options.value = response.data;
+  });
+}
+
+const city_change = (value) => {
+  axios.get("/location/area_list", {
+    params: {
+      city: value
+    }
+  }).then((response) => {
+    area_options.value = response.data;
+  });
+}
   
+const router = useRouter();
   const onSubmit = () => {
     axios({
         method: "post",
@@ -165,7 +208,16 @@ const imageUrl = ref('')
         
         data: form.value,
     })
-    .then();
+      .then((response) => {
+          ElMessage({
+            message: "添加成功，请等待审核"
+          })
+          router.push("/");
+      }).catch(() => {
+          ElMessage({
+            message: "添加失败，缺少必要项"
+          });
+    });
   }
 
   // const checked_sports = ref(false)

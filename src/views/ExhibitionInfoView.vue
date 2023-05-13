@@ -34,6 +34,9 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                     <el-row class="sub_info">
                         票价&emsp; {{ form.tickets }}
                     </el-row>
+                    <el-row>
+                        地点 {{ form.province }} - {{ form.city }} - {{ form.area }} - {{ form.address}}
+                    </el-row>
                     <el-row class="sub_info">
                         官方链接&emsp;
                         <a :href="form.link">
@@ -134,6 +137,10 @@ export default {
                 organizer: "og1",
                 tickets: "2000RMB",
                 link: "https://bilibili.com",
+                province: "",
+                city: "",
+                area: "",
+                address : "",
                 tags: [  
                     {
                         id:1,
@@ -169,7 +176,7 @@ export default {
                 .then((response) => {
                     this.form = response.data;
                     this.form.poster_url = 'http://127.0.0.1:8080/' + response.data.poster_url;
-                    console.log(this.form.exId);
+                    console.log(this.form);
 
                     axios.get("/searchTagById", {
                         params: {
