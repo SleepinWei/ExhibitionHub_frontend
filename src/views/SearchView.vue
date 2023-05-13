@@ -16,11 +16,12 @@
             </el-col>
         </el-row>
 
-        <div class="flex-container">
-            <div class="CardItem">
+        <!-- <div class="flex-container"> -->
+            <el-row style="width: 100%;height: 100%; position: absolute;">
+            <el-col :span="18" class="CardItem">
                 <CardItem :result="this.searchResult" />
-            </div>
-            <div class="Selector">
+            </el-col>
+            <el-col :span="6" class="Selector">
                 <div class="demonstration">日程显示</div>
                 <div class="selectBlock">
                     <div class="demonstration">展览日期</div>
@@ -45,8 +46,9 @@
                     <div class="demonstration">展览主办方</div>
                     <MuseumSelectorItem @change="venueChange" />
                 </div>
-            </div>
-        </div>
+            </el-col>
+            </el-row>
+        <!-- </div> -->
 
         <!-- <ExThumbnail v-for="result in searchResult" :params="{
             id: result.id,

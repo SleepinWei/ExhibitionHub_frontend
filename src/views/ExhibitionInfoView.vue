@@ -26,23 +26,23 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                         </el-col>
                     </el-row>
                     <el-row class="sub_info">
-                        时间：{{ form.begin_date }} - {{ form.end_date }}
+                        时&ensp;&ensp;间&emsp;{{ form.begin_date }} - {{ form.end_date }}
                     </el-row>
                     <el-row class="sub_info">
-                        主办方：{{ form.organizer }}
+                        主办方&emsp;{{ form.organizer }}
                     </el-row>
                     <el-row class="sub_info">
-                        票价: {{ form.tickets }}
+                        票价&emsp; {{ form.tickets }}
                     </el-row>
                     <el-row class="sub_info">
-                        官方链接:
+                        官方链接&emsp;
                         <a :href="form.link">
                             {{ form.link }}
                         </a>
                     </el-row>
                     <el-row class="sub_info">
-                        标签:
-                        <el-tag v-for="tag in form.tags"> {{ tag }} </el-tag>
+                        标签&emsp;
+                        <el-tag v-for="tag in form.tags"> {{ tag.name }} </el-tag>
                     </el-row>
                     <el-row class="subscribe_button">
                         <div v-if="isLogin && !isSubscribed">

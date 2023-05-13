@@ -2,7 +2,7 @@
     <el-row align="middle" class="header">
         <el-col :span="4" :offset="1">
             <router-link class="link" to="/">
-                    Exhibition Hub
+                    EXHIBITION HUB
             </router-link>
         </el-col>
         <el-col :span="4">
@@ -459,6 +459,8 @@ export default {
     width: 100%;
     height: 70px;
     box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, .2);
+    /* margin-bottom: 50px; */
+    background: linear-gradient(to bottom,rgba(255,255,255,1),rgba(255,255,255,0.9),rgba(255,255,255,0.7));
 }
 .link{
     text-decoration: none;

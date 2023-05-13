@@ -2,6 +2,7 @@
     <!-- <el-container> -->
         <!-- <el-header>Header</el-header> -->
         <!-- <el-main class="demo"> -->
+        <el-row style="padding-top: 20px;"></el-row>
       <el-form :model="form" label-width="120px">
       <el-form-item label="展览名称">
         <el-input v-model="form.name" />
