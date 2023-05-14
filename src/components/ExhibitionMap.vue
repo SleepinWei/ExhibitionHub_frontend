@@ -8,11 +8,9 @@
   <script>
   import inMap from 'inmap'
   import ShanghaiGeoData from '../assets/上海市.json'
-  import axios from '@/http.ts'
 
-  let location
+  let location;
   export default {
-    
     data () {
       return {
         inmap: '',
@@ -27,24 +25,14 @@
     },
     mounted () {
       this.getVenues()
-      
-      //待从后端传数据
-      // var data = [
-      //     { name: '北京', geometry: { type: 'Point', coordinates: ['116.3', '39.9'] }, style: { speed: 1 } },
-      //     { name: '上海', geometry: { type: 'Point', coordinates: ['121.29', '31.11'] }, style: { speed: 0.4 } },
-      //     { name: '福建', geometry: { type: 'Point', coordinates: ['117.984943', '26.050118'] }, style: { speed: 0.45 } },
-      //     { name: '广东', geometry: { type: 'Point', coordinates: ['113.394818', '23.408004'] }, style: { speed: 0.7 } },
-      //   { name: '广西', geometry: { type: 'Point', coordinates: ['108.924274', '23.552255'] }, style: { speed: 1 } }];
-      // console.log(data);
-      
     },
     methods:{
-     getVenues(){
-        axios.get(`/ExhibitionMap/getAllVenue`)
+      getVenues(){
+        this.$axios.get(`/ExhibitionMap/getAllVenue`)
         .then((response) => {
           this.venue=response.data
           this.getLocationData()
-          this.loadMap()
+          //this.loadMap()
         }).catch((error) => {
             if (error.response.status == 400) {
                 // exhibition is not found
@@ -52,33 +40,35 @@
             }
         });
       },
-      getLocationData(){
-        let venuedata=[
-        //{ name: '上海', geometry: { type: 'Point', coordinates: ['121.29', '31.11'] }, style: { speed: 0.4 } },
-        ]
-        this.venue.forEach(function(item,index){ 
-          let newList = {
-            name:item.venue_name,
-            geometry: { 
-              type: 'Point', 
-              coordinates: ['-1', '-1'] 
-            }, 
-            style: { 
-              speed:  Math.random()+0.1
-            }//随机速度
-          }
-        let myGeo = new BMap.Geocoder()
-        myGeo.getPoint(item.venue_address,function(point){
-          if(point){
-            newList.geometry.coordinates=[String(point.lng),String(point.lat)]
-            venuedata.push(newList);
-          }
-        })         
+      getLocationData() {
+        let venuedata = [];
+        const promises = this.venue.map((item) => {
+          return new Promise((resolve) => {
+            let myGeo = new BMap.Geocoder();
+            myGeo.getPoint(item.venue_address, function (point) {
+              if (point) {
+                let newList = {
+                  name: item.venue_name,
+                  geometry: {
+                    type: 'Point',
+                    coordinates: [String(point.lng), String(point.lat)],
+                  },
+                  style: {
+                    speed: Math.random() + 0.3,
+                  },
+                };
+                venuedata.push(newList);
+              }
+              resolve(); // Resolve the promise after processing the item
+            });
+          });
         });
-        location=venuedata
+        Promise.all(promises).then(() => {
+          location = venuedata; // Assign the completed venuedata to location
+          this.loadMap();
+        });//使用promise来确保在location已经被正确赋值
       },
       loadMap(){
-        console.log(location)
         this.inmap = new inMap.Map({
         id: 'allmap',
         skin: 'Blueness',
@@ -90,6 +80,7 @@
           min: 5
         }
       })
+
       this.polygonOverlay = new inMap.PolygonOverlay({
         style: {
             normal: {
@@ -104,6 +95,9 @@
         },
         data: ShanghaiGeoData.features,
       });
+      this.inmap.add(this.polygonOverlay);
+      // 将地图视图调整到合适的显示范围
+      this.inmap.setFitView([this.polygonOverlay]);
      
       this.pointOverlay = new inMap.PointOverlay({
           tooltip: {
@@ -138,6 +132,9 @@
               }
           }
       })
+    
+      this.inmap.add(this.pointOverlay)
+      console.log(this.pointOverlay.getRenderData())
 
       this.animationOverlay = new inMap.PointAnimationOverlay({
         style: {
@@ -148,12 +145,8 @@
         },
         data: location
       })
-
-      this.inmap.add(this.pointOverlay)
       this.inmap.add(this.animationOverlay)
-      this.inmap.add(this.polygonOverlay);
-      // 将地图视图调整到合适的显示范围
-      this.inmap.setFitView([this.polygonOverlay]);
+      
       }
       
     }
