@@ -116,19 +116,9 @@
           data: location,
           event: {
               onMouseClick(val) {
-                  console.log(val[0].name);
-                  let myGeo = new BMap.Geocoder()
-                  let address="北京市海淀区中关村南大街33号国家图书馆内(首都体育馆)国家典籍博物馆"
-                  myGeo.getPoint(address,function(point){
-                  if(point){
-                      console.log(point.lat)
-                      console.log(point.lng)
-                      // that.map.centerAndZoom(point,15)
-                      // that.latitude=point.lat
-                      // that.longitude=point.lng
-                      // that.infoWindowShow=true
-                  }
-                  })
+                  console.log(val[0].name);   
+                  //todo：传入展馆名称进入筛选界面，跳出该展馆的所有展览
+                  //this.$router.push({ path: "/search", query: { querytext: this.inputText } });             
               }
           }
       })
