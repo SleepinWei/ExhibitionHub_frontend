@@ -4,7 +4,7 @@
     <el-row class="basic_info">
         <el-col :span="9" class="poster">
             <el-row justify="center" class="poster-image">
-                <el-image style="width: 250px;height: 300px;" :src="form.poster_url" fit="contain">
+                <el-image style="width: 250px;height: 300px;" :src="'http://127.0.0.1:8080/'+form.poster_url" fit="contain">
                 </el-image>
             </el-row>
         </el-col>

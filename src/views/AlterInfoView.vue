@@ -55,7 +55,15 @@
         </el-col>
       </el-form-item>
       <el-form-item label="地点">
-        <el-input v-model="form.location" />
+        <el-select  style="padding-right: 10px;" v-model="form.province" placeholder="省" @change="province_change">
+          <el-option v-for="item in province_options" :value="item"/>
+        </el-select>
+        <el-select style="padding-right: 10px;" v-model="form.city" placeholder="市" @change="city_change">
+          <el-option v-for="item in city_options" :value="item"/>
+        </el-select>
+        <el-select style="padding-right: 10px;" v-model="form.area" placeholder="区">
+          <el-option v-for="item in area_options" :value="item"/>
+        </el-select>
       </el-form-item>
       <el-form-item label="票务信息">
         <el-input v-model="form.ticket_info" />
@@ -116,7 +124,7 @@
   import { Plus } from '@element-plus/icons-vue'
   import type { UploadProps, UploadUserFile } from 'element-plus'
   import { ElMessage } from 'element-plus'
-  import axios from "axios"
+  import axios from "../http.ts"
 import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter();
@@ -129,7 +137,9 @@ const imageUrl = ref('')
     name: '',
     venue_name:'',
     organizer: '',
-    location: '',
+    province: '',
+    city: '',
+    area: '',
     link:'',
     ticket_info:'',
     // region: '',
@@ -145,7 +155,29 @@ const imageUrl = ref('')
     // checked_art:false,
     // checked_tech:false
   })
-  
+
+const province_options = ref([]);
+const city_options = ref([]);
+const area_options = ref([]);
+  const province_change = (value) => {
+  axios.get("/location/city_list", {
+    params: {
+      province: value
+    }
+  }).then((response) => {
+    city_options.value = response.data;
+  });
+}
+
+const city_change = (value) => {
+  axios.get("/location/area_list", {
+    params: {
+      city: value
+    }
+  }).then((response) => {
+    area_options.value = response.data;
+  });
+}
   const onSubmit = () => {
     axios({
         method: "post",
@@ -251,6 +283,12 @@ onMounted(() => {
         console.log(response.data);
         form.value = response.data;
     });
+
+    axios.get("/location/province").then(
+    (response) => {
+      province_options.value = response.data;
+    }
+  )
 });
 
 </script>

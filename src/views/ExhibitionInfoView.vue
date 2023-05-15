@@ -34,6 +34,9 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                     <el-row class="sub_info">
                         票价&emsp; {{ form.tickets }}
                     </el-row>
+                    <el-row>
+                        地点 {{ form.province }} - {{ form.city }} - {{ form.area }} - {{ form.address}}
+                    </el-row>
                     <el-row class="sub_info">
                         官方链接&emsp;
                         <a :href="form.link">
@@ -109,7 +112,7 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                 标签: 
                 <el-tag v-for="tag in form.tags"> {{tag.name}} </el-tag>
             </el-row>
-            <el-row class="subscribe_button">
+            <el-row v-if="isLogin" class="subscribe_button">
                 <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
                 <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag> 
             </el-row>
@@ -134,6 +137,10 @@ export default {
                 organizer: "og1",
                 tickets: "2000RMB",
                 link: "https://bilibili.com",
+                province: "",
+                city: "",
+                area: "",
+                address : "",
                 tags: [  
                     {
                         id:1,
@@ -150,8 +157,8 @@ export default {
                 end_time: "",
                 recommends: ["ex1", "ex2", "ex3"]
             },
-            isAdmin: true,
-            isLogin: true,
+            isAdmin: false,
+            isLogin: false,
             isSubscribed: false,
             subscribeDate: '',
             showPopup: false,
@@ -169,7 +176,7 @@ export default {
                 .then((response) => {
                     this.form = response.data;
                     this.form.poster_url = 'http://127.0.0.1:8080/' + response.data.poster_url;
-                    console.log(this.form.exId);
+                    console.log(this.form);
 
                     axios.get("/searchTagById", {
                         params: {
@@ -188,11 +195,14 @@ export default {
         },
         getUserInfo() {
             // let isAdmin = this.$cookies.get("cookieName") != null;
-            let isAdmin = true; // TODO: is admin
-            let isLogin = (this.$cookies.get("cookieName") != null);
-            if (isAdmin != null) {
-                this.isAdmin = isAdmin;
+            let role = this.$cookies.get("cookieRole");
+            console.log(role);
+            if( role == "博物馆" || role == "管理员") {
+                this.isAdmin = true;
             }
+
+            let isLogin = (this.$cookies.get("cookieName") != null);
+
             if (isLogin != null) {
                 this.isLogin = isLogin;
             }

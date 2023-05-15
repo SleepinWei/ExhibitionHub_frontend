@@ -1,11 +1,11 @@
 <script setup>
-import HeaderItem from '../../components/Header.vue'
-import MuseumReviewItem from '../../components/MuseumReview.vue'
-import MuseumSubmitItem from '../../components/MuseumSubmitted.vue'
-import AdminAuditItem from '../../components/AdminAudit.vue'
-import AdminPassedItem from '../../components/AdminPassed.vue'
-import SubscribeItem from '../../components/SubscribeItem.vue'
-import CalendarView from '../../views/CalendarView.vue'
+import HeaderItem from '../components/Header.vue'
+import MuseumReviewItem from '../components/MuseumReview.vue'
+import MuseumSubmitItem from '../components/MuseumSubmitted.vue'
+import AdminAuditItem from '../components/AdminAudit.vue'
+import AdminPassedItem from '../components/AdminPassed.vue'
+import SubscribeItem from '../components/SubscribeItem.vue'
+import CalendarView from '../views/CalendarView.vue'
 </script>
 
 <template>
@@ -45,27 +45,28 @@ import CalendarView from '../../views/CalendarView.vue'
             <el-upload action="http://localhost:8080/test/upload" :data="{ uid: uid }" :show-file-list="false"
               :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
               <img :src="imageUrl" alt="avatar" class="avatar">
-
             </el-upload>
-            <!-- <img src="../../assets/1.jpg" alt="avatar" class="avatar"> -->
 
             <div v-if="!isEditing">
               <!-- 昵称 -->
               <h3>{{ user.username }}</h3>
-              <!-- 个人简介 -->
-              <p class="p-description">个人简介：{{ user.biography }}</p>
+              <el-form ref="user" :model="user" label-position="top" label-width="80px">
+                <el-form-item label="ID：">
+                  <el-input v-model="user.id" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="用户类型：">
+                  <el-input v-model="user.role" :disabled="true"></el-input>
+                </el-form-item>
+                <el-form-item label="个人简介">
+                  <el-input v-model="user.biography" :disabled="true" type="textarea"></el-input>
+                </el-form-item>
+              </el-form>
               <!-- 修改信息按钮/表单 -->
               <el-button class="button" @click="isEditing = true">修改基本信息</el-button>
             </div>
 
             <div v-if="isEditing">
               <el-form ref="subuser" :model="subuser" label-position="top" label-width="80px">
-                <el-form-item label="ID：">
-                  <el-input v-model="subuser.id" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="用户类型：">
-                  <el-input v-model="subuser.role" :disabled="true"></el-input>
-                </el-form-item>
                 <el-form-item label="昵称：">
                   <el-input v-model="subuser.username"></el-input>
                 </el-form-item>
@@ -74,9 +75,6 @@ import CalendarView from '../../views/CalendarView.vue'
                     <el-radio label="男" />
                     <el-radio label="女" />
                   </el-radio-group>
-                </el-form-item>
-                <el-form-item label="邮箱：">
-                  <el-input v-model="subuser.email" :disabled="true"></el-input>
                 </el-form-item>
                 <el-form-item label="个人简介">
                   <el-input v-model="subuser.biography" maxlength="20" type="textarea"
@@ -98,7 +96,7 @@ import CalendarView from '../../views/CalendarView.vue'
 
       <!-- 右侧更多信息 -->
       <el-col :xs="24" :sm="24" :md="16" class="right-col">
-        <el-card class="card" :body-style="{ padding: '10px', height: '100%', width: '98%' }">
+        <el-card class="card" :body-style="{ padding: '8px', height: '100%', width: '98%' }">
           <!--  -->
           <div v-if="user.role === '普通用户'">
             <div v-if="userSubscribeToReview">
@@ -116,8 +114,8 @@ import CalendarView from '../../views/CalendarView.vue'
           </div>
           <div v-else-if="user.role === '管理员'">
             <div v-if="adminAudit">
-              <!-- <AdminAuditItem /> -->
-              <AuditView />
+              <AdminAuditItem />
+              <!-- <AuditView /> -->
             </div>
             <div v-else-if="adminPassed">
               <AdminPassedItem />
@@ -141,8 +139,6 @@ export default {
   data() {
     return {
       uid: this.$cookies.get("cookieAccount"),
-      // uid:'1',
-
       user: [],
       subuser: [],
       isEditing: false, //是否编辑信息
@@ -187,21 +183,24 @@ export default {
   methods: {
     //修改基本信息，用户名、性别、出生日期
     changeBasicInfo() {
-      //表单信息复制User，传回后端修改用户信息
-      this.user.username = this.subuser.username
-      this.user.sex = this.subuser.sex
-      this.user.biography = this.subuser.biography
-      //axios.put更新信息
-      this.$axios.put("user", this.user)
+      //更新信息用户信息
+      this.$axios.put("user", this.subuser)
         .then((response) => {
-          console.log("what+" + response.data),
-            this.message = response.data
+          this.message = response.data
           //弹框提示信息
           if (this.message) {
-            this.$message({
-              message: '保存成功！',
-              type: 'success'
-            })
+            this.$axios.get("/user/find/" + this.uid)
+              .then((response) => {
+                this.user = response.data
+                this.subuser = this.user
+              })
+              .catch(response => {
+                console.log("请求失败")
+              }),
+              this.$message({
+                message: '保存成功！',
+                type: 'success'
+              })
           }
           else {
             this.$message({
@@ -299,13 +298,15 @@ export default {
 .left-col {
   display: flex;
   justify-content: center;
-  align-items: center;
+  height: 100%;
+  flex-grow: 1;
   /* margin-bottom: 80px; */
 }
 
 .right-col {
   display: flex;
   flex-direction: column;
+  weight: 100%;
   height: 100%;
 }
 
