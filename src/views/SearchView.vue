@@ -46,7 +46,7 @@
                     </el-radio-group>
                     <div class="demonstration">展览类型</div>
                     <TypeSelectorItem @change="typeChange" />
-                    <div class="demonstration">展览主办方</div>
+                    <div class="demonstration">展览馆</div>
                     <MuseumSelectorItem @change="venueChange" />
                 </div>
             </el-col>

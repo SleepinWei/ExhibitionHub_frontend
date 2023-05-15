@@ -31,14 +31,14 @@ export default {
             this.$emit('change', this.option);
         },
         getAllOrganizer() {
-            axios.get(`/tagSelection/getAllOrganizer`)
+            axios.get(`/ExhibitionMap/getAllVenue`)
                 .then(
                     (response) => {
                         console.log(response.data);
                         this.museumOptions = [{ id: 0, label: '---------------不限---------------' },];
                         var data = response.data;
                         for (var i = 0; i < data.length; i += 1) {
-                            this.museumOptions.push({ id: i + 1, label: data[i] });
+                            this.museumOptions.push({ id: i + 1, label: data[i].venue_name });
                         }
                         console.log(this.museumOptions)
                     }

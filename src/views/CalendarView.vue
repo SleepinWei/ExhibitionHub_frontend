@@ -34,7 +34,7 @@ import MuseumSelectorItem from '../components/MuseumSelectorItem.vue';
                 </el-radio-group>
                 <div class="demonstration">展览类型</div>
                 <TypeSelectorItem @selectType="typeChange" />
-                <div class="demonstration">展览主办方</div>
+                <div class="demonstration">展览馆</div>
                 <MuseumSelectorItem @change="venueChange" />
             </div>
 
