@@ -201,7 +201,7 @@ export default {
                 query: this.inputText,
                 src: this.startTime,
                 dst: this.endTime,
-                organizer: this.venue,
+                venue: this.venue,
                 tags: this.tags,
                 province: this.province,
                 city: this.city,
