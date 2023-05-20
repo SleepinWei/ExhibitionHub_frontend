@@ -382,7 +382,9 @@ export default {
         },
         searchRecommand() {
             axios.get(`/recommandEx`, {
-                ex_id: this.$route.params.exId,
+                params: {
+                    ex_id: this.$route.params.exId
+                }
             }).then((response) => {
                 console.log(response.data);
                 this.form.recommends = response.data
