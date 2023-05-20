@@ -56,7 +56,7 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                         </div>
                     </el-row>
                 </el-col>
-                <el-col :span="1" style="margin-top: 40px;">
+                <el-col :span="1" style="margin-top: 40px;margin-left: 10px;">
                     <button v-if="isAdmin" class="Btn" @click="onChangeInfo">
                         <div class="sign">
                             <svg-icon class="ex-icon" type="mdi" :path="mdiTextBoxEditOutline"></svg-icon>
@@ -105,19 +105,39 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
         </el-col>
         <el-col :span="5">
             <!-- 推荐信息 -->
-            <el-row>
-                <h2>
+            <el-row style="margin-top:25px">
+                <h2 class="ex-head-font" style="font-size: 30px;">
                     推荐展览
                 </h2>
             </el-row>
             <el-row>
                 <ul>
                     <li v-for="recommend in form.recommends">
-                        {{ recommend }}
+
+                        <el-row class="sub_info">
+                            时间：{{ recommend.begin_date }} - {{ recommend.end_date }} {{ recommend.begin_time }} - {{
+                                recommend.end_time }}
+                        </el-row>
+                        <el-row class="sub_info">
+                            主办方：{{ recommend.organizer }}
+                        </el-row>
+                        <el-row class="sub_info">
+                            票价: {{ recommend.ticket_info }}
+                        </el-row>
+                        <el-row class="sub_info">
+                            官方链接:
+                            <a :href="recommend.link">
+                                {{ recommend.link }}
+                            </a>
+                        </el-row>
+                        <el-row class="sub_info">
+                            标签:
+                            <el-tag v-for="tag in recommend.tags"> {{ tag.name }} </el-tag>
+                        </el-row>
                     </li>
                 </ul>
             </el-row>
-            <el-row class="sub_info">
+            <!-- <el-row class="sub_info">
                 时间：{{ form.begin_date }} - {{ form.end_date }} {{ form.begin_time }} - {{ form.end_time }}
             </el-row>
             <el-row class="sub_info">
@@ -139,7 +159,7 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
             <el-row v-if="isLogin" class="subscribe_button">
                 <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
                 <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag>
-            </el-row>
+            </el-row> -->
         </el-col>
     </el-row>
 </template>
@@ -186,7 +206,7 @@ export default {
             ssssssssssssssssssssssssssssss",
                 begin_time: "",
                 end_time: "",
-                recommends: ["ex1", "ex2", "ex3"]
+                recommends: [],
             },
             isAdmin: false,
             isLogin: false,
@@ -359,6 +379,14 @@ export default {
             }
             else
                 this.showDatePicker = true;
+        },
+        searchRecommand() {
+            axios.get(`/recommandEx`, {
+                ex_id: this.$route.params.exId,
+            }).then((response) => {
+                console.log(response.data);
+                this.form.recommends = response.data
+            })
         }
     },
     mounted() {
