@@ -3,11 +3,13 @@
     <el-table :data="exhibitions" stripe style="width: 100%">
       <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
       <el-table-column prop="name" label="展览名称" align="center"></el-table-column>
-      <el-table-column prop="venue_name" label="展览地点" align="center"></el-table-column>
-      <el-table-column prop="organizer" label="主办方" align="center"></el-table-column>
+      <el-table-column prop="user_id" label="修改人" align="center"></el-table-column>
+      <el-table-column prop="date" label="修改时间" align="center"></el-table-column>
+      <el-table-column prop="review_date" label="审核时间" align="center"></el-table-column>
+      <el-table-column prop="type" label="修改类型" align="center"></el-table-column>
       <el-table-column label="审核状态" v-slot="{ row }" align="center">
-        <el-check-tag  :style="{ backgroundColor: row.status === '通过' ? '#f4f4f5' : '#f4f4f5', color: row.status === '审核通过' ? '#43ad60' : '#e25959' }"  @click="handleTagClick(row)">
-          {{ row.status === '通过' ? '通过' : '未通过' }}
+        <el-check-tag  :style="{ backgroundColor: row.result=== 'pass' ? '#f4f4f5' : '#f4f4f5', color: row.status === '审核通过' ? '#43ad60' : '#e25959' }"  @click="handleTagClick(row)">
+          {{ row.result === 'pass' ? '通过' : '未通过' }}
         </el-check-tag>
       </el-table-column>
     </el-table>
@@ -72,6 +74,7 @@
           ).then((response) => {
               //
               this.exhibitionViewed = response.data; 
+              this.exhibitionViewed.poster_url = "http://127.0.0.1:8080/" + response.data.poster_url;
           });
         }
       },

@@ -104,6 +104,7 @@ export default {
         },
         approve(row) {
             // 通过
+            console.log(row.id);
             this.$axios.get(
                 `/audit/pass`, {
                     params: {

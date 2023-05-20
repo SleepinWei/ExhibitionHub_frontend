@@ -1,4 +1,5 @@
 //安装 npm i hover.css --save
+//npm install @mdi/js @jamescoyle/vue-icon
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import 'hover.css'

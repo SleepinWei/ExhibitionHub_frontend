@@ -7,8 +7,9 @@
   <el-row justify="left">
   <el-table :data="tableData" stripe style="width: 100%">
       <el-table-column prop="name" label="展览名称" align="center"/>
-      <el-table-column prop="organizer" label="主办方" align="center"/>
+      <el-table-column prop="user_id" label="修改人" align="center"/>
       <el-table-column prop="date" label="提交时间"  align="center"/>
+      <el-table-column prop="type" label="修改类型"  align="center"/>
       <el-table-column label="查看详情" align="center">
           <template #default="scope">
               <el-button  @click="view(scope.row)">
@@ -60,8 +61,8 @@ export default {
               exId: this.$route.params.exId,
               poster_url: "/src/assets/posters/saber.png",
               name: "Exhibition 1",
-              begin_date: "2001-01-01",
-              end_date: "2001-02-02",
+              date: "2001-01-01",
+              finish_date: "2001-02-02",
               organizer: "og1",
               tickets: "2000RMB",
               link: "https://bilibili.com",
@@ -90,14 +91,17 @@ export default {
           ).then((response) => {
               //
               this.exhibitionViewed = response.data; 
+            this.exhibitionViewed.poster_url = "http://127.0.0.1:8080/" + response.data.poster_url;
           });
         },
         approve(row) {
           // 通过
+          let row_id = parseInt(row.id);
+
           this.$axios.get(
             `/audit/pass`, {
               params: {
-                  id : parseInt(row.id)
+                  id : row_id
               }
             }
           ).then((response) => {
