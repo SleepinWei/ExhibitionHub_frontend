@@ -90,14 +90,17 @@ export default {
           ).then((response) => {
               //
               this.exhibitionViewed = response.data; 
+            this.exhibitionViewed.poster_url = "http://127.0.0.1:8080/" + response.data.poster_url;
           });
         },
         approve(row) {
           // 通过
+          let row_id = parseInt(row.id);
+
           this.$axios.get(
             `/audit/pass`, {
               params: {
-                  id : parseInt(row.id)
+                  id : row_id
               }
             }
           ).then((response) => {
