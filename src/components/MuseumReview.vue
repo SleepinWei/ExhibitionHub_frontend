@@ -46,25 +46,25 @@ import ExhibitionInfoComp from '@/components/ExhibitionInfoComp.vue'
 export default {
   data() {
       return {
-          tableData: [],
-          exhibitionViewed: {
-              exId: this.$route.params.exId,
-              poster_url: "/src/assets/posters/saber.png",
-              name: "Exhibition 1",
-              begin_date: "2001-01-01",
-              end_date: "2001-02-02",
-              organizer: "og1",
-              tickets: "2000RMB",
-              link: "https://bilibili.com",
-              tags: ["tag1", "tag2"],
-              introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
-          ssssssssssssssssssssssssssssss",
-              begin_time: "",
-              end_time: "",
-              recommends: ["ex1", "ex2", "ex3"]
-        
-          },
-          dialogVisible : false
+        uid: this.$cookies.get("cookieAccount"),
+        tableData: [],
+        exhibitionViewed: {
+            exId: this.$route.params.exId,
+            poster_url: "/src/assets/posters/saber.png",
+            name: "Exhibition 1",
+            begin_date: "2001-01-01",
+            end_date: "2001-02-02",
+            organizer: "og1",
+            tickets: "2000RMB",
+            link: "https://bilibili.com",
+            tags: ["tag1", "tag2"],
+            introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
+            ssssssssssssssssssssssssssssss",
+            begin_time: "",
+            end_time: "",
+            recommends: ["ex1", "ex2", "ex3"]
+        },
+        dialogVisible : false
       }
   },
   methods: {
@@ -114,11 +114,16 @@ export default {
       }
   },
   mounted() {
-    this.$axios.get("/getUncheckedEx")
-      .then((response) => {
-        // console.log(response.data);
+    this.$axios.get("/getUncheckedEx", {
+        params: {
+            id : this.uid,
+        }
+    })
+    .then((response) => {
+        console.log("/getUncheckedEx"+this.uid)
+        console.log(response.data);
         this.tableData = response.data;
-      });
+    });
   }
 }
 
