@@ -248,7 +248,7 @@
     background-size: cover;
   }
   .container {
-    background: rgba(228, 236, 238, 0.5);
+    background: rgba(229, 236, 238, 0.5);
     border: 1px solid gainsboro;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.6);
     border-radius: 10px;
