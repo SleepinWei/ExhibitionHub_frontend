@@ -7,35 +7,98 @@
   
   <script>
   import inMap from 'inmap'
-  
+  import ShanghaiGeoData from '../assets/上海市.json'
+
+  let location;
   export default {
     data () {
       return {
         inmap: '',
-        overlay: '',
+        polygonOverlay: '',
         animationOverlay: '',
         pointOverlay: '',
+        venue : [
+          {venue_name:'-1',venue_address:'-1'}
+        ],
+        //data:[]
       }
     },
     mounted () {
-      //待从后端传数据
-      var data = [
-        { name: '北京', geometry: { type: 'Point', coordinates: ['116.3', '39.9'] }, style: { speed: 1 } }, 
-        { name: '上海', geometry: { type: 'Point', coordinates: ['121.29', '31.11'] }, style: { speed: 0.4 } }, 
-        { name: '福建', geometry: { type: 'Point', coordinates: ['117.984943', '26.050118'] }, style: { speed: 0.45 } }, 
-        { name: '广东', geometry: { type: 'Point', coordinates: ['113.394818', '23.408004'] }, style: { speed: 0.7 } }, 
-        { name: '广西', geometry: { type: 'Point', coordinates: ['108.924274', '23.552255'] }, style: { speed: 1 } },]
-      this.inmap = new inMap.Map({
+      this.getVenues()
+    },
+    methods:{
+      getVenues(){
+        this.$axios.get(`/ExhibitionMap/getAllVenue`)
+        .then((response) => {
+          this.venue=response.data
+          this.getLocationData()
+          //this.loadMap()
+        }).catch((error) => {
+            if (error.response.status == 400) {
+                // exhibition is not found
+                // this.$router.push("/error400")
+            }
+        });
+      },
+      getLocationData() {
+        let venuedata = [];
+        const promises = this.venue.map((item) => {
+          return new Promise((resolve) => {
+            let myGeo = new BMap.Geocoder();
+            myGeo.getPoint(item.venue_address, function (point) {
+              if (point) {
+                let newList = {
+                  name: item.venue_name,
+                  geometry: {
+                    type: 'Point',
+                    coordinates: [String(point.lng), String(point.lat)],
+                  },
+                  style: {
+                    speed: Math.random() + 0.3,
+                  },
+                };
+                venuedata.push(newList);
+              }
+              resolve(); // Resolve the promise after processing the item
+            });
+          });
+        });
+        Promise.all(promises).then(() => {
+          location = venuedata; // Assign the completed venuedata to location
+          this.loadMap();
+        });//使用promise来确保在location已经被正确赋值
+      },
+      loadMap(){
+        this.inmap = new inMap.Map({
         id: 'allmap',
         skin: 'Blueness',
-        center: [105.403119, 38.028658],
+        center: ["121.27931842594131", "31.236916805104883"],
         zoom: {
-          value: 5,
+          value: 10,
           show: true,
-          max: 18,
+          max: 22,
           min: 5
         }
       })
+
+      this.polygonOverlay = new inMap.PolygonOverlay({
+        style: {
+            normal: {
+                borderWidth: 1.5,        
+                backgroundColor: "rgba(134,157,157,0.7)",
+                label: {
+                  show: true, // 是否显示
+                  font: "13px bold ",
+                  color: "rgba(224, 238, 251,1)"
+                }
+              },
+        },
+        data: ShanghaiGeoData.features,
+      });
+      this.inmap.add(this.polygonOverlay);
+      // 将地图视图调整到合适的显示范围
+      this.inmap.setFitView([this.polygonOverlay]);
+     
       this.pointOverlay = new inMap.PointOverlay({
           tooltip: {
             show: true,
@@ -50,44 +113,32 @@
                   size: 5 // 半径
               }
           },
-          data: data,
+          data: location,
           event: {
               onMouseClick(val) {
-                  console.log(val[0].name);
-                  //this.getLocation();
-                  
-                  
+                  console.log(val[0].name);   
+                  //todo：传入展馆名称进入筛选界面，跳出该展馆的所有展览
+                  //this.$router.push({ path: "/search", query: { querytext: this.inputText } });             
               }
           }
       })
+    
+      this.inmap.add(this.pointOverlay)
+      console.log(this.pointOverlay.getRenderData())
+
       this.animationOverlay = new inMap.PointAnimationOverlay({
         style: {
           fps: 25, // 动画帧数
-          color: '#8fb2c9',//红色点？
-          size: 15,
+          color: '#f07c82',//红色点？
+          size: 20,
           speed: 0.4
         },
-        data: data
+        data: location
       })
       this.inmap.add(this.animationOverlay)
-      this.inmap.add(this.pointOverlay)
-    },
-    methods:{
-      getLocation(){
-        let that=this
-        let myGeo = new BMap.Geocoder()
-        let address="江苏省盐城市"
-        myGeo.getPoint(address,function(point){
-        if(point){
-            console.log(point.lat)
-            console.log(point.lng)
-            // that.map.centerAndZoom(point,15)
-            // that.latitude=point.lat
-            // that.longitude=point.lng
-            // that.infoWindowShow=true
-        }
-        })
+      
       }
+      
     }
   }
   

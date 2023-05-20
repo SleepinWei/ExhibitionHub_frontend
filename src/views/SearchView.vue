@@ -45,8 +45,8 @@
                         </div>
                     </el-radio-group>
                     <div class="demonstration">展览类型</div>
-                    <TypeSelectorItem @change="typeChange" />
-                    <div class="demonstration">展览主办方</div>
+                    <TypeSelectorItem @selectType="typeChange" />
+                    <div class="demonstration">展览馆</div>
                     <MuseumSelectorItem @change="venueChange" />
                 </div>
             </el-col>
@@ -177,12 +177,16 @@ export default {
             this.area = area
             this.loadContent()
         },
-        typeChange(tags) {
-            if (tags == "") {
-                tags = "-1"
+        typeChange(data) {
+            if (data.length == 0) {
+                this.tags = "-1";
+            } else {
+                this.tags = ""
+                for (var i = 0; i < data.length; ++i) {
+                    this.tags += data[i] + ' '
+                }
             }
-            this.tags = tags
-            console.log("calendar", this.tags)
+            console.log("searchhhhhhh", this.tags)
             this.loadContent()
         },
         venueChange(venue) {
@@ -197,7 +201,7 @@ export default {
                 query: this.inputText,
                 src: this.startTime,
                 dst: this.endTime,
-                organizer: this.venue,
+                venue: this.venue,
                 tags: this.tags,
                 province: this.province,
                 city: this.city,
