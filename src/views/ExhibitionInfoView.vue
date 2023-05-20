@@ -395,6 +395,7 @@ export default {
         this.getRequest();
         this.getUserInfo();
         this.getisSub();
+        this.searchRecommand();
     },
     computed: {
         long_intros() {
