@@ -246,7 +246,6 @@ export default {
                 });
         },
         getUserInfo() {
-            // let isAdmin = this.$cookies.get("cookieName") != null;
             let role = this.$cookies.get("cookieRole");
             console.log(role);
             if (role == "博物馆" || role == "管理员") {
@@ -381,11 +380,8 @@ export default {
                 this.showDatePicker = true;
         },
         searchRecommand() {
-            axios.get(`/recommandEx`, {
-                params: {
-                    ex_id: this.$route.params.exId
-                }
-            }).then((response) => {
+            axios.get(`/recommandEx/` + this.$route.params.exId
+            ).then((response) => {
                 console.log(response.data);
                 this.form.recommends = response.data
             })
