@@ -101,7 +101,7 @@ export default {
             province: "null",
             city: "null",
             area: "null",
-            ExhibitonArr: [],
+            ExhibitonArr: []
         }
     },
     methods: {
@@ -190,7 +190,6 @@ export default {
             this.loadContent()
         },
         venueChange(venue) {
-            console.log("venuechange",venue)
             if (venue == "---------------不限---------------") {
                 venue = "null"
             }
@@ -228,19 +227,21 @@ export default {
         }
     },
     mounted() {
-        // 从其他页面跳转过来，需要进行一次查询
-        if (this.$route.query.querytext != null) {
-            this.inputText = this.$route.query.querytext;
-            this.searchRequest(this.inputText);
-        }
-        else{
-            this.searchText=null;
-        }
-
         if (this.$route.query.venue != null) {
+            this.venue=this.$route.query.venue;
             this.searchText=null;
             this.venueChange(this.venue);
-            this.$router.push({ query: {} });//清空参数
+            this.$router.push({
+                path:this.$route.path,
+                query: {}
+            }
+            );//清空路由   
+        }else{
+            // 从其他页面跳转过来，需要进行一次查询
+            if (this.$route.query.querytext != null) {
+                this.inputText = this.$route.query.querytext;    
+            }
+            this.searchRequest(this.inputText);
         }
     },
 }
