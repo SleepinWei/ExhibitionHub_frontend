@@ -1,51 +1,52 @@
 
 <template>
-    <div class="container">
+    <div class="reset-bg">
+      <div class="container">
         <el-steps :active="active" :space="200" finish-status="success" align-center>
-            <el-step title="验证用户名和邮箱"></el-step>
-            <el-step title="输入验证码"></el-step>
-            <el-step title="设置新密码"></el-step>
+          <el-step title="验证邮箱"></el-step>
+          <el-step title="输入验证码"></el-step>
+          <el-step title="设置新密码"></el-step>
         </el-steps>
         <div v-if="active === 0" class="common_div">
-            <el-form :model="Form" class="user-container" label-position="left" label-width="60px" size="default">
-                <el-form-item style="float: right; width: 80%" label="邮箱号">
-                    <el-input type="text" v-model="Form.email" autofocus ref="email" auto-complete="off"
-                        placeholder="请输入用来找回密码的邮箱" prefix-icon="el-icon-message" spellcheck="false">
-                    </el-input>
-                </el-form-item>
-            </el-form>
+          <el-form :model="Form" class="user-container" label-position="left" label-width="60px" size="default">
+            <el-form-item style="float: right; width: 90%" label="邮箱号">
+              <el-input type="text" v-model="Form.email" autofocus ref="email" auto-complete="off"
+                placeholder="请输入用来找回密码的邮箱" prefix-icon="el-icon-message" spellcheck="false">
+              </el-input>
+            </el-form-item>
+          </el-form>
         </div>
         <div v-if="active === 1" class="common_div">
-            <el-form :model="codeForm" class="user-container" label-position="left" label-width="60px" size="default">
-                <el-form-item style="float: right; width: 80%" label="验证码">
-                    <el-input type="text" v-model="codeForm.code" autofocus ref="code" auto-complete="off"
-                        placeholder="请输入邮箱验证码" prefix-icon="el-icon-s-promotion" spellcheck="false">
-                    </el-input>
-                </el-form-item>
-            </el-form>
+          <el-form :model="codeForm" class="user-container" label-position="left" label-width="60px" size="default">
+            <el-form-item style="float: right; width: 80%" label="验证码">
+              <el-input type="text" v-model="codeForm.code" autofocus ref="code" auto-complete="off"
+                placeholder="请输入邮箱验证码" prefix-icon="el-icon-s-promotion" spellcheck="false">
+              </el-input>
+            </el-form-item>
+          </el-form>
         </div>
         <div v-if="active === 2" class="common_div">
-            <el-form :model="passwordForm" class="user-container" label-position="left" label-width="60px" size="default">
-                <el-form-item style="float: right; width: 80%" label="新密码">
-                    <el-input type="password" v-model="passwordForm.password" autofocus ref="password" auto-complete="off"
-                        placeholder="请输入新密码" prefix-icon="el-icon-key">
-                    </el-input>
-                </el-form-item>
-            </el-form>
+          <el-form :model="passwordForm" class="user-container" label-position="left" label-width="60px" size="default">
+            <el-form-item style="float: right; width: 80%" label="新密码">
+              <el-input type="password" v-model="passwordForm.password" autofocus ref="password" auto-complete="off"
+                placeholder="请输入新密码" prefix-icon="el-icon-key">
+              </el-input>
+            </el-form-item>
+          </el-form>
         </div>
         <div class="common_div" style="text-align: center;justify-content: center;">
-            <el-button @click="next" :disabled="disabled" class="action_button">下一步</el-button>
+          <el-button @click="next" :disabled="disabled" class="action_button">下一步</el-button>
         </div>
-
+      </div>
     </div>
-</template>
-
-<script>
-import qs from 'qs';
-import 'element-plus/theme-chalk/index.css'
-export default {
+  </template>
+  
+  <script>
+  import qs from 'qs';
+  import 'element-plus/theme-chalk/index.css'
+  export default {
     name: "ResetPassword",
-
+  
     data() {
         return {
             active: 0,
@@ -74,10 +75,10 @@ export default {
             return true;
         },
         hasUser() {
-
-
-
-
+  
+  
+  
+  
             //这里要改！！！
             return true;
         },
@@ -127,7 +128,7 @@ export default {
                 .catch(failResponse => {
                 })
         },
-
+  
         next() {
             // 当面板为0时，先判断用户名和邮箱是否输入，进行相关的验证
             if (this.active === 0) {
@@ -193,10 +194,10 @@ export default {
                             });
                         }
                     }).catch(failResponse => {
-
+  
                     })
                 }
-
+  
             }
             // 当面板为2时，则到了用户输入密码的时候, 将密码传入后台
             if (this.active === 2) {
@@ -212,12 +213,13 @@ export default {
                     //获取焦点
                     this.$refs.password.focus();
                 } else {
-                    let password_md5 = this.$md5(this.passwordForm.password);
+                  console.log("success")
+                    let password_md5 = this.passwordForm.password;
                     this.$axios.post('/reset/resetPassword', {
                         password: password_md5,
                         email: this.Form.email,
                     }).then(successResponse => {
-                        if (successResponse.data.code === 200) {
+                        if (successResponse.status === 200) {
                             //密码修改成功
                             this.$notify({
                                 title: '成功',
@@ -228,46 +230,57 @@ export default {
                             });
                             let path = this.$route.query.redirect;
                             this.$router.replace({ path: path === '/' || path === undefined ? '/login' : path })
-                        } else if (successResponse.data.code === 400) {
+                        } else if (successResponse.status === 400) {
                             //修改密码失败，返回对应信息
                             this.$message.error(successResponse.data.message);
                         }
                     }).catch(failResponse => {
-
+  
                     })
                 }
             }
         },
     }
-}
-</script>
-
-<style scoped>
-.container {
+  }
+  </script>
+  
+  <style scoped>
+  .reset-bg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url("../assets/loginbg.png");
+    background-size: cover;
+  }
+  .container {
+    background: rgba(228, 236, 238, 0.5);
     border: 1px solid gainsboro;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.6);
     border-radius: 10px;
     margin: 10% auto;
-    width: 30%;
+    width: 32% ; /* 修改为更大的宽度 */
+    height: 30% ; /* 修改为更大的高度 */
     padding: 25px 30px;
-    background: #fff;
-    opacity: 0.7;
-}
-
-.common_div {
-    margin-top: 5%;
-}
-
-.user-container {
+  }
+  
+  .common_div {
+    margin-top: 5% ;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .user-container {
     width: 80%;
     background: #fff;
-
-}
-
-.action_button {
+  
+  }
+  
+  .action_button {
     width: 20%;
     margin-top: 3%;
     text-align: center;
-}
-</style>
-
+  }
+  </style>
+  
+  
