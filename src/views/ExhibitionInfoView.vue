@@ -6,70 +6,94 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
     <el-row>
         <el-col :span="18">
             <el-row class="basic_info">
-                <el-col :span="9" class="poster">
-                    <el-row justify="center" class="poster-image">
-                        <el-image style="width: 250px;height: 300px;" :src="form.poster_url" fit="contain">
+                <el-col :span="8" :offset="0" class="poster">
+                    <el-row justify="center" class="ex-image">
+                        <el-image :src="form.poster_url" fit="contain" style="width: 80%;">
                         </el-image>
                     </el-row>
                 </el-col>
-                <el-col :span="13" :offset="0" class="simple_info">
+                <el-col :span="12" :offset="0" class="simple_info">
                     <el-row class="sub_info" align="middle">
-                        <el-col :span="18">
-                            <h2>
-                                {{ form.name }}
-                            </h2>
-                        </el-col>
-                        <el-col :span="6" v-if="isAdmin" class="change_info_button">
-                            <el-button type="primary" @click="onChangeInfo">
-                                修改信息
-                            </el-button>
-                        </el-col>
+                        <h2 class="ex-head-font">
+                            {{ form.name }}
+                        </h2>
                     </el-row>
                     <el-row class="sub_info">
-                        时&ensp;&ensp;间&emsp;{{ form.begin_date }} - {{ form.end_date }}
+                        <svg-icon class="ex-icon" type="mdi" :path="mdiCalendarClock"></svg-icon>
+                        时&ensp;&ensp;间&emsp; {{ form.begin_date }} - {{ form.end_date }}
                     </el-row>
                     <el-row class="sub_info">
-                        主办方&emsp;{{ form.organizer }}
+                        <svg-icon class="ex-icon" type="mdi" :path="mdiAccountGroup"></svg-icon>
+                        主办方&emsp; {{ form.organizer }}
                     </el-row>
                     <el-row class="sub_info">
-                        票价&emsp; {{ form.tickets }}
-                    </el-row>
-                    <el-row>
-                        地点 {{ form.province }} - {{ form.city }} - {{ form.area }} - {{ form.address}}
+                        <svg-icon class="ex-icon" type="mdi" :path="mdiCashMultiple"></svg-icon>
+                        票&ensp;&ensp;价&emsp; {{ form.ticket_info }}
                     </el-row>
                     <el-row class="sub_info">
-                        官方链接&emsp;
-                        <a :href="form.link">
-                            {{ form.link }}
-                        </a>
+                        <svg-icon class="ex-icon" type="mdi" :path="mdiMapMarkerRadius"></svg-icon>
+                        地&ensp;&ensp;点&emsp; {{ form.province }} - {{ form.city }} - {{ form.area }} - {{ form.address }}
                     </el-row>
                     <el-row class="sub_info">
-                        标签&emsp;
+                        <svg-icon class="ex-icon" type="mdi" :path="mdiLink"></svg-icon>
+                        链&ensp;&ensp;接&emsp;&ensp; <a :href="form.link">{{ form.link }}</a>
+                    </el-row>
+                    <el-row class="sub_info">
+                        <svg-icon class="ex-icon" type="mdi" :path="mdiTagHeart"></svg-icon>
+                        标&ensp;&ensp;签&emsp;
                         <el-tag v-for="tag in form.tags"> {{ tag.name }} </el-tag>
                     </el-row>
                     <el-row class="subscribe_button">
-                        <div v-if="isLogin && !isSubscribed">
-                            <el-date-picker v-model="subscribeDate" type="date" placeholder="选择日期"
-                                style="margin-right: 20px;" format="YYYY/MM/DD" value-format="YYYY-MM-DD"></el-date-picker>
-                            <el-button @click="onSubscribe" type="success">订阅</el-button>
-                        </div>
                         <div v-if="isLogin && isSubscribed">
                             <el-tag size="large" style="margin-right: 20px;">已订阅</el-tag>
                             <el-tag size="large" style="margin-right: 20px;">订阅时间：{{ subscribeDate }}</el-tag>
-                            <el-button @click="cancelSub" type="success">取消订阅</el-button>
                         </div>
                     </el-row>
                     <el-row class="subscribe_button">
-                        <el-button v-if="isLogin" @click="onShareExhibition" type="success">分享展览</el-button>
                         <div v-if="showPopup" class="popup">
                             <ImageDownloadItem :poster_url="form.poster_url" :tolink="form.link"
                                 @close="onShareExhibition" />
                         </div>
                     </el-row>
                 </el-col>
+                <el-col :span="1" style="margin-top: 40px;">
+                    <button v-if="isAdmin" class="Btn" @click="onChangeInfo">
+                        <div class="sign">
+                            <svg-icon class="ex-icon" type="mdi" :path="mdiTextBoxEditOutline"></svg-icon>
+                        </div>
+                        <div class="text">&ensp;&ensp;修改</div>
+                    </button>
+                    <button v-if="isLogin" class="Btn" @click="onShareExhibition">
+                        <div class="sign">
+                            <svg-icon class="ex-icon" type="mdi" :path="mdiShareVariantOutline"></svg-icon>
+                        </div>
+                        <div class="text">&ensp;&ensp;分享</div>
+                    </button>
+                    <div v-if="isLogin && !isSubscribed" @mouseenter="showDatePicker = true">
+                        <button class="Btn">
+                            <div class="sign">
+                                <svg-icon class="ex-icon" type="mdi" :path="mdiBellRingOutline"></svg-icon>
+                            </div>
+                            <div class="text">&ensp;订阅</div>
+                        </button>
+                    </div>
+                    <div v-if="showDatePicker" class="ex-datePicker">
+                        <el-date-picker v-model="subscribeDate" type="date" placeholder="选择日期" format="YYYY/MM/DD"
+                            @change="onSubscribe" value-format="YYYY-MM-DD" :size="small"
+                            @visible-change="handleVisibilityChange">
+                        </el-date-picker>
+                    </div>
+
+                    <button v-if="isLogin && isSubscribed" class="Btn" @click="cancelSub">
+                        <div class="sign">
+                            <svg-icon class="ex-icon" type="mdi" :path="mdiBellCancelOutline"></svg-icon>
+                        </div>
+                        <div class="text">&ensp;取消</div>
+                    </button>
+                </el-col>
             </el-row>
 
-            <el-row class="long_intro border_up" style="margin-top: 20px;">
+            <el-row class="ex-intro-font">
                 <h3>详细介绍</h3>
             </el-row>
             <el-row class="long_intro border_up">
@@ -94,27 +118,27 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                 </ul>
             </el-row>
             <el-row class="sub_info">
-                时间：{{form.begin_date}} - {{ form.end_date}} {{ form.begin_time }} - {{ form.end_time }}
+                时间：{{ form.begin_date }} - {{ form.end_date }} {{ form.begin_time }} - {{ form.end_time }}
             </el-row>
             <el-row class="sub_info">
-                主办方：{{form.organizer }}
+                主办方：{{ form.organizer }}
             </el-row>
             <el-row class="sub_info">
-                票价: {{form.ticket_info}}
+                票价: {{ form.ticket_info }}
             </el-row>
             <el-row class="sub_info">
-                官方链接: 
+                官方链接:
                 <a :href="form.link">
-                    {{form.link}}
+                    {{ form.link }}
                 </a>
             </el-row>
             <el-row class="sub_info">
-                标签: 
-                <el-tag v-for="tag in form.tags"> {{tag.name}} </el-tag>
+                标签:
+                <el-tag v-for="tag in form.tags"> {{ tag.name }} </el-tag>
             </el-row>
             <el-row v-if="isLogin" class="subscribe_button">
                 <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
-                <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag> 
+                <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag>
             </el-row>
         </el-col>
     </el-row>
@@ -122,9 +146,16 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
 
 <script>
 import axios from '@/http.ts'
+import SvgIcon from '@jamescoyle/vue-icon';
+import {
+    mdiCalendarClock, mdiAccountGroup, mdiCashMultiple,
+    mdiMapMarkerRadius, mdiLink, mdiTagHeart, mdiTextBoxEditOutline,
+    mdiShareVariantOutline, mdiBellRingOutline, mdiBellCancelOutline
+} from '@mdi/js';
 export default {
     components: {
-        ImageDownloadItem
+        ImageDownloadItem,
+        SvgIcon
     },
     data() {
         return {
@@ -140,14 +171,14 @@ export default {
                 province: "",
                 city: "",
                 area: "",
-                address : "",
-                tags: [  
+                address: "",
+                tags: [
                     {
-                        id:1,
+                        id: 1,
                         name: "tag1"
                     },
                     {
-                        id:2,
+                        id: 2,
                         name: "tag2"
                     }
                 ],
@@ -163,13 +194,15 @@ export default {
             subscribeDate: '',
             showPopup: false,
             imageUrl: '',
+            showDatePicker: false, // 是否显示日期选择器
+            hideTimer: null, // 隐藏定时器
         }
     },
     methods: {
         async getRequest() {
             axios.get(`/searchById`,
                 {
-                    params : {
+                    params: {
                         exId: this.$route.params.exId
                     }
                 })
@@ -197,7 +230,7 @@ export default {
             // let isAdmin = this.$cookies.get("cookieName") != null;
             let role = this.$cookies.get("cookieRole");
             console.log(role);
-            if( role == "博物馆" || role == "管理员") {
+            if (role == "博物馆" || role == "管理员") {
                 this.isAdmin = true;
             }
 
@@ -249,6 +282,8 @@ export default {
             this.$router.push(`/alterinfo/${this.$route.params.exId}`);
         },
         onSubscribe() {
+            this.showDatePicker = false;
+            clearTimeout(this.hideTimer);
             console.log(this.subscribeDate)
             if (this.subscribeDate === '' || this.subscribeDate === null || this.subscribeDate === undefined) {
                 this.$message({
@@ -319,7 +354,14 @@ export default {
         onShareExhibition() {
             console.log("share")
             this.showPopup = !this.showPopup
-
+        },
+        handleVisibilityChange(visibility) {
+            console.log(visibility);
+            if (visibility === false) {
+                this.showDatePicker = false;
+            }
+            else
+                this.showDatePicker = true;
         }
     },
     mounted() {
@@ -342,12 +384,27 @@ export default {
 </script>
 
 <style>
+.ex-image {
+    display: flex;
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.poster {
+    margin-top: 20px;
+    display: flex;
+}
+
 .basic_info {
     padding-top: 30px;
+    margin-left: 10%;
 }
 
 .simple_info {
-    margin-left: 20px;
+    margin-right: 5px;
 }
 
 .el-tag {
@@ -355,11 +412,21 @@ export default {
 }
 
 .sub_info {
-    margin-top: 5px;
+    margin-top: 8px;
+    color: #333333;
+}
+
+.ex-icon {
+    margin-right: 5px;
+    color: #689CD2;
 }
 
 .long_intro {
     padding-left: 50px;
+    color: #333333;
+    line-height: 35px;
+    margin-left: 7%;
+    width: 90%;
 }
 
 .el-divider {
@@ -385,10 +452,115 @@ export default {
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 100;
-    /* 最前显示 */
+}
+
+.ex-datePicker {
+    position: relative;
+    left: -60px;
+    top: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .popup button {
     margin-top: 10px;
+}
+
+@font-face {
+    font-family: 'SourceHanSerifSC-VF';
+    src: url('../assets/fonts/SourceHanSerifSC-VF.ttf') format('truetype');
+}
+
+.ex-head-font {
+    font-family: 'SourceHanSerifSC-VF', cursive;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.ex-intro-font {
+    padding-left: 50px;
+    color: #333333;
+    margin-left: 7%;
+    line-height: 35px;
+    padding-left: 50px;
+    width: 90%;
+    font-family: 'SourceHanSerifSC-VF', cursive;
+    font-size: 20px;
+    font-weight: 200;
+    margin-top: 20px;
+    border-top: 2px solid #00000010;
+}
+
+.Btn {
+    margin-left: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition-duration: .3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    background-color: #6E84D6;
+    margin-bottom: 10px;
+}
+
+/* plus sign */
+.sign {
+    width: 100%;
+    transition-duration: .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign svg {
+    width: 17px;
+}
+
+.sign svg path {
+    fill: white;
+}
+
+/* text */
+.text {
+    position: absolute;
+    right: 0%;
+    width: 0%;
+    opacity: 0;
+    color: white;
+    font-size: 1.2em;
+    font-weight: 400;
+    transition-duration: .3s;
+}
+
+/* hover effect on button width */
+.Btn:hover {
+    width: 115px;
+    border-radius: 40px;
+    transition-duration: .3s;
+}
+
+.Btn:hover .sign {
+    width: 30%;
+    transition-duration: .3s;
+    padding-left: 20px;
+}
+
+/* hover effect button's text */
+.Btn:hover .text {
+    opacity: 1;
+    width: 70%;
+    transition-duration: .3s;
+    padding-right: 10px;
+}
+
+/* button click effect*/
+.Btn:active {
+    transform: translate(2px, 2px);
 }
 </style>
