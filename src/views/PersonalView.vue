@@ -9,128 +9,131 @@ import CalendarView from '../views/CalendarView.vue'
 </script>
 
 <template>
-  <HeaderItem />
-  <div class="container">
-    <!-- 导航栏 -->
-    <div v-if="user.role === '普通用户'">
-      <el-menu :default-active="activeIndex" class="menu" mode="horizontal">
-        <!--  -->
-        <el-menu-item index="1" @click="ToSubscribe()">我的订阅</el-menu-item>
-        <el-menu-item index="2" @click="ToCalender()">我的日历</el-menu-item>
-        <el-menu-item index="3">更多</el-menu-item>
-      </el-menu>
-    </div>
-    <div v-else-if="user.role === '博物馆'">
-      <!--  -->
-      <el-menu :default-active="activeIndex" class="menu" mode="horizontal">
-        <el-menu-item index="1" @click="ToReview()">待审核展览</el-menu-item>
-        <el-menu-item index="2" @click="ToSubmit()">已审核展览</el-menu-item>
-      </el-menu>
-    </div>
-    <div v-else-if="user.role === '管理员'">
-      <!--  -->
-      <el-menu :default-active="activeIndex" class="menu" mode="horizontal">
-        <el-menu-item index="1" @click="ToAudit()">待审核展览</el-menu-item>
-        <el-menu-item index="2" @click="ToPassed()">已审核展览</el-menu-item>
-      </el-menu>
-    </div>
-
-
-    <el-row v-if="!userCalenderToReview" class="main">
-      <!-- 左侧头像和个人信息 -->
-      <el-col :xs="24" :sm="24" :md="8" class="left-col">
-        <el-card class="card">
-          <div class="avatar-container">
-            <!-- 头像 -->
-            <el-upload action="http://localhost:8080/test/upload" :data="{ uid: uid }" :show-file-list="false"
-              :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-              <img :src="imageUrl" alt="avatar" class="avatar">
-            </el-upload>
-
-            <div v-if="!isEditing">
-              <!-- 昵称 -->
-              <h3>{{ user.username }}</h3>
-              <el-form ref="user" :model="user" label-position="top" label-width="80px">
-                <el-form-item label="ID：">
-                  <el-input v-model="user.id" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="用户类型：">
-                  <el-input v-model="user.role" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="个人简介">
-                  <el-input v-model="user.biography" :disabled="true" type="textarea"></el-input>
-                </el-form-item>
-              </el-form>
-              <!-- 修改信息按钮/表单 -->
-              <el-button class="button" @click="isEditing = true">修改基本信息</el-button>
-            </div>
-
-            <div v-if="isEditing">
-              <el-form ref="subuser" :model="subuser" label-position="top" label-width="80px">
-                <el-form-item label="昵称：">
-                  <el-input v-model="subuser.username"></el-input>
-                </el-form-item>
-                <el-form-item label="性别：">
-                  <el-radio-group v-model="subuser.sex">
-                    <el-radio label="男" />
-                    <el-radio label="女" />
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item label="个人简介">
-                  <el-input v-model="subuser.biography" maxlength="20" type="textarea"
-                    placeholder="请输入个人简介，不超过20字"></el-input>
-                </el-form-item>
-
-                <el-form-item>
-                  <el-button class="button" @click="changeBasicInfo()">保存基本信息</el-button>
-                </el-form-item>
-                <el-form-item>
-                  <el-button class="button" @click="cancel()">取消</el-button>
-                </el-form-item>
-              </el-form>
-            </div>
-
-          </div>
-        </el-card>
-      </el-col>
-
-      <!-- 右侧更多信息 -->
-      <el-col :xs="24" :sm="24" :md="16" class="right-col">
-        <el-card class="card" :body-style="{ padding: '8px', height: '100%', width: '98%' }">
+  <div class="personal-bg">
+    <HeaderItem />
+    <div class="container">
+      <!-- 导航栏 -->
+      <div v-if="user.role === '普通用户'">
+        <el-menu :default-active="activeIndex" class="menu" mode="horizontal">
           <!--  -->
-          <div v-if="user.role === '普通用户'">
-            <div v-if="userSubscribeToReview">
-              <h2>我的订阅</h2>
-              <SubscribeItem />
-            </div>
-          </div>
-          <div v-else-if="user.role === '博物馆'">
-            <div v-if="museumToReview">
-              <MuseumReviewItem />
-            </div>
-            <div v-else-if="museumSubmitted">
-              <MuseumSubmitItem />
-            </div>
-          </div>
-          <div v-else-if="user.role === '管理员'">
-            <div v-if="adminAudit">
-              <AdminAuditItem />
-              <!-- <AuditView /> -->
-            </div>
-            <div v-else-if="adminPassed">
-              <AdminPassedItem />
-            </div>
-          </div>
-        </el-card>
-      </el-col>
+          <el-menu-item index="1" @click="ToSubscribe()">我的订阅</el-menu-item>
+          <el-menu-item index="2" @click="ToCalender()">我的日历</el-menu-item>
+          <el-menu-item index="3">更多</el-menu-item>
+        </el-menu>
+      </div>
+      <div v-else-if="user.role === '博物馆'">
+        <!--  -->
+        <el-menu :default-active="activeIndex" class="menu" mode="horizontal">
+          <el-menu-item index="1" @click="ToReview()">待审核展览</el-menu-item>
+          <el-menu-item index="2" @click="ToSubmit()">已审核展览</el-menu-item>
+        </el-menu>
+      </div>
+      <div v-else-if="user.role === '管理员'">
+        <!--  -->
+        <el-menu :default-active="activeIndex" class="menu" mode="horizontal">
+          <el-menu-item index="1" @click="ToAudit()">待审核展览</el-menu-item>
+          <el-menu-item index="2" @click="ToPassed()">已审核展览</el-menu-item>
+        </el-menu>
+      </div>
 
-    </el-row>
 
-    <!-- 普通用户的日历信息查看 --->
-    <el-row v-if="user.role === '普通用户' && userCalenderToReview" :xs="24" :sm="24" :md="16">
-      <CalendarView />
-    </el-row>
+      <el-row v-if="!userCalenderToReview" class="main">
+        <!-- 左侧头像和个人信息 -->
+        <el-col :xs="24" :sm="24" :md="8" class="left-col">
+          <el-card class="card">
+            <div class="avatar-container">
+              <!-- 头像 -->
+              <el-upload action="http://localhost:8080/test/upload" :data="{ uid: uid }" :show-file-list="false"
+                :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                <img :src="imageUrl" alt="avatar" class="avatar">
+              </el-upload>
+
+              <div v-if="!isEditing">
+                <!-- 昵称 -->
+                <h3>{{ user.username }}</h3>
+                <el-form ref="user" :model="user" label-position="top" label-width="80px">
+                  <el-form-item label="ID：">
+                    <el-input v-model="user.id" :disabled="true"></el-input>
+                  </el-form-item>
+                  <el-form-item label="用户类型：">
+                    <el-input v-model="user.role" :disabled="true"></el-input>
+                  </el-form-item>
+                  <el-form-item label="个人简介">
+                    <el-input v-model="user.biography" :disabled="true" type="textarea"></el-input>
+                  </el-form-item>
+                </el-form>
+                <!-- 修改信息按钮/表单 -->
+                <el-button class="button" @click="isEditing = true">修改基本信息</el-button>
+              </div>
+
+              <div v-if="isEditing">
+                <el-form ref="subuser" :model="subuser" label-position="top" label-width="80px">
+                  <el-form-item label="昵称：">
+                    <el-input v-model="subuser.username"></el-input>
+                  </el-form-item>
+                  <el-form-item label="性别：">
+                    <el-radio-group v-model="subuser.sex">
+                      <el-radio label="男" />
+                      <el-radio label="女" />
+                    </el-radio-group>
+                  </el-form-item>
+                  <el-form-item label="个人简介">
+                    <el-input v-model="subuser.biography" maxlength="20" type="textarea"
+                      placeholder="请输入个人简介，不超过20字"></el-input>
+                  </el-form-item>
+
+                  <el-form-item>
+                    <el-button class="button" @click="changeBasicInfo()">保存基本信息</el-button>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button class="button" @click="cancel()">取消</el-button>
+                  </el-form-item>
+                </el-form>
+              </div>
+
+            </div>
+          </el-card>
+        </el-col>
+
+        <!-- 右侧更多信息 -->
+        <el-col :xs="24" :sm="24" :md="16" class="right-col">
+          <el-card class="card" :body-style="{ padding: '8px', height: '100%', width: '98%' }">
+            <!--  -->
+            <div v-if="user.role === '普通用户'">
+              <div v-if="userSubscribeToReview">
+                <h2>我的订阅</h2>
+                <SubscribeItem />
+              </div>
+            </div>
+            <div v-else-if="user.role === '博物馆'">
+              <div v-if="museumToReview">
+                <MuseumReviewItem />
+              </div>
+              <div v-else-if="museumSubmitted">
+                <MuseumSubmitItem />
+              </div>
+            </div>
+            <div v-else-if="user.role === '管理员'">
+              <div v-if="adminAudit">
+                <AdminAuditItem />
+                <!-- <AuditView /> -->
+              </div>
+              <div v-else-if="adminPassed">
+                <AdminPassedItem />
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+
+      </el-row>
+
+      <!-- 普通用户的日历信息查看 --->
+      <el-row v-if="user.role === '普通用户' && userCalenderToReview" :xs="24" :sm="24" :md="16">
+        <CalendarView />
+      </el-row>
+    </div>
   </div>
+  
 </template>
   
 <script>
@@ -279,9 +282,12 @@ export default {
 </script>
   
 <style scoped>
+.personal-bg{
+  background-image: url("../assets/personal-bg.jpg");
+  background-size: cover;
+}
 .container {
   margin: 20px;
-  /* background-image: url("../assets/personal-bg.jpg"); */
 }
 
 .menu {

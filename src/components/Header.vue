@@ -9,12 +9,12 @@
             <el-row :gutter="2">
                 <el-col :span="8">
                     <router-link class="link" to="/">
-                        首页
+                        <span class="animated-text">首页</span>
                     </router-link>
                 </el-col>
                 <el-col :span="8">
                     <router-link class="link" to="/search">
-                        分类
+                        <span class="animated-text">分类</span>
                     </router-link>
                 </el-col>
             </el-row>
@@ -462,10 +462,18 @@ export default {
     color: #1435AD;
     text-decoration: none;
 }
-
 .link:visited {
     color: #1435AD;
     text-decoration: none;
+}
+.animated-text {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.link:hover .animated-text {
+  transform: translateY(-5px);
+  color: #15863b; /* 鼠标悬停时的颜色，可以自行调整 */
 }
 
 .frame-el-button {
