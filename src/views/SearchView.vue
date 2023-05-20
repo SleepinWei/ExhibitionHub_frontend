@@ -47,7 +47,7 @@
                     <div class="demonstration">展览类型</div>
                     <TypeSelectorItem @selectType="typeChange" />
                     <div class="demonstration">展览馆</div>
-                    <MuseumSelectorItem :search_venue=venue @change="venueChange" />
+                    <MuseumSelectorItem @change="venueChange" />
                 </div>
             </el-col>
         </el-row>
@@ -96,7 +96,7 @@ export default {
             userid: this.$cookies.get("cookieAccount"),
             startTime: '1900-01-01',
             endTime: '2100-12-31',
-            venue: this.$route.query.venue,
+            venue: "null",
             tags: "-1",
             province: "null",
             city: "null",
@@ -243,6 +243,7 @@ export default {
             }
             this.searchRequest(this.inputText);
         }
+        this.searchRequest(this.inputText);
     },
 }
 </script>
