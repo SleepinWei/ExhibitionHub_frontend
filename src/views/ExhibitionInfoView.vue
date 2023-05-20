@@ -195,7 +195,6 @@ export default {
             showPopup: false,
             imageUrl: '',
             showDatePicker: false, // 是否显示日期选择器
-            hideTimer: null, // 隐藏定时器
         }
     },
     methods: {
@@ -283,7 +282,6 @@ export default {
         },
         onSubscribe() {
             this.showDatePicker = false;
-            clearTimeout(this.hideTimer);
             console.log(this.subscribeDate)
             if (this.subscribeDate === '' || this.subscribeDate === null || this.subscribeDate === undefined) {
                 this.$message({
@@ -292,7 +290,6 @@ export default {
                 });
             }
             else {
-                console.log(this.subscribeDate)
                 axios.post(`/subscribe/postUesrSub`, {
                     user_id: this.$cookies.get("cookieAccount"),
                     ex_id: this.$route.params.exId,
