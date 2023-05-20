@@ -8,9 +8,8 @@
   <el-table :data="tableData" stripe style="width: 100%">
       <el-table-column type="index" label="序号" width="60" align="center"></el-table-column>
       <el-table-column prop="name" label="展览名称" align="center"/>
-      <el-table-column prop="organizer" label="主办方" align="center"/>
-      <el-table-column prop="venue_name" label="地点"  align="center"/>
       <el-table-column prop="date" label="提交时间"  align="center"/>
+      <el-table-column prop="type" label="修改类型"  align="center"/>
       <el-table-column label="查看详情" align="center">
           <template #default="scope">
               <el-button  @click="view(scope.row)">
@@ -85,6 +84,7 @@ export default {
           ).then((response) => {
               //
               this.exhibitionViewed = response.data; 
+            this.exhibitionViewed.poster_url = "http://127.0.0.1:8080/" + response.data.poster_url;
           });
       },
       approve(row) {
