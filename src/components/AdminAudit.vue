@@ -18,7 +18,7 @@
       </el-table-column>
       <el-table-column label="审核" align="center">
           <template #default="scope">
-            <el-button type="info" @click="approve(scope.row)">
+            <el-button type="success" @click="approve(scope.row)">
                 通过
             </el-button>
             <el-button type="danger" @click="refuse(scope.row)">
@@ -54,6 +54,7 @@ import ExhibitionInfoComp from '@/components/ExhibitionInfoComp.vue'
 export default {
   data() {
       return {
+          uid: this.$cookies.get("cookieAccount"),
           tableData: [],
           exhibitionViewed: {
               exId: this.$route.params.exId,
@@ -77,37 +78,39 @@ export default {
     },
     methods: {
         view(row) {
-            // 查看展览具体信息
-            console.log(row);
-            this.dialogVisible = true;
-            this.$axios.get(
-                `/audit/view`, {
-                params: {
-                    id : parseInt(row.id)
-                }
-            }
-            ).then((response) => {
-                //
-                this.exhibitionViewed = response.data; 
-            });
+          // 查看展览具体信息
+          console.log(row);
+          this.dialogVisible = true;
+          this.$axios.get(
+              `/audit/view`, {
+              params: {
+                  id : parseInt(row.id)
+              }
+          }
+          ).then((response) => {
+              //
+              this.exhibitionViewed = response.data; 
+          });
         },
         approve(row) {
-            // 通过
-            this.$axios.get(
-              `/audit/pass`, {
-                params: {
-                    id : parseInt(row.id)
-                }
+          // 通过
+          this.$axios.get(
+            `/audit/pass`, {
+              params: {
+                  id : parseInt(row.id)
               }
-            ).then((response) => {
-              this.$axios.get("/getUncheckedEx")
-              .then((response) => {
-                  this.tableData = response.data;
-              });
+            }
+          ).then((response) => {
+            console.log(response.data)
+            this.$axios.get("/admin/getUnchecked")
+            .then((response) => {
+              console.log("/admin/getUnchecked/pass")
+              console.log(response.data);
+              this.tableData = response.data;
             });
+          });
         },
         refuse(row) {
-          // 
           this.$axios.get(
             `/audit/refuse`,
             {
@@ -116,18 +119,21 @@ export default {
               }
             }
           ).then((response) => {
-            this.$axios.get("/getUncheckedEx")
+            this.$axios.get("/admin/getUnchecked")
               .then((response) => {
-                  this.tableData = response.data;
+                console.log("/admin/getUnchecked/refuse")
+                console.log(response.data);
+                this.tableData = response.data;
               });
           });
         }
     },
     mounted() {
-      this.$axios.get("/getUncheckedEx")
+      this.$axios.get("/admin/getUnchecked")
         .then((response) => {
-            console.log(response.data);
-            this.tableData = response.data;
+          console.log("/admin/getUnchecked/mounted")
+          console.log(response.data);
+          this.tableData = response.data;
         });
     }
 }

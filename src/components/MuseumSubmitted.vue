@@ -38,22 +38,23 @@
     export default {
         data() {
           return {
-              exhibitions: [],
-              exhibitionViewed: {
-                exId: this.$route.params.exId,
-                poster_url: "/src/assets/posters/saber.png",
-                name: "Exhibition 1",
-                begin_date: "2001-01-01",
-                end_date: "2001-02-02",
-                organizer: "og1",
-                tickets: "2000RMB",
-                link: "https://bilibili.com",
-                tags: ["tag1", "tag2"],
-                introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
-            ssssssssssssssssssssssssssssss",
-                begin_time: "",
-                end_time: "",
-                recommends: ["ex1", "ex2", "ex3"]
+            uid: this.$cookies.get("cookieAccount"),
+            exhibitions: [],
+            exhibitionViewed: {
+              exId: this.$route.params.exId,
+              poster_url: "/src/assets/posters/saber.png",
+              name: "Exhibition 1",
+              begin_date: "2001-01-01",
+              end_date: "2001-02-02",
+              organizer: "og1",
+              tickets: "2000RMB",
+              link: "https://bilibili.com",
+              tags: ["tag1", "tag2"],
+              introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
+              ssssssssssssssssssssssssssssss",
+              begin_time: "",
+              end_time: "",
+              recommends: ["ex1", "ex2", "ex3"]
             },
             dialogVisible : false
           };
@@ -77,10 +78,11 @@
         mounted() {
           this.$axios.get("/getCheckedEx", {
             params: {
-              id : 2
+              id : this.uid
             }
           })
           .then((response) => {
+            console.log("/getCheckedEx"+this.uid);
             console.log(response.data);
             this.exhibitions = response.data;
           });
