@@ -47,7 +47,7 @@
                     <div class="demonstration">展览类型</div>
                     <TypeSelectorItem @selectType="typeChange" />
                     <div class="demonstration">展览馆</div>
-                    <MuseumSelectorItem @change="venueChange" />
+                    <MuseumSelectorItem :search_venue=venue @change="venueChange" />
                 </div>
             </el-col>
         </el-row>
@@ -96,7 +96,7 @@ export default {
             userid: this.$cookies.get("cookieAccount"),
             startTime: '1900-01-01',
             endTime: '2100-12-31',
-            venue: "null",
+            venue: this.$route.query.venue,
             tags: "-1",
             province: "null",
             city: "null",
@@ -190,6 +190,7 @@ export default {
             this.loadContent()
         },
         venueChange(venue) {
+            console.log("venuechange",venue)
             if (venue == "---------------不限---------------") {
                 venue = "null"
             }
@@ -230,8 +231,17 @@ export default {
         // 从其他页面跳转过来，需要进行一次查询
         if (this.$route.query.querytext != null) {
             this.inputText = this.$route.query.querytext;
+            this.searchRequest(this.inputText);
         }
-        this.searchRequest(this.inputText);
+        else{
+            this.searchText=null;
+        }
+
+        if (this.$route.query.venue != null) {
+            this.searchText=null;
+            this.venueChange(this.venue);
+            this.$router.push({ query: {} });//清空参数
+        }
     },
 }
 </script>

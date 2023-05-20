@@ -12,6 +12,11 @@
 <script>
 import axios from 'axios';
 export default {
+    props:{
+        search_venue:{
+            type:String
+        }
+    },
     data() {
         return {
             value: '',
@@ -46,6 +51,9 @@ export default {
         }
     },
     mounted() {
+        if(this.search_venue!=null){
+            this.value=this.search_venue;
+        }
         this.getAllOrganizer();
     },
 }
