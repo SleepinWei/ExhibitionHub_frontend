@@ -73,14 +73,6 @@ export default {
             }
             return true;
         },
-        hasUser() {
-
-
-
-
-            //这里要改！！！
-            return true;
-        },
         beforePost() {
             if (this.Form.email === '') {
                 this.$message({
@@ -91,15 +83,15 @@ export default {
                 return false;
             } else {
                 //进行邮箱格式的检测与数据库查看是否有该邮箱
-                return this.isEmail() && this.hasUser();
+                return this.isEmail();
             }
         },
         post() {
             console.log(this.Form.email)
             this.$axios
-            .get("/reset/sendVerCodeMail/" + this.Form.email)
+                .get("/reset/sendVerCodeMail/" + this.Form.email)
                 .then(successResponse => {
-                    if (successResponse.status === 200) {
+                    if (successResponse.data === 1) {
                         // 如果返回的结果正确，那么需要发送邮件到对应的用户邮箱中，用户自己登录邮箱后找到对应的链接后才可以输入新密码
                         this.$notify({
                             title: '成功',
@@ -112,11 +104,11 @@ export default {
                         this.active++;
                         this.disabled = false;
                     }
-                    else if (successResponse.status === 400) {
+                    else {
                         //如果用户名和密码匹配错误，那么显示错误信息，并让按钮重新可用
                         this.$notify({
                             title: '失败',
-                            message: "未知错误！",
+                            message: "用户不存在！",
                             type: 'error',
                             duration: 2000,
                             offset: 100,
@@ -125,6 +117,14 @@ export default {
                     }
                 })
                 .catch(failResponse => {
+                    this.$notify({
+                        title: '失败',
+                        message: "错误！",
+                        type: 'error',
+                        duration: 2000,
+                        offset: 100,
+                    });
+                    this.disabled = false;
                 })
         },
 
@@ -135,12 +135,6 @@ export default {
                 if (isFinished) {
                     //数据输入正确后，将按钮禁掉，并提示相关信息，然后数据发送到后台
                     this.disabled = true;
-                    this.$notify.info({
-                        title: '提示',
-                        message: '数据正确发送，请耐心等待，勿重复操作！',
-                        duration: 2000,
-                        offset: 100,
-                    });
                     this.post();
                 }
             }

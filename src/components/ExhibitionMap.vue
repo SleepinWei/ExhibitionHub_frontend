@@ -10,6 +10,7 @@
   import ShanghaiGeoData from '../assets/上海市.json'
 
   let location;
+  
   export default {
     data () {
       return {
@@ -98,6 +99,8 @@
       this.inmap.add(this.polygonOverlay);
       // 将地图视图调整到合适的显示范围
       this.inmap.setFitView([this.polygonOverlay]);
+
+      const vm = this; // 保存页面对象的引用
      
       this.pointOverlay = new inMap.PointOverlay({
           tooltip: {
@@ -116,9 +119,12 @@
           data: location,
           event: {
               onMouseClick(val) {
-                  console.log(val[0].name);   
-                  //todo：传入展馆名称进入筛选界面，跳出该展馆的所有展览
-                  //this.$router.push({ path: "/search", query: { querytext: this.inputText } });             
+                  console.log(val[0].name);
+                  vm.$router.push({
+                      path:'/search',
+                      query: {venue: val[0].name}
+                    }
+                    );    
               }
           }
       })
