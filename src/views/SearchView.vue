@@ -113,30 +113,31 @@ export default {
             this.searchRequest(this.inputText);
         },
         searchRequest(query) {
-            console.log(query);
-            this.searchText = query
-            if (this.searchText === "")
-                this.searchText = null
-            axios.get(
-                `/searchByKeyword`,
-                {
-                    params: {
-                        querytext: String(query)
-                    }
-                }
-            ).then(
-                (response) => {
-                    // this.searchResult = response.data;
-                    console.log(response.data);
-                    // this.result = response.data;
-                    this.searchResult = [];
-                    var data = response.data;
-                    for (var i = 0; i < data.length; i += 1) {
-                        this.searchResult.push(data[i]);
-                    }
-                    console.log(this.searchResult)
-                }
-            );
+            // console.log(query);
+            // this.searchText = query
+            // if (this.searchText === "")
+            //     this.searchText = null
+            // axios.get(
+            //     `/searchByKeyword`,
+            //     {
+            //         params: {
+            //             querytext: String(query)
+            //         }
+            //     }
+            // ).then(
+            //     (response) => {
+            //         // this.searchResult = response.data;
+            //         console.log(response.data);
+            //         // this.result = response.data;
+            //         this.searchResult = [];
+            //         var data = response.data;
+            //         for (var i = 0; i < data.length; i += 1) {
+            //             this.searchResult.push(data[i]);
+            //         }
+            //         console.log(this.searchResult)
+            //     }
+            // );
+            this.loadContent();
         },
         keyListener(event) {
             if (event.keyCode == 13) {
