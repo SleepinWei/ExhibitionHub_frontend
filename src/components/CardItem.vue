@@ -2,11 +2,11 @@
  * @Author: yingxin wang
  * @Date: 2023-04-25 17:20:15
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-13 20:05:15
+ * @LastEditTime: 2023-05-23 14:49:43
  * @dis: 卡片布局修改为动态效果
 -->
 <template>
-    <div class="top">
+    <div class="clickable top">
         <div v-for="item in this.result" class="it" style="margin-bottom: 35px;" @click.native="jumpToExInfo(item.id)">
             <div class="content">
                 <div class="card-back">
@@ -59,6 +59,10 @@ export default {
 </script>
 
 <style>
+.clickable {
+    cursor: pointer;
+}
+
 .top {
     display: grid;
     grid-template-columns: repeat(4, 225px);
