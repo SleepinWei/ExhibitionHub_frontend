@@ -17,6 +17,11 @@
                         <span class="animated-text">分类</span>
                     </router-link>
                 </el-col>
+                <el-col :span="8">
+                    <router-link class="link" to="/map">
+                        <span class="animated-text">地图</span>
+                    </router-link>
+                </el-col>
             </el-row>
         </el-col>
 
