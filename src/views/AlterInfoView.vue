@@ -1,7 +1,4 @@
 <template>
-    <!-- <el-container> -->
-        <!-- <el-header>Header</el-header> -->
-        <!-- <el-main class="demo"> -->
         <el-row style="padding-top: 20px;"></el-row>
       <el-form :model="form" label-width="120px">
       <el-form-item label="展览名称">
@@ -55,7 +52,7 @@
         </el-col>
       </el-form-item>
       <el-form-item label="地点">
-        <el-select  style="padding-right: 10px;" v-model="form.province" placeholder="省" @change="province_change">
+        <!-- <el-select  style="padding-right: 10px;" v-model="form.province" placeholder="省" @change="province_change">
           <el-option v-for="item in province_options" :value="item"/>
         </el-select>
         <el-select style="padding-right: 10px;" v-model="form.city" placeholder="市" @change="city_change">
@@ -63,7 +60,13 @@
         </el-select>
         <el-select style="padding-right: 10px;" v-model="form.area" placeholder="区">
           <el-option v-for="item in area_options" :value="item"/>
-        </el-select>
+        </el-select> -->
+         <!-- TODO:  -->
+        <el-cascader
+          size="large"
+          :options="pcaTextArr"
+          v-model="selectedOptions">
+        </el-cascader>
       </el-form-item>
       <el-form-item label="票务信息">
         <el-input v-model="form.ticket_info" />
@@ -102,19 +105,12 @@
       </el-form-item>
         <el-form-item label="标签">
           <el-row>
-            <!-- todo: 改为 v-for，从后端获取所有的 tags -->
-          <!-- <el-check-tag class="check_tag" :checked="form.checked_tech" @change="onChange_tech">科技</el-check-tag> -->
-          <!-- <el-check-tag class="check_tag" :checked="form.checked_sports" @change="onChange_sports">体育</el-check-tag> -->
-          <!-- <el-check-tag class="check_tag" :checked="form.checked_art" @change="onChange_art">艺术</el-check-tag> -->
           </el-row>
         </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Submit</el-button>
-        <!-- <el-button>Cancel</el-button> -->
       </el-form-item>
     </el-form>
-    <!-- </el-main> -->
-    <!-- </el-container> -->
     
   </template>
   
@@ -125,10 +121,16 @@
   import type { UploadProps, UploadUserFile } from 'element-plus'
   import { ElMessage } from 'element-plus'
   import axios from "../http.ts"
+  import {
+  pcaTextArr
+  } from "element-china-area-data";
+
 import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter();
 const route = useRoute();
+
+const selectedOptions = ref([]);
 
 const imageUrl = ref('')
   // do not use same name with ref
@@ -142,7 +144,6 @@ const imageUrl = ref('')
     area: '',
     link:'',
     ticket_info:'',
-    // region: '',
     begin_date: '',
     end_date: '',
     begin_time: '',
@@ -179,6 +180,12 @@ const city_change = (value) => {
   });
 }
   const onSubmit = () => {
+    form.value.province =selectedOptions.value[0];
+    form.value.city = selectedOptions.value[1]; 
+    form.value.area = selectedOptions.value[2]; 
+
+    console.log(form.value);
+
     axios({
         method: "post",
         url: "/alterExInfo",
@@ -203,22 +210,6 @@ const city_change = (value) => {
       }
     );
   }
-
-  // const checked_sports = ref(false)
-  // const checked_art = ref(false)
-  // const checked_tech = ref(false)
-
-  // const onChange_tech = (status: boolean) => {
-  // form.checked_tech = status
-  // }
-
-  // const onChange_sports = (status: boolean) => {
-  // form.checked_sports = status
-  // }
-
-  // const onChange_art = (status: boolean) => {
-  // form.checked_art = status
-  // }
 
   const fileList = ref<UploadUserFile[]>([
       {
@@ -282,6 +273,7 @@ onMounted(() => {
       ).then((response) => {
         console.log(response.data);
         form.value = response.data;
+        selectedOptions.value = [ response.data.province, response.data.city, response.data.area];
     });
 
     axios.get("/location/province").then(
