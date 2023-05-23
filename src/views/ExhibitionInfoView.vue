@@ -56,7 +56,7 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                         </div>
                     </el-row>
                 </el-col>
-                <el-col :span="1" style="margin-top: 40px;margin-left: 10px;">
+                <el-col :span="2" style="margin-top: 40px;margin-left: 10px;">
                     <button v-if="isAdmin" class="Btn" @click="onChangeInfo">
                         <div class="sign">
                             <svg-icon class="ex-icon" type="mdi" :path="mdiTextBoxEditOutline"></svg-icon>
@@ -111,55 +111,31 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                 </h2>
             </el-row>
             <el-row>
-                <ul>
-                    <li v-for="recommend in form.recommends">
-
-                        <el-row class="sub_info">
-                            时间：{{ recommend.begin_date }} - {{ recommend.end_date }} {{ recommend.begin_time }} - {{
-                                recommend.end_time }}
+                <div v-for="recommend in form.recommends">
+                    <el-col :span="13">
+                        <el-row justify="start" class="re-image">
+                            <el-image class="clickable" :src="recommend.poster_url" fit="contain" style="width: 80%;"
+                                @click="jumpToExInfo(recommend.id)">
+                            </el-image>
+                        </el-row>
+                    </el-col>
+                    <el-col :span="12">
+                        <h2 class="re-header">
+                            {{ recommend.name }}
+                        </h2>
+                        <el-row class="re-time">
+                            {{ recommend.begin_date }} - {{ recommend.end_date }}
                         </el-row>
                         <el-row class="sub_info">
-                            主办方：{{ recommend.organizer }}
+                            ￥{{ recommend.ticket_info }}
                         </el-row>
                         <el-row class="sub_info">
-                            票价: {{ recommend.ticket_info }}
-                        </el-row>
-                        <el-row class="sub_info">
-                            官方链接:
-                            <a :href="recommend.link">
-                                {{ recommend.link }}
-                            </a>
-                        </el-row>
-                        <el-row class="sub_info">
-                            标签:
                             <el-tag v-for="tag in recommend.tags"> {{ tag.name }} </el-tag>
                         </el-row>
-                    </li>
-                </ul>
+                        <el-row class="re-foot"></el-row>
+                    </el-col>
+                </div>
             </el-row>
-            <!-- <el-row class="sub_info">
-                时间：{{ form.begin_date }} - {{ form.end_date }} {{ form.begin_time }} - {{ form.end_time }}
-            </el-row>
-            <el-row class="sub_info">
-                主办方：{{ form.organizer }}
-            </el-row>
-            <el-row class="sub_info">
-                票价: {{ form.ticket_info }}
-            </el-row>
-            <el-row class="sub_info">
-                官方链接:
-                <a :href="form.link">
-                    {{ form.link }}
-                </a>
-            </el-row>
-            <el-row class="sub_info">
-                标签:
-                <el-tag v-for="tag in form.tags"> {{ tag.name }} </el-tag>
-            </el-row>
-            <el-row v-if="isLogin" class="subscribe_button">
-                <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
-                <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag>
-            </el-row> -->
         </el-col>
     </el-row>
 </template>
@@ -382,9 +358,18 @@ export default {
         searchRecommand() {
             axios.get(`/recommandEx/` + this.$route.params.exId
             ).then((response) => {
-                console.log(response.data);
-                this.form.recommends = response.data
+                this.form.recommends = []
+                //只取两个
+                for (var i = 0; i < 2; ++i) {
+                    if (i < response.data.length) {
+                        this.form.recommends.push(response.data[i]);
+                        this.form.recommends[i].poster_url = 'http://127.0.0.1:8080/' + this.form.recommends[i].poster_url
+                    }
+                }
             })
+        },
+        jumpToExInfo(id) {
+            this.$router.push(`/exhibition/${id}`)
         }
     },
     mounted() {
@@ -407,7 +392,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .ex-image {
     display: flex;
     width: 100%;
@@ -436,13 +421,14 @@ export default {
 }
 
 .sub_info {
+    font-weight: 300;
     margin-top: 8px;
     color: #333333;
 }
 
 .ex-icon {
     margin-right: 5px;
-    color: #689CD2;
+    color: #fafbfc;
 }
 
 .long_intro {
@@ -586,5 +572,30 @@ export default {
 /* button click effect*/
 .Btn:active {
     transform: translate(2px, 2px);
+}
+
+.re-image {
+    width: 100%;
+}
+
+.re-header {
+    font-size: 15px;
+    font-weight: 300;
+    margin-top: 20px;
+}
+
+.re-time {
+    font-size: 12px;
+    font-weight: 200;
+    margin-bottom: 20px;
+}
+
+.re-foot {
+    border-bottom: 2px solid #00000010;
+    margin-bottom: 20px;
+}
+
+.clickable {
+    cursor: pointer;
 }
 </style>
