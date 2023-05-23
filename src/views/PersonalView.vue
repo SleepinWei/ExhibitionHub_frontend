@@ -133,11 +133,9 @@ import CalendarView from '../views/CalendarView.vue'
       </el-row>
     </div>
   </div>
-  
 </template>
   
 <script>
-import AuditView from '@/views/AuditView.vue'
 export default {
   data() {
     return {
@@ -282,10 +280,11 @@ export default {
 </script>
   
 <style scoped>
-.personal-bg{
+.personal-bg {
   background-image: url("../assets/personal-bg.jpg");
   background-size: cover;
 }
+
 .container {
   margin: 20px;
 }

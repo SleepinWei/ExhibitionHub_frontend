@@ -2,7 +2,7 @@
  * @Author: yingxin wang
  * @Date: 2023-04-18 21:36:30
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-07 15:18:05
+ * @LastEditTime: 2023-05-23 15:30:02
  * @Description: 请填写简介
  */
 import { createRouter, createWebHistory } from 'vue-router'
@@ -33,12 +33,12 @@ const router = createRouter({
       path: '/addEx',
       name: 'AddExView',
       component: AddExView,
-      meta:{isShowHeader:true}
+      meta: { isShowHeader: true }
     },
     {
       path: "/alterinfo/:exId",
       component: AlterInfoView,
-      meta:{isShowHeader:true}
+      meta: { isShowHeader: true }
     },
     {
       path: '/about',
@@ -85,10 +85,6 @@ const router = createRouter({
       path: "/test",
       name: 'test',
       component: () => import("@/views/test.vue")
-    },
-    {
-      path: "/audit",
-      component: ()=> import("@/views/AuditView.vue") 
     }
   ]
 })
