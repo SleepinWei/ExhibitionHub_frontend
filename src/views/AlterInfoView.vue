@@ -1,116 +1,117 @@
 <template>
-        <el-row style="padding-top: 20px;"></el-row>
-      <el-form :model="form" label-width="120px">
-      <el-form-item label="展览名称">
-        <el-input v-model="form.name" />
+  <el-row style="padding-top: 20px;"></el-row>
+  <el-form :model="form" label-width="120px">
+    <el-form-item label="展览名称">
+      <el-input v-model="form.name" />
+    </el-form-item>
+    <el-form-item label="展馆名称">
+      <el-input v-model="form.venue_name" />
+    </el-form-item>
+    <el-form-item label="主办方">
+      <el-input v-model="form.organizer" />
+    </el-form-item>
+    <el-form-item label="活动日期">
+      <el-col :span="4">
+        <el-date-picker
+          v-model="form.begin_date"
+          type="date"
+          placeholder="选择开始日期"
+          style="width: 100%"
+        />
+      </el-col>
+      <el-col :span="1" style="text-align: center">
+        -
+      </el-col>
+      <el-col :span="4">
+        <el-date-picker
+          v-model="form.end_date"
+          placeholder="选择结束日期"
+          style="width: 100%"
+        />
+      </el-col>
+    </el-form-item>
+    <el-form-item label="活动时间">
+      <el-col :span="4">
+        <el-time-picker
+          v-model="form.begin_time"
+          placeholder="选择开始时间"
+          value-format="HH:mm:ss"
+          style="width: 100%"
+        />
+      </el-col>
+      <el-col :span="1" style="text-align: center">
+        -
+      </el-col>
+      <el-col :span="4">
+        <el-time-picker
+          v-model="form.end_time"
+          placeholder="选择结束时间"
+          value-format="HH:mm:ss"
+          style="width: 100%"
+        />
+      </el-col>
+    </el-form-item>
+    <el-form-item label="地点">
+      <!-- <el-select  style="padding-right: 10px;" v-model="form.province" placeholder="省" @change="province_change">
+        <el-option v-for="item in province_options" :value="item"/>
+      </el-select>
+      <el-select style="padding-right: 10px;" v-model="form.city" placeholder="市" @change="city_change">
+        <el-option v-for="item in city_options" :value="item"/>
+      </el-select>
+      <el-select style="padding-right: 10px;" v-model="form.area" placeholder="区">
+        <el-option v-for="item in area_options" :value="item"/>
+      </el-select> -->
+        <!-- TODO:  -->
+      <el-cascader
+        size="large"
+        :options="pcaTextArr"
+        v-model="selectedOptions">
+      </el-cascader>
+    </el-form-item>
+    <el-form-item label="票务信息">
+      <el-input v-model="form.ticket_info" />
+    </el-form-item>
+    <el-form-item label="官方链接">
+      <el-input v-model="form.link" />
+    </el-form-item>
+    <el-form-item label="展览活动简介">
+      <el-input :autosize="{ minRows: 2, maxRows: 6}" v-model="form.introduction" type="textarea" />
+    </el-form-item>
+    <el-form-item label="海报">
+      <el-upload
+      class="avatar-uploader"
+      action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+      :show-file-list="false"
+      :on-success="handleAvatarSuccess"
+      :before-upload="beforeAvatarUpload"
+    >
+      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+      <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+    </el-upload>
+    </el-form-item>
+    <el-form-item label="图片墙">
+      <el-upload
+          v-model:file-list="fileList"
+      action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+      list-type="picture-card"
+      :on-remove="handleRemove"
+      :limit="2"
+    >
+      <el-icon><Plus /></el-icon>
+    </el-upload>
+    <!-- <el-dialog v-model="dialogVisible">
+      <img w-full :src="dialogImageUrl" alt="Preview Image" />
+    </el-dialog> -->
+    </el-form-item>
+      <el-form-item label="标签">
+        <el-row>
+        </el-row>
       </el-form-item>
-      <el-form-item label="展馆名称">
-        <el-input v-model="form.venue_name" />
-      </el-form-item>
-      <el-form-item label="主办方">
-        <el-input v-model="form.organizer" />
-      </el-form-item>
-      <el-form-item label="活动日期">
-        <el-col :span="11">
-          <el-date-picker
-            v-model="form.begin_date"
-            type="date"
-            placeholder="选择开始日期"
-            style="width: 100%"
-          />
-        </el-col>
-        <el-col :span="2" class="text-center">
-          <span class="text-gray-500">-</span>
-        </el-col>
-        <el-col :span="11">
-          <el-date-picker
-            v-model="form.end_date"
-            placeholder="选择结束日期"
-            style="width: 100%"
-          />
-        </el-col>
-      </el-form-item>
-      <el-form-item label="活动时间">
-        <el-col :span="11">
-          <el-time-picker
-            v-model="form.begin_time"
-            placeholder="选择开始时间"
-            value-format="HH:mm:ss"
-            style="width: 100%"
-          />
-        </el-col>
-        <el-col :span="2" class="text-center">
-          <span class="text-gray-500">-</span>
-        </el-col>
-        <el-col :span="11">
-          <el-time-picker
-            v-model="form.end_time"
-            placeholder="选择结束时间"
-            value-format="HH:mm:ss"
-            style="width: 100%"
-          />
-        </el-col>
-      </el-form-item>
-      <el-form-item label="地点">
-        <!-- <el-select  style="padding-right: 10px;" v-model="form.province" placeholder="省" @change="province_change">
-          <el-option v-for="item in province_options" :value="item"/>
-        </el-select>
-        <el-select style="padding-right: 10px;" v-model="form.city" placeholder="市" @change="city_change">
-          <el-option v-for="item in city_options" :value="item"/>
-        </el-select>
-        <el-select style="padding-right: 10px;" v-model="form.area" placeholder="区">
-          <el-option v-for="item in area_options" :value="item"/>
-        </el-select> -->
-         <!-- TODO:  -->
-        <el-cascader
-          size="large"
-          :options="pcaTextArr"
-          v-model="selectedOptions">
-        </el-cascader>
-      </el-form-item>
-      <el-form-item label="票务信息">
-        <el-input v-model="form.ticket_info" />
-      </el-form-item>
-      <el-form-item label="官方链接">
-        <el-input v-model="form.link" />
-      </el-form-item>
-      <el-form-item label="展览活动简介">
-        <el-input :autosize="{ minRows: 2, maxRows: 6}" v-model="form.introduction" type="textarea" />
-      </el-form-item>
-      <el-form-item label="海报">
-        <el-upload
-        class="avatar-uploader"
-        action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-        :show-file-list="false"
-        :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload"
-      >
-        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-        <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-      </el-upload>
-      </el-form-item>
-      <el-form-item label="图片墙">
-        <el-upload
-           v-model:file-list="fileList"
-        action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-        list-type="picture-card"
-        :on-remove="handleRemove"
-        :limit="2"
-      >
-        <el-icon><Plus /></el-icon>
-      </el-upload>
-      <!-- <el-dialog v-model="dialogVisible">
-        <img w-full :src="dialogImageUrl" alt="Preview Image" />
-      </el-dialog> -->
-      </el-form-item>
-        <el-form-item label="标签">
-          <el-row>
-          </el-row>
-        </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">Submit</el-button>
-      </el-form-item>
-    </el-form>
+    <el-form-item>
+      <el-button type="primary" @click="onSubmit">Submit</el-button>
+      <el-button @click="onCancel">取消</el-button>
+    </el-form-item>
+  </el-form>
     
   </template>
   
@@ -121,64 +122,61 @@
   import type { UploadProps, UploadUserFile } from 'element-plus'
   import { ElMessage } from 'element-plus'
   import axios from "../http.ts"
-  import {
-  pcaTextArr
-  } from "element-china-area-data";
+  import {pcaTextArr} from "element-china-area-data";
+  import { useRoute, useRouter } from 'vue-router'
 
-import { useRoute, useRouter } from 'vue-router'
+  const router = useRouter();
+  const route = useRoute();
 
-const router = useRouter();
-const route = useRoute();
+  const selectedOptions = ref([]);
 
-const selectedOptions = ref([]);
+  const imageUrl = ref('')
+    // do not use same name with ref
+    const form = ref({
+      id: 0,
+      name: '',
+      venue_name:'',
+      organizer: '',
+      province: '',
+      city: '',
+      area: '',
+      link:'',
+      ticket_info:'',
+      begin_date: '',
+      end_date: '',
+      begin_time: '',
+      end_time: '',
+      delivery: false,
+      type: [],
+      resource: '',
+      introduction: '',
+      // checked_sports:false,
+      // checked_art:false,
+      // checked_tech:false
+    })
 
-const imageUrl = ref('')
-  // do not use same name with ref
-  const form = ref({
-    id: 0,
-    name: '',
-    venue_name:'',
-    organizer: '',
-    province: '',
-    city: '',
-    area: '',
-    link:'',
-    ticket_info:'',
-    begin_date: '',
-    end_date: '',
-    begin_time: '',
-    end_time: '',
-    delivery: false,
-    type: [],
-    resource: '',
-    introduction: '',
-    // checked_sports:false,
-    // checked_art:false,
-    // checked_tech:false
-  })
+  const province_options = ref([]);
+  const city_options = ref([]);
+  const area_options = ref([]);
+    const province_change = (value) => {
+    axios.get("/location/city_list", {
+      params: {
+        province: value
+      }
+    }).then((response) => {
+      city_options.value = response.data;
+    });
+  }
 
-const province_options = ref([]);
-const city_options = ref([]);
-const area_options = ref([]);
-  const province_change = (value) => {
-  axios.get("/location/city_list", {
-    params: {
-      province: value
-    }
-  }).then((response) => {
-    city_options.value = response.data;
-  });
-}
-
-const city_change = (value) => {
-  axios.get("/location/area_list", {
-    params: {
-      city: value
-    }
-  }).then((response) => {
-    area_options.value = response.data;
-  });
-}
+  const city_change = (value) => {
+    axios.get("/location/area_list", {
+      params: {
+        city: value
+      }
+    }).then((response) => {
+      area_options.value = response.data;
+    });
+  }
   const onSubmit = () => {
     form.value.province =selectedOptions.value[0];
     form.value.city = selectedOptions.value[1]; 
@@ -209,6 +207,11 @@ const city_change = (value) => {
           router.push(`/exhibition/${route.params.exId}`)
       }
     );
+  }
+
+  const onCancel = () => {
+      console.log("cancel")
+      router.back();//返回上一界面
   }
 
   const fileList = ref<UploadUserFile[]>([
