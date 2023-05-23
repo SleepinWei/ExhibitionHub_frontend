@@ -357,6 +357,7 @@ export default {
                         this.form.recommends[i].poster_url = 'http://127.0.0.1:8080/' + this.form.recommends[i].poster_url
                     }
                 }
+                console.log(this.form.recommends)
             })
         },
         jumpToExInfo(id) {
