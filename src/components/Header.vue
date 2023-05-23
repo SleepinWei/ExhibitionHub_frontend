@@ -63,6 +63,9 @@
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item @click="toPerson()">个人中心</el-dropdown-item>
+                            <div v-if="user.role === '博物馆'">
+                                <el-dropdown-item @click="ToAddEx()">添加展览</el-dropdown-item>
+                            </div>
                             <el-dropdown-item @click="dialogInputPw = true">修改邮箱</el-dropdown-item>
                             <el-dropdown-item @click="dialogChangePw = true">修改密码</el-dropdown-item>
                             <el-dropdown-item @click="logout()">退出账号</el-dropdown-item>
@@ -169,6 +172,7 @@ export default {
             }
         };
         return {
+            role:this.$cookies.get("cookieRole"),
             username: this.$cookies.get("cookieName"),
             uid: this.$cookies.get("cookieAccount"),
             isLogin: false,
@@ -279,6 +283,9 @@ export default {
         toPerson() {
             console.log("toperson")
             this.$router.push("/personal")
+        },
+        ToAddEx(){
+            this.$router.push("/addEx")
         },
         loadUserName() {
             this.$axios.get("http://localhost:8080/user/find/" + this.uid)
