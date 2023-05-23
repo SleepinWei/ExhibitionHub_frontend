@@ -10,7 +10,7 @@
   
 <script>
 
-import { regionData, codeToText, TextToCode } from "element-china-area-data";
+import { regionData, codeToText} from "element-china-area-data";
 export default {
     data() {
         return {
