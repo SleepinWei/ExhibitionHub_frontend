@@ -8,7 +8,7 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
             <el-row class="basic_info">
                 <el-col :span="8" :offset="0" class="poster">
                     <el-row justify="center" class="ex-image">
-                        <el-image :src="form.poster_url" fit="contain" style="width: 80%;">
+                        <el-image class="hvr-shadow" :src="form.poster_url" fit="contain" style="width: 80%;">
                         </el-image>
                     </el-row>
                 </el-col>
@@ -36,12 +36,12 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiLink"></svg-icon>
-                        链&ensp;&ensp;接&emsp;&ensp; <a :href="form.link">{{ form.link }}</a>
+                        链&ensp;&ensp;接&emsp;&ensp; <a class="ex-a" :href="form.link">{{ form.link }}</a>
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiTagHeart"></svg-icon>
                         标&ensp;&ensp;签&emsp;
-                        <el-tag v-for="tag in form.tags"> {{ tag.name }} </el-tag>
+                        <el-tag class="hvr-shadow" v-for="tag in form.tags"> {{ tag.name }} </el-tag>
                     </el-row>
                     <el-row class="subscribe_button">
                         <div v-if="isLogin && isSubscribed">
@@ -56,7 +56,7 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                         </div>
                     </el-row>
                 </el-col>
-                <el-col :span="1" style="margin-top: 40px;">
+                <el-col :span="2" style="margin-top: 40px;margin-left: 10px;">
                     <button v-if="isAdmin" class="Btn" @click="onChangeInfo">
                         <div class="sign">
                             <svg-icon class="ex-icon" type="mdi" :path="mdiTextBoxEditOutline"></svg-icon>
@@ -105,40 +105,33 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
         </el-col>
         <el-col :span="5">
             <!-- 推荐信息 -->
-            <el-row>
-                <h2>
+            <el-row style="margin-top:25px">
+                <h2 class="ex-head-font" style="font-size: 30px;">
                     推荐展览
                 </h2>
             </el-row>
             <el-row>
-                <ul>
-                    <li v-for="recommend in form.recommends">
-                        {{ recommend }}
-                    </li>
-                </ul>
-            </el-row>
-            <el-row class="sub_info">
-                时间：{{ form.begin_date }} - {{ form.end_date }} {{ form.begin_time }} - {{ form.end_time }}
-            </el-row>
-            <el-row class="sub_info">
-                主办方：{{ form.organizer }}
-            </el-row>
-            <el-row class="sub_info">
-                票价: {{ form.ticket_info }}
-            </el-row>
-            <el-row class="sub_info">
-                官方链接:
-                <a :href="form.link">
-                    {{ form.link }}
-                </a>
-            </el-row>
-            <el-row class="sub_info">
-                标签:
-                <el-tag v-for="tag in form.tags"> {{ tag.name }} </el-tag>
-            </el-row>
-            <el-row v-if="isLogin" class="subscribe_button">
-                <el-button v-if="isLogin && !isSubscribed" @click="onSubscribe" type="success">订阅</el-button>
-                <el-tag v-if="isLogin && isSubscribed">已订阅</el-tag>
+                <div v-for="recommend in form.recommends">
+                    <el-col :span="13">
+                        <el-row justify="start" class="re-image">
+                            <el-image class="clickable hvr-shadow" :src="recommend.poster_url" fit="contain"
+                                style="width: 80%;" @click="jumpToExInfo(recommend.id)">
+                            </el-image>
+                        </el-row>
+                    </el-col>
+                    <el-col :span="12">
+                        <h2 class="re-header">
+                            {{ recommend.name }}
+                        </h2>
+                        <el-row class="re-time">
+                            {{ recommend.begin_date }} - {{ recommend.end_date }}
+                        </el-row>
+                        <el-row class="sub_info">
+                            ￥{{ recommend.ticket_info }}
+                        </el-row>
+                        <el-row class="re-foot"></el-row>
+                    </el-col>
+                </div>
             </el-row>
         </el-col>
     </el-row>
@@ -186,7 +179,7 @@ export default {
             ssssssssssssssssssssssssssssss",
                 begin_time: "",
                 end_time: "",
-                recommends: ["ex1", "ex2", "ex3"]
+                recommends: [],
             },
             isAdmin: false,
             isLogin: false,
@@ -208,14 +201,12 @@ export default {
                 .then((response) => {
                     this.form = response.data;
                     this.form.poster_url = 'http://127.0.0.1:8080/' + response.data.poster_url;
-                    console.log(this.form);
 
                     axios.get("/searchTagById", {
                         params: {
                             ex_id: this.$route.params.exId
                         }
                     }).then((response) => {
-                        console.log(response.data);
                         this.form.tags = response.data
                     })
                 }).catch((error) => {
@@ -226,9 +217,7 @@ export default {
                 });
         },
         getUserInfo() {
-            // let isAdmin = this.$cookies.get("cookieName") != null;
             let role = this.$cookies.get("cookieRole");
-            console.log(role);
             if (role == "博物馆" || role == "管理员") {
                 this.isAdmin = true;
             }
@@ -266,7 +255,6 @@ export default {
                 if (response.data !== -1) {
                     this.isSubscribed = true;
                     this.subscribeDate = response.data;
-                    console.log(this.subscribeDate);
                 }
                 else {
                     console.log("获取订阅信息失败")
@@ -282,7 +270,6 @@ export default {
         },
         onSubscribe() {
             this.showDatePicker = false;
-            console.log(this.subscribeDate)
             if (this.subscribeDate === '' || this.subscribeDate === null || this.subscribeDate === undefined) {
                 this.$message({
                     message: '请选择订阅日期',
@@ -323,7 +310,6 @@ export default {
             }
         },
         cancelSub() {
-            console.log(this.subscribeDate)
             axios.post(`/subscribe/cancelUesrSub`, {
                 user_id: this.$cookies.get("cookieAccount"),
                 ex_id: this.$route.params.exId
@@ -359,12 +345,30 @@ export default {
             }
             else
                 this.showDatePicker = true;
+        },
+        searchRecommand() {
+            axios.get(`/recommandEx/` + this.$route.params.exId
+            ).then((response) => {
+                this.form.recommends = []
+                //只取两个
+                for (var i = 0; i < 2; ++i) {
+                    if (i < response.data.length) {
+                        this.form.recommends.push(response.data[i]);
+                        this.form.recommends[i].poster_url = 'http://127.0.0.1:8080/' + this.form.recommends[i].poster_url
+                    }
+                }
+                console.log(this.form.recommends)
+            })
+        },
+        jumpToExInfo(id) {
+            this.$router.push(`/exhibition/${id}`)
         }
     },
     mounted() {
         this.getRequest();
         this.getUserInfo();
         this.getisSub();
+        this.searchRecommand();
     },
     computed: {
         long_intros() {
@@ -380,7 +384,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .ex-image {
     display: flex;
     width: 100%;
@@ -409,13 +413,14 @@ export default {
 }
 
 .sub_info {
+    font-weight: 300;
     margin-top: 8px;
     color: #333333;
 }
 
 .ex-icon {
     margin-right: 5px;
-    color: #689CD2;
+    color: #fafbfc;
 }
 
 .long_intro {
@@ -506,6 +511,15 @@ export default {
     margin-bottom: 10px;
 }
 
+.ex-a {
+    color: #333;
+    text-decoration: none;
+}
+
+.ex-a:hover {
+    border-color: #999;
+}
+
 /* plus sign */
 .sign {
     width: 100%;
@@ -559,5 +573,30 @@ export default {
 /* button click effect*/
 .Btn:active {
     transform: translate(2px, 2px);
+}
+
+.re-image {
+    width: 100%;
+}
+
+.re-header {
+    font-size: 15px;
+    font-weight: 300;
+    margin-top: 20px;
+}
+
+.re-time {
+    font-size: 12px;
+    font-weight: 200;
+    margin-bottom: 20px;
+}
+
+.re-foot {
+    border-bottom: 2px solid #00000010;
+    margin-bottom: 20px;
+}
+
+.clickable {
+    cursor: pointer;
 }
 </style>

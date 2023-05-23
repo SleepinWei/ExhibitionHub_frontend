@@ -1,3 +1,10 @@
+<!--
+ * @Author: yingxin wang
+ * @Date: 2023-05-23 15:06:49
+ * @LastEditors: yingxin wang
+ * @LastEditTime: 2023-05-23 16:07:37
+ * @Description: 请填写简介
+-->
 <template>
     <div class="museumSelecotr">
         <div class="block">
@@ -12,9 +19,9 @@
 <script>
 import axios from 'axios';
 export default {
-    props:{
-        search_venue:{
-            type:String
+    props: {
+        search_venue: {
+            type: String
         }
     },
     data() {
@@ -51,8 +58,8 @@ export default {
         }
     },
     mounted() {
-        if(this.search_venue!=null){
-            this.value=this.search_venue;
+        if (this.search_venue != null) {
+            this.value = this.search_venue;
         }
         this.getAllOrganizer();
     },

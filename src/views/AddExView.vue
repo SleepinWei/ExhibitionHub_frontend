@@ -57,16 +57,11 @@
         </el-col>
       </el-form-item>
       <el-form-item label="地点">
-        <!-- <el-input v-model="form.location" /> -->
-        <el-select v-model="form.province" placeholder="省" @change="province_change">
-          <el-option v-for="item in province_options" :value="item"/>
-        </el-select>
-        <el-select v-model="form.city" placeholder="市" @change="city_change">
-          <el-option v-for="item in city_options" :value="item"/>
-        </el-select>
-        <el-select v-model="form.area" placeholder="区">
-          <el-option v-for="item in area_options" :value="item"/>
-        </el-select>
+        <el-cascader
+          size="large"
+          :options="pcaTextArr"
+          v-model="selectedOptions">
+        </el-cascader>
       </el-form-item>
       <el-form-item label="票务信息">
         <el-input v-model="form.ticket_info" />
@@ -128,6 +123,10 @@
   import { UploadProps, UploadUserFile, messageConfig } from 'element-plus'
   import { ElMessage } from 'element-plus'
   import axios from "../http.ts"
+    import {
+  pcaTextArr
+  } from "element-china-area-data";
+
 import { routerKey, useRoute, useRouter } from 'vue-router'
 
 const imageUrl = ref('')

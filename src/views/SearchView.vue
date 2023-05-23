@@ -18,7 +18,8 @@
 
         <el-row style="width: 100%;height: 100%; position: absolute;">
             <el-col :span="18" class="CardItem">
-                <el-row v-if="searchText !== null" style="margin-bottom: 20px;margin-top: -20px;color: dimgrey;">
+                <el-row v-if="searchText !== null && searchText != undefined"
+                    style="margin-bottom: 20px;margin-top: -20px;color: dimgrey;">
                     下面是" {{ searchText }} "的搜索结果
                 </el-row>
                 <CardItem :result="this.searchResult" />
@@ -87,7 +88,7 @@ export default {
     data() {
         return {
             inputText: "",
-            searchText: "",
+            searchText: null,
             searchResult: [],
             ifDateLimit: 'noDateLimit',
             ifLocationLimit: 'noLocationLimit',
@@ -198,6 +199,15 @@ export default {
             this.loadContent()
         },
         loadContent() {
+            if (this.venue == null || this.venue == "---------------不限---------------" || this.venue == undefined) {
+                this.venue = "null"
+            }
+            if (this.inputText != null && this.inputText != "" && this.inputText != undefined) {
+                this.searchText = this.inputText;
+            }
+            else
+                this.searchText = null;
+            console.log(this.searchText)
             axios.post('/tagSelection/searchByData', {
                 query: this.inputText,
                 src: this.startTime,
@@ -229,18 +239,18 @@ export default {
     },
     mounted() {
         if (this.$route.query.venue != null) {
-            this.venue=this.$route.query.venue;
-            this.searchText=null;
+            this.venue = this.$route.query.venue;
+            this.searchText = null;
             this.venueChange(this.venue);
             this.$router.push({
-                path:this.$route.path,
+                path: this.$route.path,
                 query: {}
             }
             );//清空路由   
-        }else{
+        } else {
             // 从其他页面跳转过来，需要进行一次查询
             if (this.$route.query.querytext != null) {
-                this.inputText = this.$route.query.querytext;    
+                this.inputText = this.$route.query.querytext;
             }
             this.searchRequest(this.inputText);
         }
