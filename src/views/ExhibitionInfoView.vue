@@ -8,7 +8,7 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
             <el-row class="basic_info">
                 <el-col :span="8" :offset="0" class="poster">
                     <el-row justify="center" class="ex-image">
-                        <el-image :src="form.poster_url" fit="contain" style="width: 80%;">
+                        <el-image class="hvr-shadow" :src="form.poster_url" fit="contain" style="width: 80%;">
                         </el-image>
                     </el-row>
                 </el-col>
@@ -36,12 +36,12 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiLink"></svg-icon>
-                        链&ensp;&ensp;接&emsp;&ensp; <a :href="form.link">{{ form.link }}</a>
+                        链&ensp;&ensp;接&emsp;&ensp; <a class="ex-a" :href="form.link">{{ form.link }}</a>
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiTagHeart"></svg-icon>
                         标&ensp;&ensp;签&emsp;
-                        <el-tag v-for="tag in form.tags"> {{ tag.name }} </el-tag>
+                        <el-tag class="hvr-shadow" v-for="tag in form.tags"> {{ tag.name }} </el-tag>
                     </el-row>
                     <el-row class="subscribe_button">
                         <div v-if="isLogin && isSubscribed">
@@ -114,8 +114,8 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                 <div v-for="recommend in form.recommends">
                     <el-col :span="13">
                         <el-row justify="start" class="re-image">
-                            <el-image class="clickable" :src="recommend.poster_url" fit="contain" style="width: 80%;"
-                                @click="jumpToExInfo(recommend.id)">
+                            <el-image class="clickable hvr-shadow" :src="recommend.poster_url" fit="contain"
+                                style="width: 80%;" @click="jumpToExInfo(recommend.id)">
                             </el-image>
                         </el-row>
                     </el-col>
@@ -128,9 +128,6 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                         </el-row>
                         <el-row class="sub_info">
                             ￥{{ recommend.ticket_info }}
-                        </el-row>
-                        <el-row class="sub_info">
-                            <el-tag v-for="tag in recommend.tags"> {{ tag.name }} </el-tag>
                         </el-row>
                         <el-row class="re-foot"></el-row>
                     </el-col>
@@ -204,14 +201,12 @@ export default {
                 .then((response) => {
                     this.form = response.data;
                     this.form.poster_url = 'http://127.0.0.1:8080/' + response.data.poster_url;
-                    console.log(this.form);
 
                     axios.get("/searchTagById", {
                         params: {
                             ex_id: this.$route.params.exId
                         }
                     }).then((response) => {
-                        console.log(response.data);
                         this.form.tags = response.data
                     })
                 }).catch((error) => {
@@ -223,7 +218,6 @@ export default {
         },
         getUserInfo() {
             let role = this.$cookies.get("cookieRole");
-            console.log(role);
             if (role == "博物馆" || role == "管理员") {
                 this.isAdmin = true;
             }
@@ -261,7 +255,6 @@ export default {
                 if (response.data !== -1) {
                     this.isSubscribed = true;
                     this.subscribeDate = response.data;
-                    console.log(this.subscribeDate);
                 }
                 else {
                     console.log("获取订阅信息失败")
@@ -277,7 +270,6 @@ export default {
         },
         onSubscribe() {
             this.showDatePicker = false;
-            console.log(this.subscribeDate)
             if (this.subscribeDate === '' || this.subscribeDate === null || this.subscribeDate === undefined) {
                 this.$message({
                     message: '请选择订阅日期',
@@ -318,7 +310,6 @@ export default {
             }
         },
         cancelSub() {
-            console.log(this.subscribeDate)
             axios.post(`/subscribe/cancelUesrSub`, {
                 user_id: this.$cookies.get("cookieAccount"),
                 ex_id: this.$route.params.exId
@@ -517,6 +508,15 @@ export default {
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
     background-color: #6E84D6;
     margin-bottom: 10px;
+}
+
+.ex-a {
+    color: #333;
+    text-decoration: none;
+}
+
+.ex-a:hover {
+    border-color: #999;
 }
 
 /* plus sign */
