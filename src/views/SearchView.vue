@@ -198,6 +198,10 @@ export default {
             this.loadContent()
         },
         loadContent() {
+            if (this.venue == null || this.venue == "---------------不限---------------" || this.venue == undefined) {
+                this.venue = "null"
+            }
+            this.searchText = this.inputText;
             axios.post('/tagSelection/searchByData', {
                 query: this.inputText,
                 src: this.startTime,
@@ -229,18 +233,18 @@ export default {
     },
     mounted() {
         if (this.$route.query.venue != null) {
-            this.venue=this.$route.query.venue;
-            this.searchText=null;
+            this.venue = this.$route.query.venue;
+            this.searchText = null;
             this.venueChange(this.venue);
             this.$router.push({
-                path:this.$route.path,
+                path: this.$route.path,
                 query: {}
             }
             );//清空路由   
-        }else{
+        } else {
             // 从其他页面跳转过来，需要进行一次查询
             if (this.$route.query.querytext != null) {
-                this.inputText = this.$route.query.querytext;    
+                this.inputText = this.$route.query.querytext;
             }
             this.searchRequest(this.inputText);
         }
