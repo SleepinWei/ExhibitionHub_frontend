@@ -133,11 +133,11 @@
     </el-row>
 </template>
 
-<script setup>
-import ImageDownloadItem from '../components/ImageDownloadItem.vue'
-</script >
+<!-- <script setup> -->
+<!-- </script> -->
 
 <script>
+import ImageDownloadItem from '../components/ImageDownloadItem.vue'
 import axios from '@/http.ts'
 import SvgIcon from '@jamescoyle/vue-icon';
 import {
@@ -149,7 +149,8 @@ import {
 export default {
     components: {
         ImageDownloadItem,
-        SvgIcon
+        SvgIcon,
+        ImageDownloadItem
     },
     data() {
         return {

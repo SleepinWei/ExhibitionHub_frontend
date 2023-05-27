@@ -90,6 +90,10 @@ const router = createRouter({
       path:"/map",
       name:'map',
       component: () => import("@/views/ExMapView.vue")
+    },
+    {
+      path: "/threejs",
+      component: () => import("@/views/Threejs.vue")
     }
   ]
 })
