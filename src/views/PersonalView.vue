@@ -58,6 +58,9 @@ import CalendarView from '../views/CalendarView.vue'
                   <el-form-item label="用户类型：">
                     <el-input v-model="user.role" :disabled="true"></el-input>
                   </el-form-item>
+                  <el-form-item label="邮箱：">
+                    <el-input v-model="user.email" :disabled="true"></el-input>
+                  </el-form-item>
                   <el-form-item label="个人简介">
                     <el-input v-model="user.biography" :disabled="true" type="textarea"></el-input>
                   </el-form-item>
