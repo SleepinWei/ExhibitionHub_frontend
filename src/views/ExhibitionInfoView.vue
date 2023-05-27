@@ -1,7 +1,3 @@
-<script setup>
-import ImageDownloadItem from '../components/ImageDownloadItem.vue'
-</script>
-
 <template>
     <el-row>
         <el-col :span="18">
@@ -137,6 +133,10 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
     </el-row>
 </template>
 
+<script setup>
+import ImageDownloadItem from '../components/ImageDownloadItem.vue'
+</script >
+
 <script>
 import axios from '@/http.ts'
 import SvgIcon from '@jamescoyle/vue-icon';
@@ -145,6 +145,7 @@ import {
     mdiMapMarkerRadius, mdiLink, mdiTagHeart, mdiTextBoxEditOutline,
     mdiShareVariantOutline, mdiBellRingOutline, mdiBellCancelOutline
 } from '@mdi/js';
+
 export default {
     components: {
         ImageDownloadItem,

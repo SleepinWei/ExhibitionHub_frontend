@@ -56,7 +56,7 @@ export default {
             organizer: "og1",
             tickets: "2000RMB",
             link: "https://bilibili.com",
-            tags: ["tag1", "tag2"],
+            tags: [],
             introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
             ssssssssssssssssssssssssssssss",
             begin_time: "",
@@ -84,7 +84,8 @@ export default {
           ).then((response) => {
               //
               this.exhibitionViewed = response.data; 
-            this.exhibitionViewed.poster_url = "http://127.0.0.1:8080/" + response.data.poster_url;
+              this.exhibitionViewed.poster_url ='http://127.0.0.1:8080/' + response.data.poster_url;
+
           });
       },
       approve(row) {
