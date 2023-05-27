@@ -71,6 +71,18 @@ const selectCallBack = (url) => {
     selectedModel.value = url;
 };
 
+class ColorGUIHelper {
+    constructor(object, prop) {
+      this.object = object;
+      this.prop = prop;
+    }
+    get value() {
+      return `#${this.object[this.prop].getHexString()}`;
+    }
+    set value(hexString) {
+      this.object[this.prop].set(hexString);
+    }
+}
 function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
 
   const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
@@ -96,7 +108,7 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
   camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
 }
 
-let lastObj = null;
+let lastObj = null; // 当前显示的 obj，需要在加载新模型时 remove 掉
 
 function loadObj(url,scene,controls,camera){
         const objLoader = new OBJLoader();
@@ -143,19 +155,7 @@ function main() {
 
     const gui = new GUI();
 
-
-    const lightOptions= {
-        optionBoolean: true,
-        optionString: 'hi',
-        optionNumber: 1
-    }
-
-    {
-        const folder = gui.addFolder("Light Options");
-        folder.add(lightOptions, 'optionBoolean');
-        folder.add(lightOptions, 'optionString');
-        folder.add(lightOptions, "optionNumber");
-    }
+    
 
     const ModelOption = {
         function() {
@@ -178,6 +178,7 @@ function main() {
         scene.add(light);
     }
 
+    let dirLight = null;
     {
         const color = 0xFFFFFF;
         const intensity = 0.8;
@@ -186,8 +187,18 @@ function main() {
         light.target.position.set(-5, 0, 0);
         scene.add(light);
         scene.add(light.target);
+
+        dirLight = light;
     }
 
+    {
+        const folder = gui.addFolder("Light Options");
+        folder.addColor(new ColorGUIHelper(dirLight, 'color'), 'value').name('color');
+        folder.add(dirLight, 'intensity',0,2,0.01);
+        folder.add(dirLight.target.position, 'x',-10,10);
+        folder.add(dirLight.target.position, "z", -10, 10);
+        folder.add(dirLight.target.position, "y", 0, 10);
+    }
     // {
     //     const objLoader = new OBJLoader();
     //     objLoader.load('/src/assets/models/bunny.obj', (root) => {
@@ -232,6 +243,7 @@ function main() {
         requestAnimationFrame(render);
     }
 
+    // 检测 modelChange 
     watch(modelChange, (changeVal) => {
         if (changeVal == true) {
             modelChange.value = false;
