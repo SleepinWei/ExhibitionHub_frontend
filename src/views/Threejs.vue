@@ -5,6 +5,20 @@
     <el-row style="color: white;" justify="center">
         <h1>Online Gallery</h1>
     </el-row>
+
+    <el-drawer v-model="visible" title="Select Model" direction="ltr">
+        <el-row>
+            <p>选择你想要的查看的模型</p>
+        </el-row>
+        <el-card v-for="model in availModels" :body-style=" {padding : '0px'}"
+            style="margin-bottom: 20px;"
+            @click="selectCallBack(model.url)">
+            <img :src="model.thumbnail" class="image" style="width: 100%;display: block;"/>
+            <el-row style="padding: 14px;">
+                <span>{{model.name}}</span>
+            </el-row>
+        </el-card>
+    </el-drawer>
 </template>
 
 <style scoped>
@@ -12,8 +26,9 @@
     width: 100%;
     height: 100%;
     position: fixed;
-    z-index: -1;
+    z-index: -2;
 }
+
 </style>
 
 <script setup>
@@ -21,10 +36,43 @@ import * as THREE from "three";
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import Stats from 'three/examples/jsm/libs/stats.module'
-import GUI from 'lil-gui'
-import { onMounted } from "vue";
+import GUI, { Controller } from 'lil-gui'
+import { onMounted, watch } from "vue";
+import { ref } from "vue";
+
+// page related variables
+const visible = ref(false);
+const availModels = ref([
+    {
+        id: 0,
+        url: "/src/assets/models/dragon.obj",
+        thumbnail: "/src/assets/models/dragon.jpg",
+        name:"dragon"
+    },
+    {
+        id : 1, 
+        url: "/src/assets/models/bunny.obj",
+        thumbnail: "/src/assets/models/bunny.jpg",
+        name:"bunny"
+    },
+    {
+        id:2,
+        url: "/src/assets/models/Venus_de_Milo_SMK_KAS434_1_10pct.obj",
+        thumbnail: "/src/assets/models/Venus.jpg",
+        name:"Venus"
+    }]);
+
+const modelChange = ref(false);
+
+const selectedModel = ref("");
+
+const selectCallBack = (url) => {
+    modelChange.value = true;
+    selectedModel.value = url;
+};
 
 function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
+
   const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
   const halfFovY = THREE.MathUtils.degToRad(camera.fov * .5);
   const distance = halfSizeToFitOnScreen / Math.tan(halfFovY);
@@ -48,9 +96,30 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
   camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
 }
 
+let lastObj = null;
+
+function loadObj(url,scene,controls,camera){
+        const objLoader = new OBJLoader();
+        objLoader.load(url, (root) => {
+            lastObj = root;
+            scene.add(root);
+
+            const box = new THREE.Box3().setFromObject(root);
+            const boxSize = box.getSize(new THREE.Vector3()).length();
+            const boxCenter = box.getCenter(new THREE.Vector3());
+
+            frameArea(boxSize * 1.2, boxSize, boxCenter, camera);
+
+            controls.maxDistance = boxSize * 10;
+            controls.target.copy(boxCenter);
+            controls.update();
+        });
+}
+
 function main() {
     const canvas = document.querySelector('#canvas');
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+    renderer.set
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     // renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -69,9 +138,11 @@ function main() {
     scene.background = new THREE.Color('black');
 
     const stat = new Stats()
+    stat.dom.style.setProperty("z-index",-1);
     document.body.appendChild(stat.dom);
 
     const gui = new GUI();
+
 
     const lightOptions= {
         optionBoolean: true,
@@ -80,21 +151,22 @@ function main() {
     }
 
     {
-        gui.addFolder("Light Options");
-        gui.add(lightOptions, 'optionBoolean');
-        gui.add(lightOptions, 'optionString');
-        gui.add(lightOptions, "optionNumber");
+        const folder = gui.addFolder("Light Options");
+        folder.add(lightOptions, 'optionBoolean');
+        folder.add(lightOptions, 'optionString');
+        folder.add(lightOptions, "optionNumber");
     }
 
     const ModelOption = {
         function() {
             // 弹出选择框，选择模型
+            visible.value= true;
         }
     }
 
     {
-        gui.addFolder("Model Selection");
-        gui.add(ModelOption, 'function').name("Select Model");
+        const folder = gui.addFolder("Model Selection");
+        folder.add(ModelOption, 'function').name("Select Model");
     }
 
 
@@ -116,22 +188,23 @@ function main() {
         scene.add(light.target);
     }
 
-    {
-        const objLoader = new OBJLoader();
-        objLoader.load('/src/assets/models/bunny.obj', (root) => {
-            scene.add(root);
+    // {
+    //     const objLoader = new OBJLoader();
+    //     objLoader.load('/src/assets/models/bunny.obj', (root) => {
+    //         scene.add(root);
 
-            const box = new THREE.Box3().setFromObject(root);
-            const boxSize = box.getSize(new THREE.Vector3()).length();
-            const boxCenter = box.getCenter(new THREE.Vector3());
+    //         const box = new THREE.Box3().setFromObject(root);
+    //         const boxSize = box.getSize(new THREE.Vector3()).length();
+    //         const boxCenter = box.getCenter(new THREE.Vector3());
 
-            frameArea(boxSize * 1.2, boxSize, boxCenter, camera);
+    //         frameArea(boxSize * 1.2, boxSize, boxCenter, camera);
 
-            controls.maxDistance = boxSize * 10;
-            controls.target.copy(boxCenter);
-            controls.update();
-        });
-    }
+    //         controls.maxDistance = boxSize * 10;
+    //         controls.target.copy(boxCenter);
+    //         controls.update();
+    //     });
+    // }
+    loadObj(availModels.value[0].url, scene, controls,camera);
 
     function resizeRendererToDisplaySize(renderer) {
         const canvas = renderer.domElement;
@@ -158,6 +231,14 @@ function main() {
 
         requestAnimationFrame(render);
     }
+
+    watch(modelChange, (changeVal) => {
+        if (changeVal == true) {
+            modelChange.value = false;
+            scene.remove(lastObj);
+            loadObj(selectedModel.value, scene, controls,camera);
+        }
+    })
 
     requestAnimationFrame(render);
 }
