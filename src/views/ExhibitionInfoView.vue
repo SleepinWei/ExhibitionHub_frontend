@@ -37,7 +37,7 @@
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiTagHeart"></svg-icon>
                         标&ensp;&ensp;签&emsp;
-                        <el-tag class="hvr-shadow" v-for="tag in form.tags"> {{ tag.name }} </el-tag>
+                        <el-tag class="hvr-shadow" v-for="tag in form.tag_list "> {{ tag.name }} </el-tag>
                     </el-row>
                     <el-row class="subscribe_button">
                         <div v-if="isLogin && isSubscribed">
@@ -166,7 +166,7 @@ export default {
                 city: "",
                 area: "",
                 address: "",
-                tags: [
+                tag_list: [
                     {
                         id: 1,
                         name: "tag1"
@@ -202,14 +202,6 @@ export default {
                 .then((response) => {
                     this.form = response.data;
                     this.form.poster_url = 'http://127.0.0.1:8080/' + response.data.poster_url;
-
-                    axios.get("/searchTagById", {
-                        params: {
-                            ex_id: this.$route.params.exId
-                        }
-                    }).then((response) => {
-                        this.form.tags = response.data
-                    })
                 }).catch((error) => {
                     if (error.response.status == 400) {
                         // exhibition is not found
