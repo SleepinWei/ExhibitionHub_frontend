@@ -358,6 +358,19 @@ export default {
             this.$router.push(`/exhibition/${id}`)
         }
     },
+    watch: {
+        $route(to, from) {
+            let that = this;
+            if (to.params.exId != from.params.exId) {
+                that.exId = to.params.exId;
+                this.getRequest();
+                this.getUserInfo();
+                this.getisSub();
+                this.searchRecommand();
+                this.$forceUpdate();
+            }
+        }
+    },
     mounted() {
         this.getRequest();
         this.getUserInfo();
