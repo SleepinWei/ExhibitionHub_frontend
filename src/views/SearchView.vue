@@ -223,7 +223,7 @@ export default {
 }
 
 .se-selector {
-    width: 60%;
+    width: 85%;
     border: 1px solid #DCDFE6;
     margin: auto;
     margin-left: 125px;
