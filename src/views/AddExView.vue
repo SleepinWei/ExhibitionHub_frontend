@@ -126,6 +126,8 @@
 
   const imageUrl = ref('')
   // do not use same name with ref
+  const allTags = ref([])
+
   const form = ref({
       id: 0,
       name: '',
