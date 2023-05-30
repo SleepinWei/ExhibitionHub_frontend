@@ -17,7 +17,7 @@
               </el-button>
           </template>
       </el-table-column>
-      <el-table-column label="审核" align="center">
+      <!-- <el-table-column label="审核" align="center">
           <template #default="scope">
             <el-button type="success" @click="approve(scope.row)">
                 通过
@@ -26,7 +26,19 @@
                 不通过
             </el-button>
           </template>
+      </el-table-column> -->
+
+      <el-table-column label="审核" align="center">
+        <template #default="scope">
+          <div class="tag-container">
+            <el-tag @click="approve(scope.row)" type="success">通过</el-tag>
+            {{' '}}
+            <el-tag @click="refuse(scope.row)" type="danger">不通过</el-tag>
+          </div>
+        </template>
       </el-table-column>
+
+
   </el-table>
   </el-row>
 
@@ -145,5 +157,11 @@ export default {
 </script>
 
 <style scoped>
-
+.tag-container {
+    display: inline-block;
+  }
+  
+.tag-container .el-tag:hover {
+  cursor: pointer;
+}
 </style>

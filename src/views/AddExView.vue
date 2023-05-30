@@ -56,12 +56,16 @@
         />
       </el-col>
     </el-form-item>
-    <el-form-item label="地点">
+    <el-form-item label="省市区">
       <el-cascader
         size="large"
         :options="pcaTextArr"
         v-model="selectedOptions">
       </el-cascader>
+    </el-form-item>
+    <el-form-item label="详细地址">
+      <el-input v-model="form.address">
+      </el-input>
     </el-form-item>
     <el-form-item label="票务信息">
       <el-input v-model="form.ticket_info" />
@@ -126,6 +130,9 @@
 
   const imageUrl = ref('')
   // do not use same name with ref
+  const allTags = ref([])
+  const selectedOptions = ref([]); // 选择的省市区
+
   const form = ref({
       id: 0,
       name: '',
@@ -134,6 +141,7 @@
       province: '',
       city: '',
       area: '',
+      address:"",
       link:'',
       ticket_info:'',
       begin_date: '',
@@ -144,9 +152,7 @@
       type: [],
       resource: '',
       introduction: '',
-      // checked_sports:false,
-      // checked_art:false,
-      // checked_tech:false
+      tag_list:[]
   })
 
   const province_options = ref([]);

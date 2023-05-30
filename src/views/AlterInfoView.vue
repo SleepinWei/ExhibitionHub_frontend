@@ -32,9 +32,13 @@
         <el-time-picker v-model="form.end_time" placeholder="选择结束时间" value-format="HH:mm:ss" style="width: 100%" />
       </el-col>
     </el-form-item>
-    <el-form-item label="地点">
+    <el-form-item label="省市区">
       <el-cascader size="large" :options="pcaTextArr" v-model="selectedOptions">
       </el-cascader>
+    </el-form-item>
+    <el-form-item label="详细地址">
+      <el-input v-model="form.address">
+      </el-input>
     </el-form-item>
     <el-form-item label="票务信息">
       <el-input v-model="form.ticket_info" />
@@ -107,6 +111,7 @@ const form = ref({
   province: '',
   city: '',
   area: '',
+  address : '',
   link: '',
   ticket_info: '',
   begin_date: '',
@@ -120,52 +125,38 @@ const form = ref({
   tag_list: [] 
 })
 
-const province_options = ref([]);
-const city_options = ref([]);
-const area_options = ref([]);
-const province_change = (value) => {
-  axios.get("/location/city_list", {
-    params: {
-      province: value
-    }
-  }).then((response) => {
-    city_options.value = response.data;
-  });
-}
+// const province_options = ref([]);
+// const city_options = ref([]);
+// const area_options = ref([]);
+// const province_change = (value) => {
+//   axios.get("/location/city_list", {
+//     params: {
+//       province: value
+//     }
+//   }).then((response) => {
+//     city_options.value = response.data;
+//   });
+// }
 
-const city_change = (value) => {
-  axios.get("/location/area_list", {
-    params: {
-      city: value
-    }
-  }).then((response) => {
-    area_options.value = response.data;
-  });
-}
+// const city_change = (value) => {
+//   axios.get("/location/area_list", {
+//     params: {
+//       city: value
+//     }
+//   }).then((response) => {
+//     area_options.value = response.data;
+//   });
+// }
 const onSubmit = () => {
   form.value.province = selectedOptions.value[0];
   form.value.city = selectedOptions.value[1];
   form.value.area = selectedOptions.value[2];
 
-  console.log(form.value);
+  // console.log(form.value);
 
   axios({
     method: "post",
     url: "/alterExInfo",
-    // data:{
-    //   name:form.exhibition_name,
-    //   site_name:form.exhibition_area_name,
-    //   organizer:form.sponsor_name,
-    //   begin_date:form.date1,
-    //   end_date:form.date2,
-    //   begin_time:form.time1,
-    //   end_time:form.time2,
-    //   location:form.location,
-    //   ticket_info:form.ticket_info,
-    //   introduction:form.desc,
-    //   link:form.official_link
-    // }
-
     data: form.value,
   }).then(
     (response) => {

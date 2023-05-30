@@ -53,7 +53,7 @@
                     </el-row>
                 </el-col>
                 <el-col :span="2" style="margin-top: 40px;margin-left: 10px;">
-                    <button v-if="isAdmin" class="Btn" @click="onChangeInfo">
+                    <button v-if="canChange" class="Btn" @click="onChangeInfo">
                         <div class="sign">
                             <svg-icon class="button-icon " type="mdi" :path="mdiTextBoxEditOutline"></svg-icon>
                         </div>
@@ -177,17 +177,18 @@ export default {
                         name: ""
                     }
                 ],
-                introduction:"",
+                introduction: "",
                 begin_time: "",
                 end_time: "",
                 recommends: [],
             },
-            isAdmin: false,
+            canChange: false,
             isLogin: false,
             isSubscribed: false,
             subscribeDate: '',
             showPopup: false,
             imageUrl: '',
+            ownerId: 0, 
             showDatePicker: false, // 是否显示日期选择器,
             mdiCalendarClock: mdiCalendarClock,
             mdiAccountGroup: mdiAccountGroup,
@@ -199,7 +200,6 @@ export default {
             mdiShareVariantOutline: mdiShareVariantOutline,
             mdiBellRingOutline: mdiBellRingOutline,
             mdiBellCancelOutline: mdiBellCancelOutline,
-            mdiTextBoxEditOutline: mdiTextBoxEditOutline
         }
     },
     methods: {
@@ -222,9 +222,19 @@ export default {
         },
         getUserInfo() {
             let role = this.$cookies.get("cookieRole");
-            if (role == "博物馆" || role == "管理员") {
-                this.isAdmin = true;
-            }
+            let userId = this.$cookies.get("cookieAccount");
+            axios.get("/getOwnerId", {
+                params: {
+                    ex_id:this.$route.params.exId
+                }
+            }).then((response){
+                this.ownerId = response.data;
+
+                if (role == "博物馆" && this.ownerId == userId) {
+                    // 当前用户只能修改属于自己的展览
+                    this.canChange= true;
+                }
+            })
 
             let isLogin = (this.$cookies.get("cookieName") != null);
 
