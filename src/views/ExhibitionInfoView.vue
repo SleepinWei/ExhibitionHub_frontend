@@ -1,7 +1,3 @@
-<script setup>
-import ImageDownloadItem from '../components/ImageDownloadItem.vue'
-</script>
-
 <template>
     <el-row>
         <el-col :span="18">
@@ -41,7 +37,7 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiTagHeart"></svg-icon>
                         标&ensp;&ensp;签&emsp;
-                        <el-tag class="hvr-shadow" v-for="tag in form.tags"> {{ tag.name }} </el-tag>
+                        <el-tag class="hvr-shadow" v-for="tag in form.tag_list "> {{ tag.name }} </el-tag>
                     </el-row>
                     <el-row class="subscribe_button">
                         <div v-if="isLogin && isSubscribed">
@@ -137,7 +133,11 @@ import ImageDownloadItem from '../components/ImageDownloadItem.vue'
     </el-row>
 </template>
 
+<!-- <script setup> -->
+<!-- </script> -->
+
 <script>
+import ImageDownloadItem from '../components/ImageDownloadItem.vue'
 import axios from '@/http.ts'
 import SvgIcon from '@jamescoyle/vue-icon';
 import {
@@ -145,10 +145,12 @@ import {
     mdiMapMarkerRadius, mdiLink, mdiTagHeart, mdiTextBoxEditOutline,
     mdiShareVariantOutline, mdiBellRingOutline, mdiBellCancelOutline
 } from '@mdi/js';
+
 export default {
     components: {
         ImageDownloadItem,
-        SvgIcon
+        SvgIcon,
+        ImageDownloadItem
     },
     data() {
         return {
@@ -165,7 +167,7 @@ export default {
                 city: "",
                 area: "",
                 address: "",
-                tags: [
+                tag_list: [
                     {
                         id: 1,
                         name: "tag1"
@@ -201,14 +203,6 @@ export default {
                 .then((response) => {
                     this.form = response.data;
                     this.form.poster_url = 'http://127.0.0.1:8080/' + response.data.poster_url;
-
-                    axios.get("/searchTagById", {
-                        params: {
-                            ex_id: this.$route.params.exId
-                        }
-                    }).then((response) => {
-                        this.form.tags = response.data
-                    })
                 }).catch((error) => {
                     if (error.response.status == 400) {
                         // exhibition is not found
@@ -362,6 +356,19 @@ export default {
         },
         jumpToExInfo(id) {
             this.$router.push(`/exhibition/${id}`)
+        }
+    },
+    watch: {
+        $route(to, from) {
+            let that = this;
+            if (to.params.exId != from.params.exId) {
+                that.exId = to.params.exId;
+                this.getRequest();
+                this.getUserInfo();
+                this.getisSub();
+                this.searchRecommand();
+                this.$forceUpdate();
+            }
         }
     },
     mounted() {
