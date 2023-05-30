@@ -28,11 +28,11 @@
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiMapMarkerRadius"></svg-icon>
-                        地&ensp;&ensp;点&emsp; {{ form.province }} - {{ form.city }} - {{ form.area }} - {{ form.address }}
+                        地&ensp;&ensp;点&emsp; {{ form.area }} - {{ form.address }}
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiLink"></svg-icon>
-                        链&ensp;&ensp;接&emsp;&ensp; <a class="ex-a" :href="form.link">{{ form.link }}</a>
+                        链&ensp;&ensp;接&emsp;&ensp; <a class="ex-a" :href="form.link">这里打开</a>
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiTagHeart"></svg-icon>
@@ -55,20 +55,20 @@
                 <el-col :span="2" style="margin-top: 40px;margin-left: 10px;">
                     <button v-if="isAdmin" class="Btn" @click="onChangeInfo">
                         <div class="sign">
-                            <svg-icon class="ex-icon" type="mdi" :path="mdiTextBoxEditOutline"></svg-icon>
+                            <svg-icon class="button-icon " type="mdi" :path="mdiTextBoxEditOutline"></svg-icon>
                         </div>
                         <div class="text">&ensp;&ensp;修改</div>
                     </button>
                     <button v-if="isLogin" class="Btn" @click="onShareExhibition">
                         <div class="sign">
-                            <svg-icon class="ex-icon" type="mdi" :path="mdiShareVariantOutline"></svg-icon>
+                            <svg-icon class="button-icon " type="mdi" :path="mdiShareVariantOutline"></svg-icon>
                         </div>
                         <div class="text">&ensp;&ensp;分享</div>
                     </button>
                     <div v-if="isLogin && !isSubscribed" @mouseenter="showDatePicker = true">
                         <button class="Btn">
                             <div class="sign">
-                                <svg-icon class="ex-icon" type="mdi" :path="mdiBellRingOutline"></svg-icon>
+                                <svg-icon class="button-icon " type="mdi" :path="mdiBellRingOutline"></svg-icon>
                             </div>
                             <div class="text">&ensp;订阅</div>
                         </button>
@@ -82,7 +82,7 @@
 
                     <button v-if="isLogin && isSubscribed" class="Btn" @click="cancelSub">
                         <div class="sign">
-                            <svg-icon class="ex-icon" type="mdi" :path="mdiBellCancelOutline"></svg-icon>
+                            <svg-icon class="button-icon " type="mdi" :path="mdiBellCancelOutline"></svg-icon>
                         </div>
                         <div class="text">&ensp;取消</div>
                     </button>
@@ -150,7 +150,7 @@ export default {
     components: {
         ImageDownloadItem,
         SvgIcon,
-        ImageDownloadItem
+        ImageDownloadItem,
     },
     data() {
         return {
@@ -189,7 +189,18 @@ export default {
             subscribeDate: '',
             showPopup: false,
             imageUrl: '',
-            showDatePicker: false, // 是否显示日期选择器
+            showDatePicker: false, // 是否显示日期选择器,
+            mdiCalendarClock: mdiCalendarClock,
+            mdiAccountGroup: mdiAccountGroup,
+            mdiCashMultiple: mdiCashMultiple,
+            mdiMapMarkerRadius: mdiMapMarkerRadius,
+            mdiLink: mdiLink,
+            mdiTagHeart: mdiTagHeart,
+            mdiTextBoxEditOutline: mdiTextBoxEditOutline,
+            mdiShareVariantOutline: mdiShareVariantOutline,
+            mdiBellRingOutline: mdiBellRingOutline,
+            mdiBellCancelOutline: mdiBellCancelOutline,
+            mdiTextBoxEditOutline: mdiTextBoxEditOutline
         }
     },
     methods: {
@@ -420,6 +431,9 @@ export default {
 }
 
 .sub_info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     font-weight: 300;
     margin-top: 8px;
     color: #333333;
@@ -427,7 +441,12 @@ export default {
 
 .ex-icon {
     margin-right: 5px;
-    color: #fafbfc;
+    color: #6E84D6;
+}
+
+.button-icon {
+    margin-right: 5px;
+    color: #ffffff;
 }
 
 .long_intro {
@@ -481,7 +500,7 @@ export default {
 }
 
 .ex-head-font {
-    font-family: 'SourceHanSerifSC-VF', cursive;
+    font-family: 'SourceHanSerifSC-VF';
     font-size: 30px;
     font-weight: 500;
 }
@@ -493,7 +512,7 @@ export default {
     line-height: 35px;
     padding-left: 50px;
     width: 90%;
-    font-family: 'SourceHanSerifSC-VF', cursive;
+    font-family: 'SourceHanSerifSC-VF';
     font-size: 20px;
     font-weight: 200;
     margin-top: 20px;
