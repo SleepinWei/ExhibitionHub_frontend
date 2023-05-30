@@ -79,8 +79,7 @@
     <el-form-item label="海报">
       <el-upload
       class="avatar-uploader"
-      action="http://localhost:8080/addEx/uploadPoster" 
-      :data="{ ex_id: form.id }"
+      action="http://localhost:8080/addEx/stash"
       ref="uploadRef"
       auto-upload="false"
       :show-file-list="false"
@@ -113,12 +112,16 @@
   import { ref } from 'vue'  
   import { Plus } from '@element-plus/icons-vue'
   import { UploadProps, UploadUserFile, messageConfig } from 'element-plus'
+  import type { UploadInstance } from "element-plus";
   import { ElMessage } from 'element-plus'
   import axios from "../http.ts"
   import {pcaTextArr} from "element-china-area-data";
   import { routerKey, useRoute, useRouter } from 'vue-router'
+import { StringController } from 'lil-gui';
 
   const imageUrl = ref('')
+  var img_base64 = new String
+  var userid = "-1"
   // do not use same name with ref
   const allTags = ref([])
   const selectedOptions = ref([]); // 选择的省市区
@@ -127,21 +130,26 @@
       id: 0,
       name: '',
       venue_name:'',
-      organizer: '',
-      province: '',
-      city: '',
-      area: '',
-      address:"",
-      link:'',
       ticket_info:'',
+      organizer: '',
       begin_date: '',
       end_date: '',
       begin_time: '',
       end_time: '',
-      delivery: false,
-      type: [],
-      resource: '',
+      province: '',
+      city: '',
+      area: '',
+      address:"",
       introduction: '',
+      link:'',
+      poster_url:'',
+      is_checked:false,
+      
+      
+      //delivery: false,
+      //type: [],
+      //resource: '',
+      
       tag_list:[]
   })
 
@@ -156,6 +164,8 @@
       }
   )
   });
+  
+  const uploadRef = ref<UploadInstance>();
 
   const province_change = (value) => {
   axios.get("/location/city_list", {
@@ -174,6 +184,7 @@
       }
   }).then((response) => {
       area_options.value = response.data;
+      console.log(area_options)
   });
   }
   
@@ -185,21 +196,55 @@
   }
 
   const onSubmit = () => {
-      axios({
-          method: "post",
-          url: "/addEx",
-          data: form.value,
-      })
-      .then((response) => {
-          ElMessage({
-              message: "添加成功，请等待审核"
-          })
-          router.push("/");
-      }).catch(() => {
-          ElMessage({
-              message: "添加失败，缺少必要项"
-          });
-      });
+    form.value.province=selectedOptions.value[0]
+    form.value.city=selectedOptions.value[1]
+    form.value.area=selectedOptions.value[2]
+    var jsondata = JSON.parse(JSON.stringify(form.value))
+    console.log(jsondata)
+    axios({
+        method: "post",
+        url: "/addEx",
+        data: {
+          file_base64: img_base64,
+          data: jsondata
+        }
+    })
+    .then((response) => {
+      if(response.data=="success"){
+        ElMessage({
+            message: "添加成功，请等待审核"
+        })
+        router.push("/");
+      }
+      else{
+        ElMessage({
+            message: "添加失败，缺少必要项"
+        });
+      }
+        
+    }).catch(() => {
+        ElMessage({
+            message: "添加失败，缺少必要项"
+        });
+    });
+    // console.log(document.cookie.split("="))
+    // if (document.cookie != "") {
+    //   userid = document.cookie.split("=")[1].split(";")[0];
+    // }
+    //   axios.post(`/addEx/uploadPoster`, {
+    //     file_base64: img_base64,
+    //     uid: userid,
+    //         }).then((response) => {
+    //             let time = parseInt(new Date().getTime() / 1000);
+    //             console.log(time)
+    //             form.value.poster_url=userid+'_'+time+'.jpg';
+                
+    //             console.log("海报图片上传成功！")
+    //         }).catch((error) => {
+    //             console.log(error)
+    //         });
+
+      
   }
 
   const fileList = ref<UploadUserFile[]>([
@@ -233,6 +278,13 @@
       uploadFile
   ) => {
       imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+      var reader = new FileReader();
+      reader.readAsDataURL(uploadFile.raw!);
+      reader.onload = () => {
+
+          img_base64=reader.result;
+          //form.img = reader.result;
+      }
   }
 
   const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
