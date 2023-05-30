@@ -130,22 +130,26 @@ import { StringController } from 'lil-gui';
       id: 0,
       name: '',
       venue_name:'',
-      organizer: '',
-      province: '',
-      city: '',
-      area: '',
-      address:"",
-      link:'',
-      poster_url:'',
       ticket_info:'',
+      organizer: '',
       begin_date: '',
       end_date: '',
       begin_time: '',
       end_time: '',
-      delivery: false,
-      type: [],
-      resource: '',
+      province: '',
+      city: '',
+      area: '',
+      address:"",
       introduction: '',
+      link:'',
+      poster_url:'',
+      is_checked:'',
+      
+      
+      //delivery: false,
+      //type: [],
+      //resource: '',
+      
       tag_list:[]
   })
 
@@ -180,6 +184,7 @@ import { StringController } from 'lil-gui';
       }
   }).then((response) => {
       area_options.value = response.data;
+      console.log(area_options)
   });
   }
   
@@ -191,12 +196,14 @@ import { StringController } from 'lil-gui';
   }
 
   const onSubmit = () => {
+    var jsondata = JSON.parse(JSON.stringify(form.value))
+    console.log(jsondata)
     axios({
         method: "post",
         url: "/addEx",
         data: {
           file_base64: img_base64,
-          data: form.value
+          data: jsondata
         }
     })
     .then((response) => {
