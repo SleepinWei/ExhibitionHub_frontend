@@ -30,14 +30,14 @@ export default {
             this.$emit('selectType', data);
         },
         getTags() {
-            axios.get(`/tagSelection/getAllTag`)
+            axios.get(`/tagSelection/getAllTags`)
                 .then(
                     (response) => {
                         console.log(response.data);
                         this.types = [];
                         var data = response.data;
                         for (var i = 0; i < data.length; i += 1) {
-                            this.types.push({ id: i, name: data[i] });
+                            this.types.push({ id: data[i].id, name: data[i].name });
                         }
                         console.log(this.types)
                     }
