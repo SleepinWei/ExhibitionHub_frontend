@@ -177,7 +177,7 @@ export default {
                         name: ""
                     }
                 ],
-                introduction:"",
+                introduction: "",
                 begin_time: "",
                 end_time: "",
                 recommends: [],
@@ -199,7 +199,6 @@ export default {
             mdiShareVariantOutline: mdiShareVariantOutline,
             mdiBellRingOutline: mdiBellRingOutline,
             mdiBellCancelOutline: mdiBellCancelOutline,
-            mdiTextBoxEditOutline: mdiTextBoxEditOutline
         }
     },
     methods: {

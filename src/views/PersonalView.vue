@@ -18,7 +18,6 @@ import CalendarView from '../views/CalendarView.vue'
           <!--  -->
           <el-menu-item index="1" @click="ToSubscribe()">我的订阅</el-menu-item>
           <el-menu-item index="2" @click="ToCalender()">我的日历</el-menu-item>
-          <el-menu-item index="3">更多</el-menu-item>
         </el-menu>
       </div>
       <div v-else-if="user.role === '博物馆'">
@@ -160,7 +159,6 @@ export default {
   created: function () {//根据Id查询用户信息
     this.$axios.get("/user/find/" + this.uid)
       .then((response) => {
-        console.log("created:user/find"),
           this.user = response.data//user赋值
         this.subuser = this.user
       })
@@ -221,6 +219,7 @@ export default {
             type: 'error'
           })
         })
+      this.isEditing=false
     },
     cancel() {
       this.isEditing = false
@@ -236,7 +235,6 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      console.log("sm+" + this.imageUrl)
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
