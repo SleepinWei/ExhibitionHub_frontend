@@ -203,6 +203,9 @@ export default {
                 message: '保存成功！',
                 type: 'success'
               })
+
+            this.isEditing=false//关闭修改界面
+            this.$router.replace('/personall')
           }
           else {
             this.$message({
@@ -219,7 +222,10 @@ export default {
             type: 'error'
           })
         })
-      this.isEditing=false
+      
+      // this.$router.go(0)
+      // location.reload()
+      
     },
     cancel() {
       this.isEditing = false

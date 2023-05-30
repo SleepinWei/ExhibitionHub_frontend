@@ -57,6 +57,11 @@ const router = createRouter({
       component: () => import('../views/PersonalView.vue'),
     },
     {
+      path: '/personall',
+      name: 'Personall',
+      component: () => import('../views/Blank.vue'),
+    },
+    {
       path: '/resetPassword',
       name: 'resetPassword',
       //重设密码页面
