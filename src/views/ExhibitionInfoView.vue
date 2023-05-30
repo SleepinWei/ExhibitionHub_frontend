@@ -20,7 +20,7 @@
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiAccountGroup"></svg-icon>
-                        主办方&emsp; {{ form.organizer }}
+                        展馆名&emsp; {{ form.venue_name }}
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiCashMultiple"></svg-icon>
