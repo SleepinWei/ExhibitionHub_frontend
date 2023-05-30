@@ -19,7 +19,7 @@
         animationOverlay: '',
         pointOverlay: '',
         venue : [
-          {venue_name:'-1',venue_address:'-1'}
+          {venue_name:'-1',venue_province:'-1',venue_city:'-1',venue_area:'-1',venue_address:'-1'}
         ],
         //data:[]
       }
@@ -46,7 +46,7 @@
         const promises = this.venue.map((item) => {
           return new Promise((resolve) => {
             let myGeo = new BMap.Geocoder();
-            myGeo.getPoint(item.venue_address, function (point) {
+            myGeo.getPoint((item.venue_province+item.venue_area+item.venue_address), function (point) {
               if (point) {
                 let newList = {
                   name: item.venue_name,
