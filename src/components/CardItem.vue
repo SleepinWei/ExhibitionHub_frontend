@@ -2,7 +2,7 @@
  * @Author: yingxin wang
  * @Date: 2023-04-25 17:20:15
  * @LastEditors: yingxin wang
- * @LastEditTime: 2023-05-23 14:49:43
+ * @LastEditTime: 2023-05-30 15:22:58
  * @dis: 卡片布局修改为动态效果
 -->
 <template>
@@ -29,7 +29,7 @@
                         <div class="card-title">{{ item.name }}</div>
                         <div class="dis-box">
                             <div class="dis">
-                                <p class="dis">
+                                <p class="dis-p">
                                     <strong>{{ item.introduction }}</strong>
                                 </p>
                             </div>
@@ -197,9 +197,27 @@ export default {
     justify-content: space-between;
 }
 
-.dis p {
+
+.dis-p {
     width: 88%;
+    display: -webkit-box;
+    -webkit-line-clamp: 11;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    position: relative;
+    line-height: 1.4em;
+    max-height: 15.4em;
+    text-align: justify;
 }
+
+.dis-p::after {
+    content: "...";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-left: 20px;
+}
+
 
 .it-footer {
     color: #ffffff88;
