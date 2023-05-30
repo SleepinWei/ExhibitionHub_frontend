@@ -152,7 +152,7 @@ const onSubmit = () => {
   form.value.city = selectedOptions.value[1];
   form.value.area = selectedOptions.value[2];
 
-  // console.log(form.value);
+  console.log(form.value);
 
   axios({
     method: "post",

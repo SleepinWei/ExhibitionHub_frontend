@@ -29,7 +29,7 @@
     },
     methods: {
       jumpToExhibition(id) {
-        this.$router.push(`/exhibition/${id}`)
+          this.$router.push({ path: `/exhibition/${id}` })
       },
     },
     created: function () {
