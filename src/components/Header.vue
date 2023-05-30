@@ -278,7 +278,7 @@ export default {
                 })
         },
         toPerson() {
-            this.$router.push("/personal")
+            this.$router.push('/personall')
         },
         ToAddEx(){
             this.$router.push("/addEx")
