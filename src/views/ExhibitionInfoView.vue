@@ -65,7 +65,8 @@
                         </div>
                         <div class="text">&ensp;&ensp;分享</div>
                     </button>
-                    <div v-if="isLogin && !isSubscribed" @mouseenter="showDatePicker = true">
+                    <div v-if="isLogin && !isSubscribed && !isVenue && !isAdministrator"
+                        @mouseenter="showDatePicker = true">
                         <button class="Btn">
                             <div class="sign">
                                 <svg-icon class="button-icon " type="mdi" :path="mdiBellRingOutline"></svg-icon>
@@ -80,7 +81,7 @@
                         </el-date-picker>
                     </div>
 
-                    <button v-if="isLogin && isSubscribed" class="Btn" @click="cancelSub">
+                    <button v-if="isLogin && isSubscribed && !isVenue && !isAdministrator" class="Btn" @click="cancelSub">
                         <div class="sign">
                             <svg-icon class="button-icon " type="mdi" :path="mdiBellCancelOutline"></svg-icon>
                         </div>
@@ -189,6 +190,8 @@ export default {
             showPopup: false,
             imageUrl: '',
             ownerId: 0,
+            isVenue: false,
+            isAdministrator: false,
             showDatePicker: false, // 是否显示日期选择器,
             mdiCalendarClock: mdiCalendarClock,
             mdiAccountGroup: mdiAccountGroup,
@@ -227,12 +230,16 @@ export default {
                 params: {
                     ex_id: this.$route.params.exId
                 }
-            }).then((response)=>{
+            }).then((response) => {
                 this.ownerId = response.data;
 
                 if (role == "博物馆" && this.ownerId == userId) {
                     // 当前用户只能修改属于自己的展览
                     this.canChange = true;
+                    this.isVenue = true;
+                }
+                else if (role == "管理员") {
+                    this.isAdministrator = true;
                 }
             })
 
