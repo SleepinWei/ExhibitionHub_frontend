@@ -143,7 +143,7 @@ import { StringController } from 'lil-gui';
       introduction: '',
       link:'',
       poster_url:'',
-      is_checked:'',
+      is_checked:false,
       
       
       //delivery: false,
@@ -196,6 +196,9 @@ import { StringController } from 'lil-gui';
   }
 
   const onSubmit = () => {
+    form.value.province=selectedOptions.value[0]
+    form.value.city=selectedOptions.value[1]
+    form.value.area=selectedOptions.value[2]
     var jsondata = JSON.parse(JSON.stringify(form.value))
     console.log(jsondata)
     axios({
@@ -207,10 +210,18 @@ import { StringController } from 'lil-gui';
         }
     })
     .then((response) => {
+      if(response.data=="success"){
         ElMessage({
             message: "添加成功，请等待审核"
         })
         router.push("/");
+      }
+      else{
+        ElMessage({
+            message: "添加失败，缺少必要项"
+        });
+      }
+        
     }).catch(() => {
         ElMessage({
             message: "添加失败，缺少必要项"
