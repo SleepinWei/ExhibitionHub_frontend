@@ -218,8 +218,7 @@ export default {
     created: function () {//根据Id查询用户信息
         this.$axios.get("/user/find/" + this.uid)
             .then((response) => {
-                console.log("created:user/find"),
-                    this.user = response.data//user赋值
+                this.user = response.data//user赋值
                 this.subuser = this.user
             })
             .catch(response => {
@@ -234,7 +233,6 @@ export default {
                         type: 'image/jpeg', // 根据实际情况设置图片类型
                     });
                     this.imageUrl = URL.createObjectURL(blob);
-                    console.log("wwwwww")
                 })
                 .catch((error) => {
                     console.error(error);
@@ -263,7 +261,6 @@ export default {
                 .then(() => {
                     this.$axios.post('/logout').then(res => res.data)
                         .then(res => {
-                            console.log(res)
                             this.$message({
                                 type: 'success',
                                 message: '退出账户成功'
@@ -281,7 +278,6 @@ export default {
                 })
         },
         toPerson() {
-            console.log("toperson")
             this.$router.push("/personal")
         },
         ToAddEx(){
@@ -290,7 +286,6 @@ export default {
         loadUserName() {
             this.$axios.get("http://localhost:8080/user/find/" + this.uid)
                 .then((response) => {
-                    console.log(response)
                     this.username = response.data.username//user赋值
                 })
                 .catch(response => {

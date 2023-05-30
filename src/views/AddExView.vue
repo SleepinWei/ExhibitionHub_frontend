@@ -100,10 +100,11 @@
     </el-form-item>
       <el-form-item label="标签">
         <el-row>
-          <!-- todo: 改为 v-for，从后端获取所有的 tags -->
-        <!-- <el-check-tag class="check_tag" :checked="form.checked_tech" @change="onChange_tech">科技</el-check-tag> -->
-        <!-- <el-check-tag class="check_tag" :checked="form.checked_sports" @change="onChange_sports">体育</el-check-tag> -->
-        <!-- <el-check-tag class="check_tag" :checked="form.checked_art" @change="onChange_art">艺术</el-check-tag> -->
+        <el-checkbox-group v-model="form.tag_list" size="large">
+          <el-checkbox-button v-for="(tag,index) in allTags" :key="index" :label="tag">
+            {{ tag.name }}
+          </el-checkbox-button>
+        </el-checkbox-group>
         </el-row>
       </el-form-item>
     <el-form-item>
@@ -247,6 +248,14 @@
           return true
       }
   }
+
+onMounted(() => {
+  axios.get("/tagSelection/getAllTags").then(
+    (response) => {
+      allTags.value = response.data;
+    }
+  )
+});
 
 </script>
 

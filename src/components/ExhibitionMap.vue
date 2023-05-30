@@ -150,7 +150,7 @@
   
   </script>
   
-  <style>
+  <style scoped>
   .title {
     position: absolute;
     z-index: 2;
