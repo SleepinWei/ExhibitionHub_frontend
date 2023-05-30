@@ -79,8 +79,7 @@
     <el-form-item label="海报">
       <el-upload
       class="avatar-uploader"
-      action="http://localhost:8080/addEx/uploadPoster" 
-      :data="{ ex_id: form.id }"
+      action="http://localhost:8080/addEx/stash"
       ref="uploadRef"
       auto-upload="false"
       :show-file-list="false"
@@ -113,12 +112,16 @@
   import { ref } from 'vue'  
   import { Plus } from '@element-plus/icons-vue'
   import { UploadProps, UploadUserFile, messageConfig } from 'element-plus'
+  import type { UploadInstance } from "element-plus";
   import { ElMessage } from 'element-plus'
   import axios from "../http.ts"
   import {pcaTextArr} from "element-china-area-data";
   import { routerKey, useRoute, useRouter } from 'vue-router'
+import { StringController } from 'lil-gui';
 
   const imageUrl = ref('')
+  var img_base64 = new String
+  var userid = "-1"
   // do not use same name with ref
   const allTags = ref([])
   const selectedOptions = ref([]); // 选择的省市区
@@ -133,6 +136,7 @@
       area: '',
       address:"",
       link:'',
+      poster_url:'',
       ticket_info:'',
       begin_date: '',
       end_date: '',
@@ -156,6 +160,8 @@
       }
   )
   });
+  
+  const uploadRef = ref<UploadInstance>();
 
   const province_change = (value) => {
   axios.get("/location/city_list", {
@@ -185,21 +191,42 @@
   }
 
   const onSubmit = () => {
-      axios({
-          method: "post",
-          url: "/addEx",
-          data: form.value,
-      })
-      .then((response) => {
-          ElMessage({
-              message: "添加成功，请等待审核"
-          })
-          router.push("/");
-      }).catch(() => {
-          ElMessage({
-              message: "添加失败，缺少必要项"
-          });
-      });
+    axios({
+        method: "post",
+        url: "/addEx",
+        data: {
+          file_base64: img_base64,
+          data: form.value
+        }
+    })
+    .then((response) => {
+        ElMessage({
+            message: "添加成功，请等待审核"
+        })
+        router.push("/");
+    }).catch(() => {
+        ElMessage({
+            message: "添加失败，缺少必要项"
+        });
+    });
+    // console.log(document.cookie.split("="))
+    // if (document.cookie != "") {
+    //   userid = document.cookie.split("=")[1].split(";")[0];
+    // }
+    //   axios.post(`/addEx/uploadPoster`, {
+    //     file_base64: img_base64,
+    //     uid: userid,
+    //         }).then((response) => {
+    //             let time = parseInt(new Date().getTime() / 1000);
+    //             console.log(time)
+    //             form.value.poster_url=userid+'_'+time+'.jpg';
+                
+    //             console.log("海报图片上传成功！")
+    //         }).catch((error) => {
+    //             console.log(error)
+    //         });
+
+      
   }
 
   const fileList = ref<UploadUserFile[]>([
@@ -233,6 +260,13 @@
       uploadFile
   ) => {
       imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+      var reader = new FileReader();
+      reader.readAsDataURL(uploadFile.raw!);
+      reader.onload = () => {
+
+          img_base64=reader.result;
+          //form.img = reader.result;
+      }
   }
 
   const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
