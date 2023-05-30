@@ -32,9 +32,13 @@
         <el-time-picker v-model="form.end_time" placeholder="选择结束时间" value-format="HH:mm:ss" style="width: 100%" />
       </el-col>
     </el-form-item>
-    <el-form-item label="地点">
+    <el-form-item label="省市区">
       <el-cascader size="large" :options="pcaTextArr" v-model="selectedOptions">
       </el-cascader>
+    </el-form-item>
+    <el-form-item label="详细地址">
+      <el-input v-model="form.address">
+      </el-input>
     </el-form-item>
     <el-form-item label="票务信息">
       <el-input v-model="form.ticket_info" />
@@ -107,6 +111,7 @@ const form = ref({
   province: '',
   city: '',
   area: '',
+  address : '',
   link: '',
   ticket_info: '',
   begin_date: '',
