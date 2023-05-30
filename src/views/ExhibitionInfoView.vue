@@ -156,29 +156,28 @@ export default {
         return {
             form: {
                 exId: this.$route.params.exId,
-                poster_url: "/src/assets/posters/saber.png",
-                name: "Exhibition 1",
-                begin_date: "2001-01-01",
-                end_date: "2001-02-02",
-                organizer: "og1",
-                tickets: "2000RMB",
-                link: "https://bilibili.com",
+                poster_url: "",
+                name: "",
+                begin_date: "",
+                end_date: "",
+                organizer: "",
+                tickets: "",
+                link: "",
                 province: "",
                 city: "",
                 area: "",
                 address: "",
                 tag_list: [
                     {
-                        id: 1,
-                        name: "tag1"
+                        id: 0,
+                        name: ""
                     },
                     {
-                        id: 2,
-                        name: "tag2"
+                        id: 0,
+                        name: ""
                     }
                 ],
-                introduction: "some long introssssss\nssssssssssssssssssssssssssss\nssssssssssssssssssssss\
-            ssssssssssssssssssssssssssssss",
+                introduction:"",
                 begin_time: "",
                 end_time: "",
                 recommends: [],

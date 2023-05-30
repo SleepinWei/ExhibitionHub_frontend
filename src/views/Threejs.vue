@@ -131,7 +131,6 @@ function loadObj(url,scene,controls,camera){
 function main() {
     const canvas = document.querySelector('#canvas');
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
-    renderer.set
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     // renderer.setSize(window.innerWidth, window.innerHeight);
 
