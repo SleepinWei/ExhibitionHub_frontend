@@ -227,7 +227,7 @@ export default {
                 params: {
                     ex_id:this.$route.params.exId
                 }
-            }).then((response){
+            }).then((response)=>{
                 this.ownerId = response.data;
 
                 if (role == "博物馆" && this.ownerId == userId) {
