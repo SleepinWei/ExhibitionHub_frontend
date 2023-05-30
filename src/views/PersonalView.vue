@@ -219,6 +219,7 @@ export default {
             type: 'error'
           })
         })
+      this.isEditing=false
     },
     cancel() {
       this.isEditing = false
