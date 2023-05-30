@@ -16,22 +16,22 @@ import CalendarView from '../views/CalendarView.vue'
       <div v-if="user.role === '普通用户'">
         <el-menu :default-active="activeIndex" class="menu" mode="horizontal">
           <!--  -->
-          <el-menu-item index="1" @click="ToSubscribe()">我的订阅</el-menu-item>
-          <el-menu-item index="2" @click="ToCalender()">我的日历</el-menu-item>
+          <el-menu-item index="subscribe" @click="ToSubscribe()">我的订阅</el-menu-item>
+          <el-menu-item index="calendar" @click="ToCalender()">我的日历</el-menu-item>
         </el-menu>
       </div>
       <div v-else-if="user.role === '博物馆'">
         <!--  -->
         <el-menu :default-active="activeIndex" class="menu" mode="horizontal">
-          <el-menu-item index="1" @click="ToReview()">待审核展览</el-menu-item>
-          <el-menu-item index="2" @click="ToSubmit()">已审核展览</el-menu-item>
+          <el-menu-item index="review" @click="ToReview()">待审核展览</el-menu-item>
+          <el-menu-item index="submit" @click="ToSubmit()">已审核展览</el-menu-item>
         </el-menu>
       </div>
       <div v-else-if="user.role === '管理员'">
         <!--  -->
         <el-menu :default-active="activeIndex" class="menu" mode="horizontal">
-          <el-menu-item index="1" @click="ToAudit()">待审核展览</el-menu-item>
-          <el-menu-item index="2" @click="ToPassed()">已审核展览</el-menu-item>
+          <el-menu-item index="audit" @click="ToAudit()">待审核展览</el-menu-item>
+          <el-menu-item index="passed" @click="ToPassed()">已审核展览</el-menu-item>
         </el-menu>
       </div>
 
@@ -147,7 +147,7 @@ export default {
       isEditing: false, //是否编辑信息
       message: '',      //弹窗信息显示
       imageUrl: '',
-
+      activeIndex:'',
       userSubscribeToReview: true,
       userCalenderToReview: false,
       museumToReview: true,
@@ -175,13 +175,42 @@ export default {
           });
           this.imageUrl = URL.createObjectURL(blob);
           console.log("wwwwww")
+          if(this.user.role=='普通用户'){
+            this.activeIndex='subscribe';
+          }
+          else if(this.user.role=='博物馆'){
+            this.activeIndex='review';
+          }
+          else if(this.user.role=='管理员'){
+            this.activeIndex='audit';
+          }
         })
         .catch((error) => {
           console.error(error);
         });
-
-
   },
+  watch: {
+        $route(to, from) {
+          if(to.query.menu=="subscribe"){
+            this.ToSubscribe();
+          }
+          else if(to.query.menu=="calendar"){
+            this.ToCalender();
+          }
+          else if(to.query.menu=="review"){
+            this.ToReview();
+          }
+          else if(to.query.menu=="submit"){
+            this.ToSubmit();
+          }
+          else if(to.query.menu=="audit"){
+            this.ToAudit();
+          }
+          else if(to.query.menu=="passed"){
+            this.ToPassed();
+          }
+      }
+    },
   methods: {
     //修改基本信息，用户名、性别、出生日期
     changeBasicInfo() {
@@ -258,26 +287,50 @@ export default {
       return isJPG && isLt2M && isjpg;
     },
     ToReview() {
+      this.activeIndex='review';
+      this.$router.push({
+                path: "/personal", query: { menu: "review" }
+            });
       this.museumToReview = true;
       this.museumSubmitted = false;
     },
     ToSubmit() {
+      this.activeIndex='submit';
+      this.$router.push({
+                path: "/personal", query: { menu: "submit" }
+            });
       this.museumToReview = false;
       this.museumSubmitted = true;
     },
     ToAudit() {
+      this.activeIndex='audit';
+      this.$router.push({
+                path: "/personal", query: { menu: "audit" }
+            });
       this.adminAudit = true;
       this.adminPassed = false;
     },
     ToPassed() {
+      this.activeIndex='passed';
+      this.$router.push({
+                path: "/personal", query: { menu: "passed" }
+            });
       this.adminAudit = false;
       this.adminPassed = true;
     },
     ToSubscribe() {
+      this.activeIndex='subscribe';
+      this.$router.push({
+                path: "/personal", query: { menu: "subscribe" }
+            });
       this.userSubscribeToReview = true;
       this.userCalenderToReview = false;
     },
     ToCalender() {
+      this.activeIndex='calendar';
+      this.$router.push({
+                path: "/personal", query: { menu: "calendar" }
+            });
       this.userSubscribeToReview = false;
       this.userCalenderToReview = true;
       console.log(this.userCalenderToReview)

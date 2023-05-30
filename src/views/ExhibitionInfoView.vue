@@ -20,7 +20,7 @@
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiAccountGroup"></svg-icon>
-                        主办方&emsp; {{ form.organizer }}
+                        展馆名&emsp; {{ form.venue_name }}
                     </el-row>
                     <el-row class="sub_info">
                         <svg-icon class="ex-icon" type="mdi" :path="mdiCashMultiple"></svg-icon>
@@ -53,7 +53,7 @@
                     </el-row>
                 </el-col>
                 <el-col :span="2" style="margin-top: 40px;margin-left: 10px;">
-                    <button v-if="isAdmin" class="Btn" @click="onChangeInfo">
+                    <button v-if="canChange" class="Btn" @click="onChangeInfo">
                         <div class="sign">
                             <svg-icon class="button-icon " type="mdi" :path="mdiTextBoxEditOutline"></svg-icon>
                         </div>
@@ -182,12 +182,13 @@ export default {
                 end_time: "",
                 recommends: [],
             },
-            isAdmin: false,
+            canChange: false,
             isLogin: false,
             isSubscribed: false,
             subscribeDate: '',
             showPopup: false,
             imageUrl: '',
+            ownerId: 0,
             showDatePicker: false, // 是否显示日期选择器,
             mdiCalendarClock: mdiCalendarClock,
             mdiAccountGroup: mdiAccountGroup,
@@ -221,9 +222,19 @@ export default {
         },
         getUserInfo() {
             let role = this.$cookies.get("cookieRole");
-            if (role == "博物馆" || role == "管理员") {
-                this.isAdmin = true;
-            }
+            let userId = this.$cookies.get("cookieAccount");
+            axios.get("/getOwnerId", {
+                params: {
+                    ex_id: this.$route.params.exId
+                }
+            }).then((response) => {
+                this.ownerId = response.data;
+
+                if (role == "博物馆" && this.ownerId == userId) {
+                    // 当前用户只能修改属于自己的展览
+                    this.canChange = true;
+                }
+            })
 
             let isLogin = (this.$cookies.get("cookieName") != null);
 
@@ -541,7 +552,7 @@ export default {
 }
 
 .ex-a:hover {
-    border-color: #999;
+    color: #6E84D6;
 }
 
 /* plus sign */
