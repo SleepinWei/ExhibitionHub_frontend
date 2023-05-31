@@ -8,7 +8,7 @@
       <el-table-column prop="review_date" label="审核时间" align="center"></el-table-column>
       <el-table-column prop="type" label="修改类型" align="center"></el-table-column>
       <el-table-column label="审核状态" v-slot="{ row }" align="center">
-        <el-check-tag  :style="{ backgroundColor: row.result=== 'pass' ? '#f4f4f5' : '#f4f4f5', color: row.status === '审核通过' ? '#43ad60' : '#e25959' }"  @click="handleTagClick(row)">
+        <el-check-tag  :style="{ backgroundColor: row.result=== 'pass' ? '#f4f4f5' : '#f4f4f5', color: row.result=== 'pass' ? '#43ad60' : '#e25959' }"  @click="handleTagClick(row)">
           {{ row.result === 'pass' ? '通过' : '未通过' }}
         </el-check-tag>
       </el-table-column>
