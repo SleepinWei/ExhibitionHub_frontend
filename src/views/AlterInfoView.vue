@@ -50,25 +50,20 @@
       <el-input :autosize="{ minRows: 2, maxRows: 6 }" v-model="form.introduction" type="textarea" />
     </el-form-item>
     <el-form-item label="海报">
-      <el-upload class="avatar-uploader" action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-        :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-        <el-icon v-else class="avatar-uploader-icon">
-          <Plus />
-        </el-icon>
-      </el-upload>
+      <el-upload
+      class="avatar-uploader"
+      action="http://127.0.0.1:8080/addEx/stash"
+      ref="uploadRef"
+      auto-upload="false"
+      :show-file-list="false"
+      :on-success="handleAvatarSuccess"
+      :before-upload="beforeAvatarUpload"
+      >
+      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+      <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+    </el-upload>
     </el-form-item>
-    <el-form-item label="图片墙">
-      <el-upload v-model:file-list="fileList" action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-        list-type="picture-card" :on-remove="handleRemove" :limit="2">
-        <el-icon>
-          <Plus />
-        </el-icon>
-      </el-upload>
-      <!-- <el-dialog v-model="dialogVisible">
-      <img w-full :src="dialogImageUrl" alt="Preview Image" />
-    </el-dialog> -->
-    </el-form-item>
+    
     <el-form-item label="标签">
       <el-row>
         <el-checkbox-group v-model="form.tag_list" size="large">
@@ -201,12 +196,19 @@ const handleRemove: UploadProps['onRemove'] = (uploadFile, uploadFiles) => {
 //       dialogVisible.value = true
 //   }
 
-const handleAvatarSuccess: UploadProps['onSuccess'] = (
-  response,
-  uploadFile
-) => {
-  imageUrl.value = URL.createObjectURL(uploadFile.raw!)
-}
+  const handleAvatarSuccess: UploadProps['onSuccess'] = (
+      response,
+      uploadFile
+  ) => {
+      imageUrl.value = URL.createObjectURL(uploadFile.raw!)
+      var reader = new FileReader();
+      reader.readAsDataURL(uploadFile.raw!);
+      reader.onload = () => {
+
+          img_base64=reader.result;
+          //form.img = reader.result;
+      }
+  }
 
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
   if (rawFile.type !== 'image/jpeg') {

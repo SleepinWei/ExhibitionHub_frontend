@@ -143,6 +143,7 @@ export default {
     },
     unmounted(){
         this.$axios.get('https://kjkttt.gardilily.com/api/calendar/cleancache/' + this.userid
+
             ).then(res => res.data).then(res => {
                 console.log("clean cache success")
             }).catch((error) => {
