@@ -11,7 +11,7 @@
             <div class="content">
                 <div class="card-back">
                     <div class="card-back-content">
-                        <img :src="'http://127.0.0.1:8080/' + item.poster_url" style="width: 100%">
+                        <img :src="'https://kjkttt.gardilily.com/api/' + item.poster_url" style="width: 100%">
                     </div>
                 </div>
                 <div class="card-front">

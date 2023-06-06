@@ -26,7 +26,7 @@ export default {
     props: ['params'],
     data() {
         return {
-            poster_url: 'http://127.0.0.1:8080/' + this.params.poster_url
+            poster_url: 'https://kjkttt.gardilily.com/api/' + this.params.poster_url
         }
     },
     methods: {

@@ -86,7 +86,7 @@ export default {
               console.log(response.data)
               this.exhibitionViewed = response.data; 
               console.log(this.exhibitionViewed)
-              this.exhibitionViewed.poster_url ='http://127.0.0.1:8080/' + response.data.poster_url;
+              this.exhibitionViewed.poster_url ='https://kjkttt.gardilily.com/api/' + response.data.poster_url;
 
           });
       },

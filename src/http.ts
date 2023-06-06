@@ -43,7 +43,8 @@ axios.interceptors.response.use((response: AxiosResponse<any>) => {
 }
 )
 
-axios.defaults.baseURL = "http://127.0.0.1:8080/"
+axios.defaults.baseURL = "https://kjkttt.gardilily.com/api"
 axios.defaults.withCredentials = true
+
 
 export default axios
