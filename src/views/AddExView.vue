@@ -79,7 +79,7 @@
     <el-form-item label="海报">
       <el-upload
       class="avatar-uploader"
-      action="http://localhost:8080/addEx/stash"
+      action="http://127.0.0.1:8080/addEx/stash"
       ref="uploadRef"
       auto-upload="false"
       :show-file-list="false"

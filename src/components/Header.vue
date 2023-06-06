@@ -284,7 +284,7 @@ export default {
             this.$router.push("/addEx")
         },
         loadUserName() {
-            this.$axios.get("http://localhost:8080/user/find/" + this.uid)
+            this.$axios.get("http://127.0.0.1:8080/user/find/" + this.uid)
                 .then((response) => {
                     this.username = response.data.username//user赋值
                 })

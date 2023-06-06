@@ -125,7 +125,7 @@ export default {
             this.loadContent()
         },
         loadContent() {
-            this.$axios.get('http://localhost:8080/calendarByOrganizer/' + this.userid + '/' + this.startTime + '/' + this.endTime
+            this.$axios.get('http://127.0.0.1:8080/calendarByOrganizer/' + this.userid + '/' + this.startTime + '/' + this.endTime
                 + '/' + this.venue + '/' + this.tags + '/' + this.province + '/' + this.city + '/' + this.area
             ).then(res => res.data).then(res => {
                 this.ExhibitonArr = res
@@ -142,7 +142,7 @@ export default {
         this.loadContent()
     },
     unmounted(){
-        this.$axios.get('http://localhost:8080/calendar/cleancache/' + this.userid
+        this.$axios.get('http://127.0.0.1:8080/calendar/cleancache/' + this.userid
             ).then(res => res.data).then(res => {
                 console.log("clean cache success")
             }).catch((error) => {
