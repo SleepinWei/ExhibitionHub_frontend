@@ -73,7 +73,7 @@
             ).then((response) => {
                 //
                 this.exhibitionViewed = response.data; 
-                this.exhibitionViewed.poster_url = this.$apiRoot + response.data.poster_url;
+                this.exhibitionViewed.poster_url = this.$posterPath + response.data.poster_url;
           
             });
           }

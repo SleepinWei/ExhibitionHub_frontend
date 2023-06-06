@@ -26,7 +26,7 @@ export default {
     props: ['params'],
     data() {
         return {
-            poster_url: this.$apiRoot + this.params.poster_url
+            poster_url: this.$posterPath + this.params.poster_url
         }
     },
     methods: {
