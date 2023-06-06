@@ -43,7 +43,7 @@ axios.interceptors.response.use((response: AxiosResponse<any>) => {
 }
 )
 
-axios.defaults.baseURL = "https://kjkttt.gardilily.com/api"
+axios.defaults.baseURL = "https://kjkttt.gardilily.com/api/"
 axios.defaults.withCredentials = true
 
 

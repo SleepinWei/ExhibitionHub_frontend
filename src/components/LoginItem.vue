@@ -39,7 +39,6 @@
     }},
     methods: {
       login() {
-        console.log("login");
         this.$axios.post('/login', qs.stringify(this.user)) // 加了个stringify就不404辣？!
           .then((res) => {
             console.log(res.data.code)
