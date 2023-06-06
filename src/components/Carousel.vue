@@ -4,7 +4,7 @@
             <el-carousel-item v-for="item in searchResult.slice(0,6)" :key="item.id" class="carousel-item">
                 <div class="carousel-slide" @click="jumpToExInfo(item.id)">
                     <div class="carousel-image-container">
-                        <img :src="'https://kjkttt.gardilily.com/api/' + item.poster_url" alt="Card Image" class="carousel-image"/>
+                        <img :src="this.$apiRoot + item.poster_url" alt="Card Image" class="carousel-image"/>
                     </div>
                 </div>
             </el-carousel-item>

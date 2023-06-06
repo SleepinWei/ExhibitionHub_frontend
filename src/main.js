@@ -13,12 +13,13 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 const app = createApp(App)
 app.config.globalProperties.$axios = axios
+app.config.globalProperties.$apiRoot = 'https://kjkttt.gardilily.com/api/'
+
 // app.config.headers["Access-Control-Allow-Origin"]="http://127.0.0.1:8080";
 
 app.use(ElementPlus, { locale: zhCn })
 app.use(router)
 app.use(VueCookies)
-
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)

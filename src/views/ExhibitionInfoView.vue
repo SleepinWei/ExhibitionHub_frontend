@@ -215,7 +215,7 @@ export default {
                 })
                 .then((response) => {
                     this.form = response.data;
-                    this.form.poster_url = 'https://kjkttt.gardilily.com/api/' + response.data.poster_url;
+                    this.form.poster_url = this.$apiRoot + response.data.poster_url;
                 }).catch((error) => {
                     if (error.response.status == 400) {
                         // exhibition is not found
@@ -375,7 +375,7 @@ export default {
                 for (var i = 0; i < 2; ++i) {
                     if (i < response.data.length) {
                         this.form.recommends.push(response.data[i]);
-                        this.form.recommends[i].poster_url = 'https://kjkttt.gardilily.com/api/' + this.form.recommends[i].poster_url
+                        this.form.recommends[i].poster_url = this.$apiRoot + this.form.recommends[i].poster_url
                     }
                 }
                 console.log(this.form.recommends)

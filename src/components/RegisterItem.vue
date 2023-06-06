@@ -86,7 +86,7 @@
   },
   methods: {
     sendEmail() {
-      console.log('https://kjkttt.gardilily.com/api/api/sendRisVerCodeMail/' + this.ruleForm.email);
+      console.log(this.$apiRoot+'api/sendRisVerCodeMail/' + this.ruleForm.email);
       this.$axios.get('/api/sendRisVerCodeMail/' + this.ruleForm.email)
         .then(res => {
           console.log(res.data);
@@ -122,7 +122,7 @@
     register() {
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          this.$axios.post('https://kjkttt.gardilily.com/api/register',
+          this.$axios.post(this.$apiRoot+'api/register',
             {
               username: this.ruleForm.username,
               password: this.ruleForm.password,

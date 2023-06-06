@@ -11,7 +11,7 @@
             <div class="content">
                 <div class="card-back">
                     <div class="card-back-content">
-                        <img :src="'https://kjkttt.gardilily.com/api/' + item.poster_url" style="width: 100%">
+                        <img :src="this.$apiRoot + item.poster_url" style="width: 100%">
                     </div>
                 </div>
                 <div class="card-front">

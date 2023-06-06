@@ -47,4 +47,6 @@ axios.defaults.baseURL = "https://kjkttt.gardilily.com/api/"
 axios.defaults.withCredentials = true
 
 
+
+
 export default axios

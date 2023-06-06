@@ -42,7 +42,7 @@ import CalendarView from '../views/CalendarView.vue'
           <el-card class="card">
             <div class="avatar-container">
               <!-- 头像 -->
-              <el-upload action="https://kjkttt.gardilily.com/api/test/upload" :data="{ uid: uid }" :show-file-list="false"
+              <el-upload :action="uploadURL" :data="{ uid: uid }" :show-file-list="false"
                 :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                 <img :src="imageUrl" alt="avatar" class="avatar">
               </el-upload>
@@ -153,7 +153,8 @@ export default {
       museumToReview: true,
       museumSubmitted: false,
       adminAudit: true,
-      adminPassed: false
+      adminPassed: false,
+      uploadURL:this.$apiRoot+'test/upload'
     }
   },
   created: function () {//根据Id查询用户信息

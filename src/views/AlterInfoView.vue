@@ -52,7 +52,7 @@
     <el-form-item label="海报">
       <el-upload
       class="avatar-uploader"
-      action="http://127.0.0.1:8080/addEx/stash"
+      action='https://kjkttt.gardilily.com/api/addEx/stash'
       ref="uploadRef"
       auto-upload="false"
       :show-file-list="false"
@@ -164,25 +164,6 @@ const onCancel = () => {
   console.log("cancel")
   router.back();//返回上一界面
 }
-
-const fileList = ref<UploadUserFile[]>([
-  {
-    name: 'food.jpeg',
-    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-  },
-  {
-    name: 'food.jpeg',
-    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-  },
-  {
-    name: 'food.jpeg',
-    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-  },
-  {
-    name: 'food.jpeg',
-    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-  }
-])
 
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)

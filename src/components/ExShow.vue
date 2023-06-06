@@ -6,7 +6,7 @@
             <el-card shadow="hover" class="exhibition-card"  @click="jumpToExhibition(exhibition.id)">
                 <el-row>
                     <el-col :span="10" class="exhibition-image">
-                        <img :src="'https://kjkttt.gardilily.com/api/' + exhibition.poster_url" alt="Exhibition Image" />
+                        <img :src="this.$apiRoot + exhibition.poster_url" alt="Exhibition Image" />
                     </el-col>
                     <el-col :span="14" class="exhibition-info">
                         <h2 class="exhibition-title">{{ exhibition.name }}</h2>
