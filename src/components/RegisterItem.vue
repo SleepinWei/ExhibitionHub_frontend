@@ -122,7 +122,7 @@
     register() {
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          this.$axios.post(this.$apiRoot+'api/register',
+          this.$axios.post(this.$apiRoot+'register',
             {
               username: this.ruleForm.username,
               password: this.ruleForm.password,
