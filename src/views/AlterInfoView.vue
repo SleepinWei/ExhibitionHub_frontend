@@ -96,28 +96,32 @@ const route = useRoute();
 const selectedOptions = ref([]);
 
 const imageUrl = ref('')
+var img_base64 = "null"
+
 // do not use same name with ref
 const allTags = ref([])
 const form = ref({
   id: 0,
   name: '',
   venue_name: '',
-  organizer: '',
-  province: '',
-  city: '',
-  area: '',
-  address : '',
-  link: '',
   ticket_info: '',
+  organizer: '',
   begin_date: '',
   end_date: '',
   begin_time: '',
   end_time: '',
-  delivery: false,
-  type: [],
-  resource: '',
+  province: '',
+  city: '',
+  area: '',
+  address: "",
   introduction: '',
-  tag_list: [] 
+  link: '',
+  poster_url: '',
+  is_checked: false,
+  //delivery: false,
+  //type: [],
+  //resource: '',
+  tag_list: []
 })
 
 // const province_options = ref([]);
@@ -147,12 +151,18 @@ const onSubmit = () => {
   form.value.city = selectedOptions.value[1];
   form.value.area = selectedOptions.value[2];
 
-  console.log(form.value);
+  var jsondata = JSON.parse(JSON.stringify(form.value))
+  console.log(jsondata)
+
+  console.log(img_base64)
 
   axios({
     method: "post",
     url: "/alterExInfo",
-    data: form.value,
+    data: {
+      file_base64: img_base64,
+      data: jsondata
+    }
   }).then(
     (response) => {
       router.push(`/exhibition/${route.params.exId}`)
