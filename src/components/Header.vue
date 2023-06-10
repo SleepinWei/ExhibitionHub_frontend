@@ -193,7 +193,7 @@ export default {
             },
             rules: {// 表单校验
                 oldPassword: [
-                    { required: true, message: "旧密码不能为空", trigger: "blur" },
+                    { required: true, message: "密码不能为空", trigger: "blur" },
                     { required: true, validator: correctPassword, trigger: "blur" }
                 ],
                 newPassword: [
@@ -300,7 +300,17 @@ export default {
                     this.user.password = this.form.newPassword
                     this.$axios.put("user/change", this.user)
                         .then((response) => {
-                            this.user = response.data
+                            // this.user = response.data
+
+                            this.$axios.get("/user/find/" + this.uid)
+                                .then((response) => {
+                                    this.user = response.data//user赋值
+                                    this.subuser = this.user
+                                })
+                                .catch(response => {
+                                    console.log("请求失败")
+                                })
+
                             this.$message({
                                 message: '修改密码成功！',
                                 type: 'success'
