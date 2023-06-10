@@ -45,20 +45,20 @@ const visible = ref(false);
 const availModels = ref([
     {
         id: 0,
-        url: "/src/assets/models/dragon.obj",
-        thumbnail: "/src/assets/models/dragon.jpg",
+        url: "../assets/models/dragon.obj",
+        thumbnail: "../assets/models/dragon.jpg",
         name:"dragon"
     },
     {
         id : 1, 
-        url: "/src/assets/models/bunny.obj",
-        thumbnail: "/src/assets/models/bunny.jpg",
+        url: "../assets/models/bunny.obj",
+        thumbnail: "../assets/models/bunny.jpg",
         name:"bunny"
     },
     {
         id:2,
-        url: "/src/assets/models/Venus_de_Milo_SMK_KAS434_1_10pct.obj",
-        thumbnail: "/src/assets/models/Venus.jpg",
+        url: "../assets/models/Venus_de_Milo_SMK_KAS434_1_10pct.obj",
+        thumbnail: "../assets/models/Venus.jpg",
         name:"Venus"
     }]);
 
