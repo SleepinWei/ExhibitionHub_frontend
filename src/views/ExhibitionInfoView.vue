@@ -238,6 +238,9 @@ export default {
                     this.canChange = true;
                     this.isVenue = true;
                 }
+                else if(role == "博物馆") {
+                    this.isVenue = true;
+                }
                 else if (role == "管理员") {
                     this.isAdministrator = true;
                 }
