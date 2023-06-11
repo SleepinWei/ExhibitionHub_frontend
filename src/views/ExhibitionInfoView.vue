@@ -59,6 +59,12 @@
                         </div>
                         <div class="text">&ensp;&ensp;修改</div>
                     </button>
+                    <button v-if="canChange || isAdministrator" class="Btn" @click="onDelete">
+                        <div class="sign">
+                            <svg-icon class="button-icon " type="mdi" :path="mdiTrashCanOutline"></svg-icon>
+                        </div>
+                        <div class="text">&ensp;&ensp;删除</div>
+                    </button>
                     <button v-if="isLogin" class="Btn" @click="onShareExhibition">
                         <div class="sign">
                             <svg-icon class="button-icon " type="mdi" :path="mdiShareVariantOutline"></svg-icon>
@@ -144,7 +150,8 @@ import SvgIcon from '@jamescoyle/vue-icon';
 import {
     mdiCalendarClock, mdiAccountGroup, mdiCashMultiple,
     mdiMapMarkerRadius, mdiLink, mdiTagHeart, mdiTextBoxEditOutline,
-    mdiShareVariantOutline, mdiBellRingOutline, mdiBellCancelOutline
+    mdiShareVariantOutline, mdiBellRingOutline, mdiBellCancelOutline,
+    mdiTrashCanOutline
 } from '@mdi/js';
 
 export default {
@@ -203,6 +210,7 @@ export default {
             mdiShareVariantOutline: mdiShareVariantOutline,
             mdiBellRingOutline: mdiBellRingOutline,
             mdiBellCancelOutline: mdiBellCancelOutline,
+            mdiTrashCanOutline:mdiTrashCanOutline,
         }
     },
     methods: {
@@ -291,6 +299,15 @@ export default {
             // TODO: 与 User 登录对接，主要为字段名
             // redirect
             this.$router.push(`/alterinfo/${this.$route.params.exId}`);
+        },
+        onDelete() {
+            this.$axios.get("/ex/delete", {
+                params: {
+                    ex_id: this.$route.params.exId
+                }
+            }).then((resposne) => {
+                this.$router.push("/")
+            })
         },
         onSubscribe() {
             this.showDatePicker = false;
