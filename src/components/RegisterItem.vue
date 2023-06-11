@@ -3,6 +3,12 @@
     <div class="login-box">
       <p id="heading">注册</p>
       <el-form class="login-from" :model="ruleForm" :rules="rules" ref="ruleForm">
+        <el-form-item class="frame-el-item" label="账号类型" prop="role" label-width=90px>
+          <el-select v-model="ruleForm.role">
+            <el-option v-for="item in roleOptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item class="frame-el-item" label="昵称" prop="username" label-width=90px>
           <el-input v-model="ruleForm.username"></el-input>
         </el-form-item>
@@ -46,10 +52,25 @@
         ruleForm: {
           username: "",
           password: "",
+          role: "",
           passwordconfirm: "",
           email: "",
           code: "",
         },
+        roleOptions: [
+          {
+            value: "普通用户",
+            label: "普通用户"
+          },
+          {
+            value: "管理员",
+            label: "管理员"
+          },
+          {
+            value: "博物馆",
+            label: "博物馆"
+          }
+        ],
       rules: {
         username: [
           { required: true, message: "昵称不能为空！", trigger: "blur" },
@@ -57,6 +78,9 @@
         password: [
           { required: true, message: "密码不能为空！", trigger: "blur" },
           { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/, message: '须同时包含数字与字母,长度为 8-20位', trigger: "blur" },
+        ],
+        role: [
+          {required: true,message:"用户类型不能为空！", trigger:"blur"}
         ],
         passwordconfirm: [
           { required: true, message: "确认密码不能为空！", trigger: "blur" },
@@ -127,6 +151,7 @@
               username: this.ruleForm.username,
               password: this.ruleForm.password,
               email: this.ruleForm.email,
+              role: this.ruleForm.role,
               code: this.ruleForm.code
             })
             .then(res => {
