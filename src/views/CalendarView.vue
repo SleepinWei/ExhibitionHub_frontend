@@ -159,6 +159,7 @@ export default {
     display: inline-block;
     width: 67%;
     margin: 1%;
+    height: 800px;
 }
 
 .Selector {

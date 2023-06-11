@@ -150,7 +150,6 @@ export default {
 .el-calendar{
 width: auto;
 height: auto;
-
 }
 
 .card p {
